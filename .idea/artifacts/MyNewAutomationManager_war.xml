@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="MyNewAutomationManager:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="my-new-automation-manager.war">
+      <element id="artifact" artifact-name="MyNewAutomationManager:war exploded" />
+    </root>
+  </artifact>
+</component>
