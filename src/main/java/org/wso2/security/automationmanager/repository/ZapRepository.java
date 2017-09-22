@@ -1,3 +1,4 @@
+package org.wso2.security.automationmanager.repository;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -15,18 +16,9 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.automationmanager;
 
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.data.repository.CrudRepository;
+import org.wso2.security.automationmanager.entity.Zap;
 
-
-public class ServletInitializer extends SpringBootServletInitializer {
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(ServletInitializer.class);
-    }
-
+public interface ZapRepository extends CrudRepository<Zap, String> {
 }
-

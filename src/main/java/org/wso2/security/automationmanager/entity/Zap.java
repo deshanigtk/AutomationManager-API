@@ -22,33 +22,27 @@ import javax.persistence.Id;
 import java.text.SimpleDateFormat;
 
 @Entity
-public class DynamicScanner {
+public class Zap {
 
     @Id
     private String id;
-    private String userId;
     private SimpleDateFormat createdTime;
-    private String name;
     private String status;
     private String ipAddress;
     private String containerPort;
     private String hostPort;
 
-    public DynamicScanner(String id, String userId, SimpleDateFormat createdTime, String ipAddress, String containerPort, String hostPort) {
+    public Zap(String id, SimpleDateFormat createdTime, String ipAddress, String containerPort, String hostPort) {
         this.id = id;
-        this.userId = userId;
         this.createdTime = createdTime;
         this.status = "created";
         this.ipAddress = ipAddress;
         this.containerPort = containerPort;
         this.hostPort = hostPort;
     }
+
     public String getId() {
         return id;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     public SimpleDateFormat getCreatedTime() {
@@ -73,13 +67,5 @@ public class DynamicScanner {
 
     public String getHostPort() {
         return hostPort;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 }

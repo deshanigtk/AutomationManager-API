@@ -1,4 +1,5 @@
-package org.wso2.security.automationmanager.service;/*
+package org.wso2.security.automationmanager.service;
+/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,5 +17,31 @@ package org.wso2.security.automationmanager.service;/*
 * under the License.
 */
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.wso2.security.automationmanager.entity.StaticScanner;
+import org.wso2.security.automationmanager.repository.StaticScannerRepository;
+
+@Service
 public class StaticScannerService {
+
+    @Autowired
+    private StaticScannerRepository staticScannerRepository;
+
+    public Object findAll() {
+        return staticScannerRepository.findAll();
+    }
+
+    public StaticScanner findOne(String containerId) {
+
+        return staticScannerRepository.findOne(containerId);
+    }
+
+    public Iterable<StaticScanner> findByUserIdAndStatus(String userId, String status) {
+        return staticScannerRepository.findByUserIdAndStatus(userId, status);
+    }
+
+    public StaticScanner save(StaticScanner staticScanner) {
+        return staticScannerRepository.save(staticScanner);
+    }
 }

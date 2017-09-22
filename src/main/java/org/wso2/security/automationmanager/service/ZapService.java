@@ -1,3 +1,4 @@
+package org.wso2.security.automationmanager.service;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -15,18 +16,28 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.automationmanager;
 
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.wso2.security.automationmanager.entity.Zap;
+import org.wso2.security.automationmanager.repository.ZapRepository;
 
+@Service
+public class ZapService {
 
-public class ServletInitializer extends SpringBootServletInitializer {
+    @Autowired
+    private ZapRepository zapRepository;
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(ServletInitializer.class);
+    public Object findAll() {
+        return zapRepository.findAll();
     }
 
-}
+    public Zap findOne(String containerId) {
 
+        return zapRepository.findOne(containerId);
+    }
+
+    public Zap save(Zap zap) {
+        return zapRepository.save(zap);
+    }
+}

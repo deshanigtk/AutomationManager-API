@@ -16,5 +16,31 @@ package org.wso2.security.automationmanager.service;/*
 * under the License.
 */
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.wso2.security.automationmanager.entity.DynamicScanner;
+import org.wso2.security.automationmanager.repository.DynamicScannerRepository;
+
+@Service
 public class DynamicScannerService {
+
+    @Autowired
+    private DynamicScannerRepository dynamicScannerRepository;
+
+    public Object findAll() {
+        return dynamicScannerRepository.findAll();
+    }
+
+    public DynamicScanner findOne(String containerId) {
+
+        return dynamicScannerRepository.findOne(containerId);
+    }
+    public Iterable<DynamicScanner> findByUserIdAndStatus(String userId, String status) {
+        return dynamicScannerRepository.findByUserIdAndStatus(userId, status);
+    }
+
+
+    public DynamicScanner save(DynamicScanner dynamicScanner) {
+        return dynamicScannerRepository.save(dynamicScanner);
+    }
 }

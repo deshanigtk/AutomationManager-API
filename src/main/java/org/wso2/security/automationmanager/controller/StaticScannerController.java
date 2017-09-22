@@ -1,4 +1,5 @@
-package org.wso2.security.automationmanager.controller;/*
+package org.wso2.security.automationmanager.controller;
+/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.wso2.security.automationmanager.entity.StaticScanner;
 import org.wso2.security.automationmanager.handlers.DockerHandler;
 import org.wso2.security.automationmanager.handlers.HttpRequestHandler;
-import org.wso2.security.automationmanager.repository.StaticScannerRepository;
+import org.wso2.security.automationmanager.service.StaticScannerService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,43 +37,46 @@ import java.text.SimpleDateFormat;
 @RequestMapping("/staticScanner")
 public class StaticScannerController {
 
-    @Value("${static_scanner_docker_image}")
+    @Value("${STATIC_SCANNER_DOCKER_IMAGE}")
     private String dockerImage;
 
     @Autowired
-    private StaticScannerRepository staticScannerRepository;
+    private StaticScannerService staticScannerService;
 
     private final String RUN_FIND_SEC_BUGS = "/staticScanner/findSecBugs";
 
     @PostMapping(path = "/start")
     public @ResponseBody
-    void start(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam String containerPort, @RequestParam String hostPort) {
+    String start(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam String containerPort, @RequestParam String hostPort) {
         if (DockerHandler.pullImage(dockerImage)) {
             String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, new String[]{});
 
             if (containerId != null) {
                 SimpleDateFormat createdTime = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
                 StaticScanner staticScanner = new StaticScanner(containerId, userId, createdTime, ipAddress, containerPort, hostPort);
-                staticScannerRepository.save(staticScanner);
+                staticScannerService.save(staticScanner);
 
                 if (DockerHandler.startContainer(containerId)) {
-                    staticScanner = staticScannerRepository.findOne(containerId);
+                    staticScanner = staticScannerService.findOne(containerId);
                     staticScanner.setStatus("running");
+                    return containerId;
                 }
+
             }
         }
+        return null;
     }
 
     @PostMapping(path = "/cloneProductFromGitHub")
     public @ResponseBody
-    void clone(@RequestParam String userId, @RequestParam String gitUrl, @RequestParam String branch) {
+    void clone(@RequestParam String userId, @RequestParam String containerId, @RequestParam String gitUrl, @RequestParam String branch) {
 
     }
 
     @PostMapping(path = "/getRunningContainersByUser")
     public @ResponseBody
     Iterable<StaticScanner> clone(@RequestParam String userId) {
-        return staticScannerRepository.findByUserIdAndStatus(userId, "running");
+        return staticScannerService.findByUserIdAndStatus(userId, "running");
     }
 
 
@@ -80,7 +84,7 @@ public class StaticScannerController {
     public @ResponseBody
     void runFindSecBugs(@RequestParam String userId, @RequestParam String containerId) {
         try {
-            StaticScanner staticScanner = staticScannerRepository.findOne(containerId);
+            StaticScanner staticScanner = staticScannerService.findOne(containerId);
             if (staticScanner.getStatus().equals("running") && staticScanner.getUserId().equals(userId) && staticScanner.isProductAvailable()) {
 
                 URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(Integer.parseInt(staticScanner.getHostPort())).setScheme("http").setPath(RUN_FIND_SEC_BUGS)
