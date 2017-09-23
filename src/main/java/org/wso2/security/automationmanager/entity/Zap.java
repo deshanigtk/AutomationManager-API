@@ -19,20 +19,22 @@ package org.wso2.security.automationmanager.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.text.SimpleDateFormat;
 
 @Entity
 public class Zap {
 
     @Id
     private String id;
-    private SimpleDateFormat createdTime;
+    private String createdTime;
     private String status;
     private String ipAddress;
     private String containerPort;
     private String hostPort;
 
-    public Zap(String id, SimpleDateFormat createdTime, String ipAddress, String containerPort, String hostPort) {
+    public Zap() {
+    }
+
+    public Zap(String id, String createdTime, String ipAddress, String containerPort, String hostPort) {
         this.id = id;
         this.createdTime = createdTime;
         this.status = "created";
@@ -45,7 +47,7 @@ public class Zap {
         return id;
     }
 
-    public SimpleDateFormat getCreatedTime() {
+    public String getCreatedTime() {
         return createdTime;
     }
 

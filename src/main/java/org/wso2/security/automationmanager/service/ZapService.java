@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.wso2.security.automationmanager.entity.Zap;
 import org.wso2.security.automationmanager.repository.ZapRepository;
 
+import java.util.List;
+
 @Service
 public class ZapService {
 
@@ -35,6 +37,10 @@ public class ZapService {
     public Zap findOne(String containerId) {
 
         return zapRepository.findOne(containerId);
+    }
+
+    public Iterable<Zap> findByStatus(String status) {
+        return zapRepository.findByStatusEquals(status);
     }
 
     public Zap save(Zap zap) {

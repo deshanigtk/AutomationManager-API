@@ -24,15 +24,13 @@ import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.*;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactory;;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 public class DockerHandler {
@@ -50,19 +48,39 @@ public class DockerHandler {
     }
 
     public static boolean pullImage(String imageName) {
-        try {
-            if (getDockerClient().searchImages(imageName) == null) {
-                getDockerClient().pull(imageName);
-            }
-            return true;
+        if (!checkIfImageIsAvailable(imageName)) try {
+            getDockerClient().pull(imageName);
+            return checkIfImageIsAvailable(imageName);
         } catch (DockerException | InterruptedException | DockerCertificateException e) {
             e.printStackTrace();
             LOGGER.error(e.toString());
             return false;
         }
+        return true;
     }
 
-    public static String createContainer(String imageName, String ipAddress, String containerPort, String hostPort, String[] cmd) {
+    private static boolean checkIfImageIsAvailable(String imageName) {
+        List<Image> images;
+        try {
+            images = getDockerClient().listImages();
+
+            for (Image image : images) {
+                for (String tag : image.repoTags()) {
+                    if (imageName.equals(tag)) {
+                        LOGGER.info("Image is available");
+                        return true;
+                    }
+                }
+            }
+            LOGGER.error("Image not available locally");
+        } catch (InterruptedException | DockerCertificateException | DockerException e) {
+            e.printStackTrace();
+            LOGGER.error(e.toString());
+        }
+        return false;
+    }
+
+    public static String createContainer(String imageName, String ipAddress, String containerPort, String hostPort, List<String> cmd) {
         String[] ports = {containerPort, hostPort};
         HashMap<String, List<PortBinding>> portBindings = new HashMap<>();
 

@@ -21,15 +21,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.wso2.security.automationmanager.entity.Zap;
 import org.wso2.security.automationmanager.handlers.DockerHandler;
 import org.wso2.security.automationmanager.service.ZapService;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 @PropertySource("classpath:global.properties")
 @Controller
@@ -40,28 +40,37 @@ public class ZapController {
     @Value("${ZAP_DOCKER_IMAGE}")
     private String dockerImage;
 
+    private static List<String> command;
+
     @Autowired
     private ZapService zapService;
 
-    @PostMapping(path = "/start")
+    @PostMapping(value = "/start")
     public @ResponseBody
     String start(@RequestParam String ipAddress, @RequestParam String containerPort, @RequestParam String hostPort) {
         if (DockerHandler.pullImage(dockerImage)) {
-            String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, new String[]{});
+            command = Arrays.asList("zap.sh", "-daemon", "-config", "api.disablekey=true", "-config",
+                    "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true", "-port", containerPort, "-host", ipAddress);
 
-            if (containerId != null) {
-                SimpleDateFormat createdTime = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-                Zap zap = new Zap(containerId, createdTime, ipAddress, containerPort, hostPort);
-                zapService.save(zap);
+            Iterable<Zap> runningContainers = zapService.findByStatus("running");
+            if (!runningContainers.iterator().hasNext()) {
+                String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, command);
 
-                if (DockerHandler.startContainer(containerId)) {
-                    zap = zapService.findOne(containerId);
-                    zap.setStatus("running");
-                    return containerId;
+                if (containerId != null) {
+                    String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+                    Zap zap = new Zap(containerId, createdTime, ipAddress, containerPort, hostPort);
+                    zapService.save(zap);
+
+                    if (DockerHandler.startContainer(containerId)) {
+                        zap = zapService.findOne(containerId);
+                        zap.setStatus("running");
+                        zapService.save(zap);
+                        return containerId;
+                    }
                 }
-
             }
         }
         return null;
     }
+
 }

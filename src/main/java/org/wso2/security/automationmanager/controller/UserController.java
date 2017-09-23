@@ -31,7 +31,7 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(path = "/add") // Map ONLY GET Requests
+    @GetMapping(value = "/add") // Map ONLY GET Requests
     public @ResponseBody
     String addNewUser(@RequestParam String name, @RequestParam String email) {
         // @ResponseBody means the returned String is the response, not a view name
@@ -44,19 +44,19 @@ public class UserController {
         return "Saved";
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping(value = "/all")
     public @ResponseBody
     Iterable<User> getAllUsers() {
         // This returns a JSON or XML with the users
         return userRepository.findAll();
     }
 
-    @GetMapping(path = "/signin")
+    @GetMapping(value = "/signin")
     public String signIn() {
         return "signin/signin";
     }
 
-    @GetMapping(path = "/mainScanners")
+    @GetMapping(value = "/mainScanners")
     public String index() {
         return "scanners";
     }

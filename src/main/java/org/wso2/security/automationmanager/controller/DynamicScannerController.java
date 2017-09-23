@@ -17,6 +17,7 @@ package org.wso2.security.automationmanager.controller;
 * under the License.
 */
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,15 +27,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.automationmanager.entity.DynamicScanner;
 import org.wso2.security.automationmanager.handlers.DockerHandler;
+import org.wso2.security.automationmanager.handlers.HttpRequestHandler;
 import org.wso2.security.automationmanager.service.DynamicScannerService;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @PropertySource("classpath:global.properties")
 @Controller
-@RequestMapping("/dynamicScanner")
+@RequestMapping("dynamicScanner")
 public class DynamicScannerController {
 
     @Value("${DYNAMIC_SCANNER_DOCKER_IMAGE}")
@@ -46,24 +50,24 @@ public class DynamicScannerController {
     @Value("${START_ZAP_SCAN}")
     private String startZapScan;
 
-
     @Autowired
     private DynamicScannerService dynamicScannerService;
 
-    @PostMapping(path = "/start")
+    @PostMapping(value = "start")
     public @ResponseBody
     String start(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam String containerPort, @RequestParam String hostPort) {
         if (DockerHandler.pullImage(dockerImage)) {
-            String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, new String[]{});
+            String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, null);
 
             if (containerId != null) {
-                SimpleDateFormat createdTime = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+                String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
                 DynamicScanner dynamicScanner = new DynamicScanner(containerId, userId, createdTime, ipAddress, containerPort, hostPort);
                 dynamicScannerService.save(dynamicScanner);
 
                 if (DockerHandler.startContainer(containerId)) {
                     dynamicScanner = dynamicScannerService.findOne(containerId);
                     dynamicScanner.setStatus("running");
+                    dynamicScannerService.save(dynamicScanner);
                     return containerId;
                 }
 
@@ -72,7 +76,7 @@ public class DynamicScannerController {
         return null;
     }
 
-    @PostMapping(path = "/uploadZipFileExtractAndStartServer")
+    @PostMapping(value = "/uploadZipFileExtractAndStartServer")
     public @ResponseBody
     void uploadZipFileExtractAndStartServer(@RequestParam String containerId, @RequestParam MultipartFile zipFile) {
 
@@ -87,7 +91,7 @@ public class DynamicScannerController {
         }
     }
 
-    @GetMapping(path = "/zapScan")
+    @GetMapping(value = "zapScan")
     public @ResponseBody
     void startZapScan(@RequestParam String containerId,
                       @RequestParam String zapHost,
@@ -101,18 +105,21 @@ public class DynamicScannerController {
         try {
             DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
             URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(Integer.parseInt(dynamicScanner.getHostPort())).setScheme("http").setPath(startZapScan)
+
                     .addParameter("zapHost", zapHost)
                     .addParameter("zapPort", String.valueOf(zapPort))
                     .addParameter("sessionName", sessionName)
                     .addParameter("productHostRelativeToZap", productHostRelativeToZap)
-                    .addParameter("productHostRelativeToDynamicScanner", productHostRelativeToDynamicScanner)
+                    .addParameter("productHostRelativeToThis", productHostRelativeToDynamicScanner)
                     .addParameter("productPort", String.valueOf(productPort))
                     .addParameter("urlListPath", urlListPath)
                     .addParameter("isAuthenticatedScan", String.valueOf(isAuthenticatedScan))
                     .build();
-        } catch (URISyntaxException e) {
+
+            HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri.toString());
+            HttpRequestHandler.printResponse(httpResponse);
+        } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
         }
     }
-
 }

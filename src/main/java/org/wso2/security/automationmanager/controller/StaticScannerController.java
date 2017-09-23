@@ -31,6 +31,7 @@ import org.wso2.security.automationmanager.service.StaticScannerService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @PropertySource("classpath:global.properties")
 @Controller
@@ -45,20 +46,21 @@ public class StaticScannerController {
 
     private final String RUN_FIND_SEC_BUGS = "/staticScanner/findSecBugs";
 
-    @PostMapping(path = "/start")
+    @PostMapping(value = "/start")
     public @ResponseBody
     String start(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam String containerPort, @RequestParam String hostPort) {
         if (DockerHandler.pullImage(dockerImage)) {
-            String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, new String[]{});
+            String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, null);
 
             if (containerId != null) {
-                SimpleDateFormat createdTime = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+                String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
                 StaticScanner staticScanner = new StaticScanner(containerId, userId, createdTime, ipAddress, containerPort, hostPort);
                 staticScannerService.save(staticScanner);
 
                 if (DockerHandler.startContainer(containerId)) {
                     staticScanner = staticScannerService.findOne(containerId);
                     staticScanner.setStatus("running");
+                    staticScannerService.save(staticScanner);
                     return containerId;
                 }
 
@@ -67,20 +69,20 @@ public class StaticScannerController {
         return null;
     }
 
-    @PostMapping(path = "/cloneProductFromGitHub")
+    @PostMapping(value = "/cloneProductFromGitHub")
     public @ResponseBody
     void clone(@RequestParam String userId, @RequestParam String containerId, @RequestParam String gitUrl, @RequestParam String branch) {
 
     }
 
-    @PostMapping(path = "/getRunningContainersByUser")
+    @PostMapping(value = "/getRunningContainersByUser")
     public @ResponseBody
     Iterable<StaticScanner> clone(@RequestParam String userId) {
         return staticScannerService.findByUserIdAndStatus(userId, "running");
     }
 
 
-    @PostMapping(path = "/runFindSecBugs")
+    @PostMapping(value = "/runFindSecBugs")
     public @ResponseBody
     void runFindSecBugs(@RequestParam String userId, @RequestParam String containerId) {
         try {

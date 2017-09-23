@@ -19,14 +19,13 @@ package org.wso2.security.automationmanager.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.text.SimpleDateFormat;
 
 @Entity
 public class StaticScanner {
     @Id
     private String id;
     private String userId;
-    private SimpleDateFormat createdTime;
+    private String createdTime;
     private String name;
     private String status;
     private String ipAddress;
@@ -35,7 +34,9 @@ public class StaticScanner {
 
     private boolean isProductAvailable;
 
-    public StaticScanner(String id, String userId, SimpleDateFormat createdTime, String ipAddress, String containerPort, String hostPort) {
+    public StaticScanner(){}
+
+    public StaticScanner(String id, String userId, String createdTime, String ipAddress, String containerPort, String hostPort) {
         this.id = id;
         this.userId = userId;
         this.createdTime = createdTime;
@@ -53,7 +54,7 @@ public class StaticScanner {
         return userId;
     }
 
-    public SimpleDateFormat getCreatedTime() {
+    public String getCreatedTime() {
         return createdTime;
     }
 
