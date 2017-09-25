@@ -20,22 +20,29 @@ package org.wso2.security.automationmanager.handlers;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class HttpRequestHandler {
-    private static HttpClient httpClient = HttpClientBuilder.create().build();
+    private static CloseableHttpClient httpClient = HttpClients.createDefault();
+
     private static List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
 
-    public static HttpResponse sendGetRequest(String request) {
+    public static HttpResponse sendGetRequest(URI request) {
         HttpResponse httpResponse = null;
         HttpGet httpGetRequest = new HttpGet(request);
         try {
@@ -57,13 +64,40 @@ public class HttpRequestHandler {
         return httpClient.execute(httpPostRequest);
     }
 
+    public static HttpResponse sendMultipartRequest(URI uri, MultipartFile file, Map<String, String> textBody) {
+        CloseableHttpResponse response = null;
+        try {
+            HttpPost uploadFile = new HttpPost(uri);
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            for (Map.Entry<String, String> entry : textBody.entrySet()) {
+                builder.addTextBody(entry.getKey(), entry.getValue(), ContentType.TEXT_PLAIN);
+            }
+            // This attaches the file to the POST:
+            InputStream inputStream = file.getInputStream();
+
+            builder.addBinaryBody(
+                    "file",
+                    inputStream,
+                    ContentType.APPLICATION_OCTET_STREAM,
+                    file.getOriginalFilename()
+            );
+
+            HttpEntity multipart = builder.build();
+            uploadFile.setEntity(multipart);
+            response = httpClient.execute(uploadFile);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
 
     public static String printResponse(HttpResponse response) throws IOException {
 
         BufferedReader rd = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));
 
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         String line;
         while ((line = rd.readLine()) != null) {
             result.append(line);

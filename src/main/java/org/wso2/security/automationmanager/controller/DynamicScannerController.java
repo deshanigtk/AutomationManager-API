@@ -19,6 +19,8 @@ package org.wso2.security.automationmanager.controller;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -28,13 +30,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.automationmanager.entity.DynamicScanner;
 import org.wso2.security.automationmanager.handlers.DockerHandler;
 import org.wso2.security.automationmanager.handlers.HttpRequestHandler;
+import org.wso2.security.automationmanager.handlers.MailHandler;
 import org.wso2.security.automationmanager.service.DynamicScannerService;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @PropertySource("classpath:global.properties")
 @Controller
@@ -50,8 +55,16 @@ public class DynamicScannerController {
     @Value("${START_ZAP_SCAN}")
     private String startZapScan;
 
+    @Value("${GET_REPORT_AND_MAIL}")
+    private String getReportAndMail;
+
     @Autowired
     private DynamicScannerService dynamicScannerService;
+
+    @Autowired
+    private MailHandler mailHandler;
+
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping(value = "start")
     public @ResponseBody
@@ -62,10 +75,9 @@ public class DynamicScannerController {
             if (containerId != null) {
                 String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
                 DynamicScanner dynamicScanner = new DynamicScanner(containerId, userId, createdTime, ipAddress, containerPort, hostPort);
-                dynamicScannerService.save(dynamicScanner);
+                dynamicScanner = dynamicScannerService.save(dynamicScanner);
 
                 if (DockerHandler.startContainer(containerId)) {
-                    dynamicScanner = dynamicScannerService.findOne(containerId);
                     dynamicScanner.setStatus("running");
                     dynamicScannerService.save(dynamicScanner);
                     return containerId;
@@ -76,16 +88,19 @@ public class DynamicScannerController {
         return null;
     }
 
-    @PostMapping(value = "/uploadZipFileExtractAndStartServer")
+    @PostMapping(value = "uploadZipFileExtractAndStartServer")
     public @ResponseBody
-    void uploadZipFileExtractAndStartServer(@RequestParam String containerId, @RequestParam MultipartFile zipFile) {
-
+    void uploadZipFileExtractAndStartServer(@RequestParam String containerId, @RequestParam MultipartFile zipFile, @RequestParam boolean replaceExisting) throws IOException {
         try {
             DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
-            URI baseUri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(Integer.parseInt(dynamicScanner.getHostPort())).setScheme("http").setPath(uploadExtractAndStartServer)
+
+            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(Integer.parseInt(dynamicScanner.getHostPort())).setScheme("http").setPath(uploadExtractAndStartServer)
                     .build();
 
-//            HttpRequestHandler.sendPostrequest();
+            Map<String, String> bodyContent = new HashMap<>();
+            bodyContent.put("replaceExisting", String.valueOf(replaceExisting));
+            HttpRequestHandler.sendMultipartRequest(uri, zipFile, bodyContent);
+
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -104,7 +119,8 @@ public class DynamicScannerController {
                       @RequestParam boolean isAuthenticatedScan) {
         try {
             DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
-            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(Integer.parseInt(dynamicScanner.getHostPort())).setScheme("http").setPath(startZapScan)
+            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(Integer.parseInt(dynamicScanner.getHostPort()))
+                    .setScheme("http").setPath(startZapScan)
 
                     .addParameter("zapHost", zapHost)
                     .addParameter("zapPort", String.valueOf(zapPort))
@@ -116,10 +132,29 @@ public class DynamicScannerController {
                     .addParameter("isAuthenticatedScan", String.valueOf(isAuthenticatedScan))
                     .build();
 
-            HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri.toString());
+            HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri);
             HttpRequestHandler.printResponse(httpResponse);
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @PostMapping(path = "getReportAndMail")
+    public @ResponseBody
+    void getReport(@RequestParam String containerId, @RequestParam String to) throws Exception {
+
+        DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
+        URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
+                .setPort(Integer.parseInt(dynamicScanner.getHostPort())).setScheme("http").setPath(getReportAndMail)
+                .build();
+
+        HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri);
+
+        if (httpResponse.getEntity() != null) {
+            String subject = "Dynamic Scan Report: ";
+
+            HttpRequestHandler.saveResponseToFile(httpResponse, httpResponse.getEntity().);
+            mailHandler.sendMail(to, subject, "This is auto generated message", tempFile);
         }
     }
 }

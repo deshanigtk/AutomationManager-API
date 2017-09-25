@@ -92,7 +92,7 @@ public class StaticScannerController {
                 URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(Integer.parseInt(staticScanner.getHostPort())).setScheme("http").setPath(RUN_FIND_SEC_BUGS)
                         .build();
 
-                HttpRequestHandler.sendGetRequest(uri.toString());
+                HttpRequestHandler.sendGetRequest(uri);
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
