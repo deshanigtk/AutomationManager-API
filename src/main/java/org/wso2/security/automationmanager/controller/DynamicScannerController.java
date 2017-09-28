@@ -152,9 +152,16 @@ public class DynamicScannerController {
 
         if (httpResponse.getEntity() != null) {
             String subject = "Dynamic Scan Report: ";
-
-            HttpRequestHandler.saveResponseToFile(httpResponse, httpResponse.getEntity().);
-            mailHandler.sendMail(to, subject, "This is auto generated message", tempFile);
+            mailHandler.sendMail(to, subject, "This is auto generated message", httpResponse.getEntity().getContent());
         }
+    }
+
+    @GetMapping(path = "kill")
+    public @ResponseBody
+    void kill(@RequestParam String containerId) throws Exception {
+        DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
+        DockerHandler.killContainer(containerId);
+        dynamicScanner.setStatus("killed");
+        dynamicScannerService.save(dynamicScanner);
     }
 }

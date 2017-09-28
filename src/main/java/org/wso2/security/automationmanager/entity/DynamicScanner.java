@@ -32,8 +32,10 @@ public class DynamicScanner {
     private String ipAddress;
     private String containerPort;
     private String hostPort;
+    private boolean isProductAvailable;
 
-    public DynamicScanner(){}
+    public DynamicScanner() {
+    }
 
     public DynamicScanner(String id, String userId, String createdTime, String ipAddress, String containerPort, String hostPort) {
         this.id = id;
@@ -43,7 +45,9 @@ public class DynamicScanner {
         this.ipAddress = ipAddress;
         this.containerPort = containerPort;
         this.hostPort = hostPort;
+        this.isProductAvailable = false;
     }
+
     public String getId() {
         return id;
     }
@@ -58,6 +62,14 @@ public class DynamicScanner {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setProductAvailable(boolean productAvailable) {
+        isProductAvailable = productAvailable;
+    }
+
+    public boolean isProductAvailable() {
+        return isProductAvailable;
     }
 
     public String getStatus() {

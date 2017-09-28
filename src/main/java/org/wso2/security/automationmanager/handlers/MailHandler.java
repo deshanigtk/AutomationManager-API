@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -54,7 +53,7 @@ public class MailHandler {
             mimeMessageHelper.setTo(to);
             mimeMessageHelper.setText(body);
 
-            mimeMessageHelper.addAttachment("attachment",
+            mimeMessageHelper.addAttachment("ScanReport.html",
                     new ByteArrayResource(IOUtils.toByteArray(inputStream)));
             mailSender.send(mimeMessageHelper.getMimeMessage());
 

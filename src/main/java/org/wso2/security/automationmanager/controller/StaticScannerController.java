@@ -17,17 +17,22 @@ package org.wso2.security.automationmanager.controller;
 * under the License.
 */
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.automationmanager.entity.StaticScanner;
 import org.wso2.security.automationmanager.handlers.DockerHandler;
 import org.wso2.security.automationmanager.handlers.HttpRequestHandler;
 import org.wso2.security.automationmanager.service.StaticScannerService;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
@@ -41,12 +46,21 @@ public class StaticScannerController {
     @Value("${STATIC_SCANNER_DOCKER_IMAGE}")
     private String dockerImage;
 
+    @Value("${CLONE_FROM_GITHUB}")
+    private String cloneFromGitHub;
+
+    @Value("${UPLOAD_PRODUCT_ZIP_FILE_AND_EXTRACT}")
+    private String uploadProductZipFileAndExtract;
+
+    @Value("${FIND_SEC_BUGS}")
+    private String runFindSecBugs;
+
     @Autowired
     private StaticScannerService staticScannerService;
 
-    private final String RUN_FIND_SEC_BUGS = "/staticScanner/findSecBugs";
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    @PostMapping(value = "/start")
+    @PostMapping(value = "start")
     public @ResponseBody
     String start(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam String containerPort, @RequestParam String hostPort) {
         if (DockerHandler.pullImage(dockerImage)) {
@@ -69,31 +83,66 @@ public class StaticScannerController {
         return null;
     }
 
-    @PostMapping(value = "/cloneProductFromGitHub")
+    @PostMapping(value = "cloneProductFromGitHub")
     public @ResponseBody
-    void clone(@RequestParam String userId, @RequestParam String containerId, @RequestParam String gitUrl, @RequestParam String branch) {
-
-    }
-
-    @PostMapping(value = "/getRunningContainersByUser")
-    public @ResponseBody
-    Iterable<StaticScanner> clone(@RequestParam String userId) {
-        return staticScannerService.findByUserIdAndStatus(userId, "running");
-    }
-
-
-    @PostMapping(value = "/runFindSecBugs")
-    public @ResponseBody
-    void runFindSecBugs(@RequestParam String userId, @RequestParam String containerId) {
+    boolean clone(@RequestParam String containerId, @RequestParam String url, @RequestParam String branch, @RequestParam String tag) {
         try {
             StaticScanner staticScanner = staticScannerService.findOne(containerId);
-            if (staticScanner.getStatus().equals("running") && staticScanner.getUserId().equals(userId) && staticScanner.isProductAvailable()) {
-
-                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(Integer.parseInt(staticScanner.getHostPort())).setScheme("http").setPath(RUN_FIND_SEC_BUGS)
+            if (staticScanner.getStatus().equals("running")) {
+                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(Integer.parseInt(staticScanner.getHostPort())).setScheme("http")
+                        .setPath(cloneFromGitHub)
+                        .addParameter("url", url)
+                        .addParameter("branch", branch)
+                        .addParameter("tag", tag)
                         .build();
+                HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri);
+                boolean isProductCloned = Boolean.parseBoolean(httpResponse.getEntity().getContent().toString());
+                if (isProductCloned) {
+                    staticScanner.setProductAvailable(true);
+                    staticScannerService.save(staticScanner);
+                    LOGGER.info("Product successfully cloned");
 
+                    return true;
+                }
+            } else {
+                LOGGER.error("Container is not running");
+            }
+
+        } catch (URISyntaxException | IOException e) {
+            LOGGER.error("Product is not cloned");
+            LOGGER.error(e.toString());
+        }
+        return false;
+    }
+
+    @PostMapping(value = "runFindSecBugs")
+    public @ResponseBody
+    void runFindSecBugs(@RequestParam String containerId) {
+        try {
+            StaticScanner staticScanner = staticScannerService.findOne(containerId);
+            if (staticScanner.getStatus().equals("running") && staticScanner.isProductAvailable()) {
+
+                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(Integer.parseInt(staticScanner.getHostPort())).setScheme("http").setPath(runFindSecBugs)
+                        .build();
                 HttpRequestHandler.sendGetRequest(uri);
             }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping(value = "uploadProductZipFileAndExtract")
+    public @ResponseBody
+    void uploadProductZipFileAndExtract(@RequestParam String containerId, @RequestParam MultipartFile zipFile) throws IOException {
+        try {
+            StaticScanner staticScanner = staticScannerService.findOne(containerId);
+
+            URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(Integer.parseInt(staticScanner.getHostPort())).setScheme("http")
+                    .setPath(uploadProductZipFileAndExtract)
+                    .build();
+
+            HttpRequestHandler.sendMultipartRequest(uri, zipFile, null);
+
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

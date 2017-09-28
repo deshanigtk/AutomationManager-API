@@ -34,7 +34,8 @@ public class StaticScanner {
 
     private boolean isProductAvailable;
 
-    public StaticScanner(){}
+    public StaticScanner() {
+    }
 
     public StaticScanner(String id, String userId, String createdTime, String ipAddress, String containerPort, String hostPort) {
         this.id = id;
@@ -44,6 +45,7 @@ public class StaticScanner {
         this.ipAddress = ipAddress;
         this.containerPort = containerPort;
         this.hostPort = hostPort;
+        this.isProductAvailable = false;
     }
 
     public String getId() {
