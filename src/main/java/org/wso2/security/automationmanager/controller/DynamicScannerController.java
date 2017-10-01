@@ -58,59 +58,86 @@ public class DynamicScannerController {
     @Value("${GET_REPORT_AND_MAIL}")
     private String getReportAndMail;
 
-    @Autowired
-    private DynamicScannerService dynamicScannerService;
+    @Value("${CONFIGURE_NOTIFICATION_MANAGER}")
+    private String configureNotificationManager;
 
-    @Autowired
-    private MailHandler mailHandler;
+    @Value("${AUTOMATION_MANAGER_HOST}")
+    private String myHost;
+
+    @Value("${AUTOMATION_MANAGER_PORT}")
+    private int myPort;
+
+    private final DynamicScannerService dynamicScannerService;
+
+    private final MailHandler mailHandler;
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    public DynamicScannerController(DynamicScannerService dynamicScannerService, MailHandler mailHandler) {
+        this.dynamicScannerService = dynamicScannerService;
+        this.mailHandler = mailHandler;
+    }
+
     @PostMapping(value = "start")
     public @ResponseBody
-    String start(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam String containerPort, @RequestParam String hostPort) {
-        if (DockerHandler.pullImage(dockerImage)) {
-            String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, null);
+    String start(@RequestParam String ipAddress, @RequestParam int containerPort, @RequestParam int hostPort) {
+        String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(containerPort), String.valueOf(hostPort), null);
 
-            if (containerId != null) {
-                String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
-                DynamicScanner dynamicScanner = new DynamicScanner(containerId, userId, createdTime, ipAddress, containerPort, hostPort);
-                dynamicScanner = dynamicScannerService.save(dynamicScanner);
+        if (containerId != null) {
+            String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+            DynamicScanner dynamicScanner = new DynamicScanner(containerId, createdTime, ipAddress, containerPort, hostPort);
+            dynamicScanner = dynamicScannerService.save(dynamicScanner);
 
-                if (DockerHandler.startContainer(containerId)) {
+            if (DockerHandler.startContainer(containerId)) {
+                try {
+                    Thread.sleep(2000);
+                    URI uri = (new URIBuilder()).setHost(ipAddress).setPort(hostPort).setScheme("http").setPath(configureNotificationManager)
+                            .addParameter("automationManagerHost", myHost)
+                            .addParameter("automationManagerPort", String.valueOf(myPort))
+                            .addParameter("myContainerId", containerId)
+                            .build();
+                    LOGGER.info("URI to configure notification manager: " + uri);
+                    HttpRequestHandler.sendGetRequest(uri);
                     dynamicScanner.setStatus("running");
                     dynamicScannerService.save(dynamicScanner);
-                    return containerId;
-                }
 
+                } catch (URISyntaxException | InterruptedException e) {
+                    e.printStackTrace();
+                    LOGGER.error(e.toString());
+                }
+                return containerId;
             }
+
         }
         return null;
     }
 
     @PostMapping(value = "uploadZipFileExtractAndStartServer")
     public @ResponseBody
-    void uploadZipFileExtractAndStartServer(@RequestParam String containerId, @RequestParam MultipartFile zipFile, @RequestParam boolean replaceExisting) throws IOException {
+    void uploadZipFileExtractAndStartServer(@RequestParam String containerId, @RequestParam MultipartFile zipFile) throws IOException {
         try {
             DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
 
-            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(Integer.parseInt(dynamicScanner.getHostPort())).setScheme("http").setPath(uploadExtractAndStartServer)
+            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(uploadExtractAndStartServer)
                     .build();
 
-            Map<String, String> bodyContent = new HashMap<>();
-            bodyContent.put("replaceExisting", String.valueOf(replaceExisting));
-            HttpRequestHandler.sendMultipartRequest(uri, zipFile, bodyContent);
+            HttpResponse httpResponse = HttpRequestHandler.sendMultipartRequest(uri, zipFile, new HashMap<>());
+
+
+            HttpRequestHandler.printResponse(httpResponse);
 
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
 
-    @GetMapping(value = "zapScan")
+    @GetMapping(value = "runZapScan")
     public @ResponseBody
     void startZapScan(@RequestParam String containerId,
                       @RequestParam String zapHost,
                       @RequestParam int zapPort,
+                      @RequestParam String contextName,
                       @RequestParam String sessionName,
                       @RequestParam String productHostRelativeToZap,
                       @RequestParam String productHostRelativeToDynamicScanner,
@@ -119,11 +146,12 @@ public class DynamicScannerController {
                       @RequestParam boolean isAuthenticatedScan) {
         try {
             DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
-            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(Integer.parseInt(dynamicScanner.getHostPort()))
+            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(dynamicScanner.getHostPort())
                     .setScheme("http").setPath(startZapScan)
 
                     .addParameter("zapHost", zapHost)
                     .addParameter("zapPort", String.valueOf(zapPort))
+                    .addParameter("contextName", contextName)
                     .addParameter("sessionName", sessionName)
                     .addParameter("productHostRelativeToZap", productHostRelativeToZap)
                     .addParameter("productHostRelativeToThis", productHostRelativeToDynamicScanner)
@@ -145,7 +173,7 @@ public class DynamicScannerController {
 
         DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
         URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-                .setPort(Integer.parseInt(dynamicScanner.getHostPort())).setScheme("http").setPath(getReportAndMail)
+                .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(getReportAndMail)
                 .build();
 
         HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri);

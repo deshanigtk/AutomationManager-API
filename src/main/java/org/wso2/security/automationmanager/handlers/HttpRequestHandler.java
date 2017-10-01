@@ -47,10 +47,11 @@ public class HttpRequestHandler {
         HttpGet httpGetRequest = new HttpGet(request);
         try {
             httpResponse = httpClient.execute(httpGetRequest);
+            return httpResponse;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return httpResponse;
+        return null;
     }
 
     public static HttpResponse sendPostrequest(String request, ArrayList<NameValuePair> parameters) throws IOException {

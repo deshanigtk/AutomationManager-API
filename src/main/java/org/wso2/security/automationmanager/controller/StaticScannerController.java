@@ -62,9 +62,9 @@ public class StaticScannerController {
 
     @PostMapping(value = "start")
     public @ResponseBody
-    String start(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam String containerPort, @RequestParam String hostPort) {
+    String start(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam int containerPort, @RequestParam int hostPort) {
         if (DockerHandler.pullImage(dockerImage)) {
-            String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, null);
+            String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(containerPort), String.valueOf(hostPort), null);
 
             if (containerId != null) {
                 String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
@@ -89,7 +89,7 @@ public class StaticScannerController {
         try {
             StaticScanner staticScanner = staticScannerService.findOne(containerId);
             if (staticScanner.getStatus().equals("running")) {
-                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(Integer.parseInt(staticScanner.getHostPort())).setScheme("http")
+                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(staticScanner.getHostPort()).setScheme("http")
                         .setPath(cloneFromGitHub)
                         .addParameter("url", url)
                         .addParameter("branch", branch)
@@ -122,7 +122,7 @@ public class StaticScannerController {
             StaticScanner staticScanner = staticScannerService.findOne(containerId);
             if (staticScanner.getStatus().equals("running") && staticScanner.isProductAvailable()) {
 
-                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(Integer.parseInt(staticScanner.getHostPort())).setScheme("http").setPath(runFindSecBugs)
+                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(staticScanner.getHostPort()).setScheme("http").setPath(runFindSecBugs)
                         .build();
                 HttpRequestHandler.sendGetRequest(uri);
             }
@@ -137,7 +137,7 @@ public class StaticScannerController {
         try {
             StaticScanner staticScanner = staticScannerService.findOne(containerId);
 
-            URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(Integer.parseInt(staticScanner.getHostPort())).setScheme("http")
+            URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(staticScanner.getHostPort()).setScheme("http")
                     .setPath(uploadProductZipFileAndExtract)
                     .build();
 

@@ -31,9 +31,9 @@ public class DynamicScannerService {
         return dynamicScannerRepository.findAll();
     }
 
-    public DynamicScanner findOne(String containerId) {
+    public DynamicScanner findOne(String id) {
 
-        return dynamicScannerRepository.findOne(containerId);
+        return dynamicScannerRepository.findOne(id);
     }
     public Iterable<DynamicScanner> findByUserIdAndStatus(String userId, String status) {
         return dynamicScannerRepository.findByUserIdAndStatus(userId, status);

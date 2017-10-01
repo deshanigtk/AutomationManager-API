@@ -29,15 +29,15 @@ public class StaticScanner {
     private String name;
     private String status;
     private String ipAddress;
-    private String containerPort;
-    private String hostPort;
+    private int containerPort;
+    private int hostPort;
 
     private boolean isProductAvailable;
 
     public StaticScanner() {
     }
 
-    public StaticScanner(String id, String userId, String createdTime, String ipAddress, String containerPort, String hostPort) {
+    public StaticScanner(String id, String userId, String createdTime, String ipAddress, int containerPort, int hostPort) {
         this.id = id;
         this.userId = userId;
         this.createdTime = createdTime;
@@ -72,11 +72,11 @@ public class StaticScanner {
         return ipAddress;
     }
 
-    public String getContainerPort() {
+    public int getContainerPort() {
         return containerPort;
     }
 
-    public String getHostPort() {
+    public int getHostPort() {
         return hostPort;
     }
 

@@ -27,25 +27,84 @@ public class DynamicScanner {
     private String id;
     private String userId;
     private String createdTime;
-    private String name;
     private String status;
     private String ipAddress;
-    private String containerPort;
-    private String hostPort;
-    private boolean isProductAvailable;
+    private int containerPort;
+    private int hostPort;
+
+    private boolean fileUploaded;
+    private String fileUploadedTime;
+    private boolean fileExtracted;
+    private String fileExtractedTime;
+    private boolean serverStarted;
+    private String serverStartedTime;
+
+    private String zapScanStatus;
+    private int zapScanProgress = -1;
+    private String zapScanProgressTime;
+    private boolean reportReady;
+    private String reportReadyTime;
 
     public DynamicScanner() {
     }
 
-    public DynamicScanner(String id, String userId, String createdTime, String ipAddress, String containerPort, String hostPort) {
+    public DynamicScanner(String id, String createdTime, String ipAddress, int containerPort, int hostPort) {
         this.id = id;
-        this.userId = userId;
+//        this.userId = userId;
         this.createdTime = createdTime;
         this.status = "created";
         this.ipAddress = ipAddress;
         this.containerPort = containerPort;
         this.hostPort = hostPort;
-        this.isProductAvailable = false;
+    }
+
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setFileUploaded(boolean fileUploaded) {
+        this.fileUploaded = fileUploaded;
+    }
+
+    public void setFileUploadedTime(String fileUploadedTime) {
+        this.fileUploadedTime = fileUploadedTime;
+    }
+
+    public void setFileExtracted(boolean fileExtracted) {
+        this.fileExtracted = fileExtracted;
+    }
+
+    public void setFileExtractedTime(String fileExtractedTime) {
+        this.fileExtractedTime = fileExtractedTime;
+    }
+
+    public void setServerStarted(boolean serverStarted) {
+        this.serverStarted = serverStarted;
+    }
+
+    public void setServerStartedTime(String serverStartedTime) {
+        this.serverStartedTime = serverStartedTime;
+    }
+
+    public void setZapScanStatus(String zapScanStatus) {
+        this.zapScanStatus = zapScanStatus;
+    }
+
+    public void setZapScanProgress(int zapScanProgress) {
+        this.zapScanProgress = zapScanProgress;
+    }
+
+    public void setZapScanProgressTime(String zapScanProgressTime) {
+        this.zapScanProgressTime = zapScanProgressTime;
+    }
+
+    public void setReportReady(boolean reportReady) {
+        this.reportReady = reportReady;
+    }
+
+    public void setReportReadyTime(String reportReadyTime) {
+        this.reportReadyTime = reportReadyTime;
     }
 
     public String getId() {
@@ -60,17 +119,6 @@ public class DynamicScanner {
         return createdTime;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setProductAvailable(boolean productAvailable) {
-        isProductAvailable = productAvailable;
-    }
-
-    public boolean isProductAvailable() {
-        return isProductAvailable;
-    }
 
     public String getStatus() {
         return status;
@@ -80,19 +128,35 @@ public class DynamicScanner {
         return ipAddress;
     }
 
-    public String getContainerPort() {
+    public int getContainerPort() {
         return containerPort;
     }
 
-    public String getHostPort() {
+    public int getHostPort() {
         return hostPort;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public boolean isServerStarted() {
+        return serverStarted;
     }
 
-    public String getName() {
-        return name;
+    public String getZapScanStatus() {
+        return zapScanStatus;
+    }
+
+    public int getZapScanProgress() {
+        return zapScanProgress;
+    }
+
+    public String getZapScanProgressTime() {
+        return zapScanProgressTime;
+    }
+
+    public boolean isReportReady() {
+        return reportReady;
+    }
+
+    public String getReportReadyTime() {
+        return reportReadyTime;
     }
 }
