@@ -26,11 +26,22 @@ public class StaticScanner {
     private String id;
     private String userId;
     private String createdTime;
-    private String name;
     private String status;
     private String ipAddress;
     private int containerPort;
     private int hostPort;
+    private boolean fileUploaded;
+    private boolean fileExtracted;
+    private boolean productCloned;
+    private boolean dependencyCheckReportReady;
+    private boolean findSecBugsReportReady;
+
+    private String fileUploadedTime;
+    private String fileExtractedTime;
+    private String productClonedTime;
+    private String dependencyCheckReportReadyTime;
+    private String findSecBugsReportReadyTime;
+
 
     private boolean isProductAvailable;
 
@@ -64,6 +75,46 @@ public class StaticScanner {
         this.status = status;
     }
 
+    public void setFileUploaded(boolean fileUploaded) {
+        this.fileUploaded = fileUploaded;
+    }
+
+    public void setFileExtracted(boolean fileExtracted) {
+        this.fileExtracted = fileExtracted;
+    }
+
+    public void setProductCloned(boolean productCloned) {
+        this.productCloned = productCloned;
+    }
+
+    public void setFileUploadedTime(String fileUploadedTime) {
+        this.fileUploadedTime = fileUploadedTime;
+    }
+
+    public void setFileExtractedTime(String fileExtractedTime) {
+        this.fileExtractedTime = fileExtractedTime;
+    }
+
+    public void setProductClonedTime(String productClonedTime) {
+        this.productClonedTime = productClonedTime;
+    }
+
+    public void setDependencyCheckReportReady(boolean dependencyCheckReportReady) {
+        this.dependencyCheckReportReady = dependencyCheckReportReady;
+    }
+
+    public void setFindSecBugsReportReady(boolean findSecBugsReportReady) {
+        this.findSecBugsReportReady = findSecBugsReportReady;
+    }
+
+    public void setDependencyCheckReportReadyTime(String dependencyCheckReportReadyTime) {
+        this.dependencyCheckReportReadyTime = dependencyCheckReportReadyTime;
+    }
+
+    public void setFindSecBugsReportReadyTime(String findSecBugsReportReadyTime) {
+        this.findSecBugsReportReadyTime = findSecBugsReportReadyTime;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -80,12 +131,44 @@ public class StaticScanner {
         return hostPort;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public boolean isProductCloned() {
+        return productCloned;
     }
 
-    public String getName() {
-        return name;
+    public boolean isFileExtracted() {
+        return fileExtracted;
+    }
+
+    public boolean isFileUploaded() {
+        return fileUploaded;
+    }
+
+    public String getFileUploadedTime() {
+        return fileUploadedTime;
+    }
+
+    public String getFileExtractedTime() {
+        return fileExtractedTime;
+    }
+
+    public String getProductClonedTime() {
+        return productClonedTime;
+    }
+
+    public boolean isDependencyCheckReportReady() {
+        return dependencyCheckReportReady;
+    }
+
+    public boolean isFindSecBugsReportReady() {
+        return findSecBugsReportReady;
+    }
+
+    public String getDependencyCheckReportReadyTime() {
+        return dependencyCheckReportReadyTime;
+    }
+
+    public String getFindSecBugsReportReadyTime() {
+        return findSecBugsReportReadyTime;
     }
 
     public void setProductAvailable(boolean productAvailable) {

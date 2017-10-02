@@ -55,29 +55,29 @@ public class StaticScannerController {
     @Value("${FIND_SEC_BUGS}")
     private String runFindSecBugs;
 
-    @Autowired
-    private StaticScannerService staticScannerService;
+    private final StaticScannerService staticScannerService;
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    public StaticScannerController(StaticScannerService staticScannerService) {
+        this.staticScannerService = staticScannerService;
+    }
 
     @PostMapping(value = "start")
     public @ResponseBody
     String start(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam int containerPort, @RequestParam int hostPort) {
-        if (DockerHandler.pullImage(dockerImage)) {
-            String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(containerPort), String.valueOf(hostPort), null);
+        String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(containerPort), String.valueOf(hostPort), null);
 
-            if (containerId != null) {
-                String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
-                StaticScanner staticScanner = new StaticScanner(containerId, userId, createdTime, ipAddress, containerPort, hostPort);
+        if (containerId != null) {
+            String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+            StaticScanner staticScanner = new StaticScanner(containerId, userId, createdTime, ipAddress, containerPort, hostPort);
+            staticScannerService.save(staticScanner);
+
+            if (DockerHandler.startContainer(containerId)) {
+                staticScanner.setStatus("running");
                 staticScannerService.save(staticScanner);
-
-                if (DockerHandler.startContainer(containerId)) {
-                    staticScanner = staticScannerService.findOne(containerId);
-                    staticScanner.setStatus("running");
-                    staticScannerService.save(staticScanner);
-                    return containerId;
-                }
-
+                return containerId;
             }
         }
         return null;

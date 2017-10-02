@@ -39,7 +39,6 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 @PropertySource("classpath:global.properties")
 @Controller
@@ -90,28 +89,32 @@ public class DynamicScannerController {
             dynamicScanner = dynamicScannerService.save(dynamicScanner);
 
             if (DockerHandler.startContainer(containerId)) {
-                try {
-                    Thread.sleep(2000);
-                    URI uri = (new URIBuilder()).setHost(ipAddress).setPort(hostPort).setScheme("http").setPath(configureNotificationManager)
-                            .addParameter("automationManagerHost", myHost)
-                            .addParameter("automationManagerPort", String.valueOf(myPort))
-                            .addParameter("myContainerId", containerId)
-                            .build();
-                    LOGGER.info("URI to configure notification manager: " + uri);
-                    HttpRequestHandler.sendGetRequest(uri);
-                    dynamicScanner.setStatus("running");
-                    dynamicScannerService.save(dynamicScanner);
 
-                } catch (URISyntaxException | InterruptedException e) {
-                    e.printStackTrace();
-                    LOGGER.error(e.toString());
-                }
+                dynamicScanner.setStatus("running");
+                dynamicScannerService.save(dynamicScanner);
                 return containerId;
             }
-
         }
         return null;
     }
+
+    @GetMapping(value = "/configureNotificationManager")
+    public @ResponseBody
+    void configureNotificationManager(@RequestParam String ipAddress, @RequestParam int hostPort, @RequestParam String containerId) {
+        try {
+            URI uri = (new URIBuilder()).setHost(ipAddress).setPort(hostPort).setScheme("http").setPath(configureNotificationManager)
+                    .addParameter("automationManagerHost", myHost)
+                    .addParameter("automationManagerPort", String.valueOf(myPort))
+                    .addParameter("myContainerId", containerId)
+                    .build();
+            LOGGER.info("URI to configure notification manager: " + uri);
+            HttpRequestHandler.sendGetRequest(uri);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            LOGGER.error(e.toString());
+        }
+    }
+
 
     @PostMapping(value = "uploadZipFileExtractAndStartServer")
     public @ResponseBody
@@ -119,12 +122,11 @@ public class DynamicScannerController {
         try {
             DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
 
-            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(uploadExtractAndStartServer)
+            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(dynamicScanner.getHostPort()).setScheme("http")
+                    .setPath(uploadExtractAndStartServer)
                     .build();
 
             HttpResponse httpResponse = HttpRequestHandler.sendMultipartRequest(uri, zipFile, new HashMap<>());
-
-
             HttpRequestHandler.printResponse(httpResponse);
 
         } catch (URISyntaxException e) {
