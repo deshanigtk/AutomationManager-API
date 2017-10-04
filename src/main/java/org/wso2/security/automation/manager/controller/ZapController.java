@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.controller;
+package org.wso2.security.automation.manager.controller;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -22,9 +22,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.wso2.security.automationmanager.entity.Zap;
-import org.wso2.security.automationmanager.handlers.DockerHandler;
-import org.wso2.security.automationmanager.service.ZapService;
+import org.wso2.security.automation.manager.entity.Zap;
+import org.wso2.security.automation.manager.handlers.DockerHandler;
+import org.wso2.security.automation.manager.service.ZapService;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

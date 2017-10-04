@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.controller;
+package org.wso2.security.automation.manager.controller;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -21,8 +21,8 @@ package org.wso2.security.automationmanager.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.wso2.security.automationmanager.entity.User;
-import org.wso2.security.automationmanager.repository.UserRepository;
+import org.wso2.security.automation.manager.entity.User;
+import org.wso2.security.automation.manager.repository.UserRepository;
 
 @Controller
 @RequestMapping("/")

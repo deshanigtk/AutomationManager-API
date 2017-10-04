@@ -1,3 +1,4 @@
+package org.wso2.security.automation.manager.repository;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -15,18 +16,11 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.automationmanager;
 
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.data.repository.CrudRepository;
+import org.wso2.security.automation.manager.entity.StaticScanner;
 
+public interface StaticScannerRepository extends CrudRepository<StaticScanner, String> {
 
-public class ServletInitializer extends SpringBootServletInitializer {
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(ServletInitializer.class);
-    }
-
+    Iterable<StaticScanner> findByUserIdAndStatus(String userId, String status);
 }
-

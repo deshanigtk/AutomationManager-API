@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.repository;
+package org.wso2.security.automation.manager.repository;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -18,9 +18,8 @@ package org.wso2.security.automationmanager.repository;
 */
 
 import org.springframework.data.repository.CrudRepository;
-import org.wso2.security.automationmanager.entity.StaticScanner;
+import org.wso2.security.automation.manager.entity.Zap;
 
-public interface StaticScannerRepository extends CrudRepository<StaticScanner, String> {
-
-    Iterable<StaticScanner> findByUserIdAndStatus(String userId, String status);
+public interface ZapRepository extends CrudRepository<Zap, String> {
+    Iterable<Zap> findByStatusEquals(String status);
 }

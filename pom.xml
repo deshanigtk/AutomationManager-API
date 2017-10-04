@@ -108,7 +108,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>org.wso2.security.automationmanager.Application</mainClass>
+                    <mainClass>org.wso2.security.automation.manager.Application</mainClass>
                 </configuration>
                 <executions>
                     <execution>

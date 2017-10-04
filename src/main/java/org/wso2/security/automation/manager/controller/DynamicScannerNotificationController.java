@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.controller;/*
+package org.wso2.security.automation.manager.controller;/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -19,8 +19,8 @@ package org.wso2.security.automationmanager.controller;/*
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.wso2.security.automationmanager.entity.DynamicScanner;
-import org.wso2.security.automationmanager.service.DynamicScannerService;
+import org.wso2.security.automation.manager.entity.DynamicScanner;
+import org.wso2.security.automation.manager.service.DynamicScannerService;
 
 @Controller
 @RequestMapping("dynamicScanner/notify")

@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.service;/*
+package org.wso2.security.automation.manager.service;/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -18,8 +18,8 @@ package org.wso2.security.automationmanager.service;/*
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.wso2.security.automationmanager.entity.DynamicScanner;
-import org.wso2.security.automationmanager.repository.DynamicScannerRepository;
+import org.wso2.security.automation.manager.repository.DynamicScannerRepository;
+import org.wso2.security.automation.manager.entity.DynamicScanner;
 
 @Service
 public class DynamicScannerService {

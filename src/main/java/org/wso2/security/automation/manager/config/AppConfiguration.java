@@ -19,7 +19,7 @@
  *
  */
 
-package org.wso2.security.automationmanager.config;
+package org.wso2.security.automation.manager.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

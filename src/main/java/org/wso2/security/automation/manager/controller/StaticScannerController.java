@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.controller;
+package org.wso2.security.automation.manager.controller;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -27,10 +27,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.automationmanager.entity.StaticScanner;
-import org.wso2.security.automationmanager.handlers.DockerHandler;
-import org.wso2.security.automationmanager.handlers.HttpRequestHandler;
-import org.wso2.security.automationmanager.service.StaticScannerService;
+import org.wso2.security.automation.manager.entity.StaticScanner;
+import org.wso2.security.automation.manager.handlers.DockerHandler;
+import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
+import org.wso2.security.automation.manager.handlers.MailHandler;
+import org.wso2.security.automation.manager.service.StaticScannerService;
 
 import java.io.IOException;
 import java.net.URI;
@@ -55,13 +56,19 @@ public class StaticScannerController {
     @Value("${FIND_SEC_BUGS}")
     private String runFindSecBugs;
 
+    @Value("${STATIC_SCANNER_GET_REPORT}")
+    private String getReport;
+
     private final StaticScannerService staticScannerService;
+
+    private final MailHandler mailHandler;
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public StaticScannerController(StaticScannerService staticScannerService) {
+    public StaticScannerController(StaticScannerService staticScannerService, MailHandler mailHandler) {
         this.staticScannerService = staticScannerService;
+        this.mailHandler = mailHandler;
     }
 
     @PostMapping(value = "start")
@@ -145,6 +152,32 @@ public class StaticScannerController {
 
         } catch (URISyntaxException e) {
             e.printStackTrace();
+        }
+    }
+
+    @PostMapping(path = "getReportAndMail")
+    public @ResponseBody
+    void getReport(@RequestParam String containerId, @RequestParam String to, @RequestParam boolean dependencyCheckReport) throws Exception {
+
+//        DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
+        URI uri = (new URIBuilder()).setHost("localhost")
+                .setPort(8081).setScheme("http").setPath(getReport)
+                .addParameter("dependencyCheckReport", String.valueOf(dependencyCheckReport))
+                .build();
+
+        System.out.println(uri);
+        HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri);
+        System.out.println(httpResponse.getEntity().getContent());
+
+        if (httpResponse.getEntity() != null) {
+            String subject = "Static Scan Report: ";
+            String fileName;
+            if (dependencyCheckReport) {
+                fileName = "Dependency-Check-Reports.zip";
+            } else {
+                fileName = "Find-Sec-Bugs-Reports.zip";
+            }
+            mailHandler.sendMail(to, subject, "This is auto generated message", httpResponse.getEntity().getContent(), fileName);
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.repository;
+package org.wso2.security.automation.manager;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -16,10 +16,13 @@ package org.wso2.security.automationmanager.repository;
 * specific language governing permissions and limitations
 * under the License.
 */
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import org.springframework.data.repository.CrudRepository;
-import org.wso2.security.automationmanager.entity.Zap;
+@SpringBootApplication
+public class Application {
 
-public interface ZapRepository extends CrudRepository<Zap, String> {
-    Iterable<Zap> findByStatusEquals(String status);
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 }

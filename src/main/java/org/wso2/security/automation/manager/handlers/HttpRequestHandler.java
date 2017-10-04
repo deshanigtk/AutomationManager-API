@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.handlers;
+package org.wso2.security.automation.manager.handlers;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *

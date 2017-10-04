@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.controller;
+package org.wso2.security.automation.manager.controller;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -27,11 +27,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.automationmanager.entity.DynamicScanner;
-import org.wso2.security.automationmanager.handlers.DockerHandler;
-import org.wso2.security.automationmanager.handlers.HttpRequestHandler;
-import org.wso2.security.automationmanager.handlers.MailHandler;
-import org.wso2.security.automationmanager.service.DynamicScannerService;
+import org.wso2.security.automation.manager.entity.DynamicScanner;
+import org.wso2.security.automation.manager.handlers.DockerHandler;
+import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
+import org.wso2.security.automation.manager.handlers.MailHandler;
+import org.wso2.security.automation.manager.service.DynamicScannerService;
 
 import java.io.*;
 import java.net.URI;
@@ -174,15 +174,19 @@ public class DynamicScannerController {
     void getReport(@RequestParam String containerId, @RequestParam String to) throws Exception {
 
         DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
-        URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-                .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(getReportAndMail)
-                .build();
+//        URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
+//                .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(getReportAndMail)
+//                .build();
 
+        URI uri = (new URIBuilder()).setHost("localhost")
+                .setPort(8081).setScheme("http").setPath(getReportAndMail)
+                .build();
         HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri);
+
 
         if (httpResponse.getEntity() != null) {
             String subject = "Dynamic Scan Report: ";
-            mailHandler.sendMail(to, subject, "This is auto generated message", httpResponse.getEntity().getContent());
+            mailHandler.sendMail(to, subject, "This is auto generated message", httpResponse.getEntity().getContent(), "ZapReport.html");
         }
     }
 

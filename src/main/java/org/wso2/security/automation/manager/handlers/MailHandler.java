@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.handlers;/*
+package org.wso2.security.automation.manager.handlers;/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -43,7 +43,7 @@ public class MailHandler {
     }
 
 
-    public void sendMail(String to, String subject, String body, InputStream inputStream) {
+    public void sendMail(String to, String subject, String body, InputStream inputStream, String attachmentFileName) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
 
@@ -53,7 +53,7 @@ public class MailHandler {
             mimeMessageHelper.setTo(to);
             mimeMessageHelper.setText(body);
 
-            mimeMessageHelper.addAttachment("ScanReport.html",
+            mimeMessageHelper.addAttachment(attachmentFileName,
                     new ByteArrayResource(IOUtils.toByteArray(inputStream)));
             mailSender.send(mimeMessageHelper.getMimeMessage());
 

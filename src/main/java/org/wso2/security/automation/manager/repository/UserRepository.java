@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.repository;
+package org.wso2.security.automation.manager.repository;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -18,8 +18,8 @@ package org.wso2.security.automationmanager.repository;
 */
 
 import org.springframework.data.repository.CrudRepository;
-import org.wso2.security.automationmanager.entity.DynamicScanner;
+import org.wso2.security.automation.manager.entity.User;
 
-public interface DynamicScannerRepository extends CrudRepository<DynamicScanner, String> {
-    Iterable<DynamicScanner> findByUserIdAndStatus(String userId, String status);
+public interface UserRepository extends CrudRepository<User, Long> {
+
 }

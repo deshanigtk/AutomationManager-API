@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.controller;/*
+package org.wso2.security.automation.manager.controller;/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wso2.security.automationmanager.entity.StaticScanner;
-import org.wso2.security.automationmanager.service.StaticScannerService;
+import org.wso2.security.automation.manager.entity.StaticScanner;
+import org.wso2.security.automation.manager.service.StaticScannerService;
 
 @Controller
 @RequestMapping("staticScanner/notify")

@@ -1,4 +1,4 @@
-package org.wso2.security.automationmanager.service;
+package org.wso2.security.automation.manager.service;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -19,29 +19,29 @@ package org.wso2.security.automationmanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.wso2.security.automationmanager.entity.StaticScanner;
-import org.wso2.security.automationmanager.repository.StaticScannerRepository;
+import org.wso2.security.automation.manager.entity.Zap;
+import org.wso2.security.automation.manager.repository.ZapRepository;
 
 @Service
-public class StaticScannerService {
+public class ZapService {
 
     @Autowired
-    private StaticScannerRepository staticScannerRepository;
+    private ZapRepository zapRepository;
 
     public Object findAll() {
-        return staticScannerRepository.findAll();
+        return zapRepository.findAll();
     }
 
-    public StaticScanner findOne(String containerId) {
+    public Zap findOne(String containerId) {
 
-        return staticScannerRepository.findOne(containerId);
+        return zapRepository.findOne(containerId);
     }
 
-    public Iterable<StaticScanner> findByUserIdAndStatus(String userId, String status) {
-        return staticScannerRepository.findByUserIdAndStatus(userId, status);
+    public Iterable<Zap> findByStatus(String status) {
+        return zapRepository.findByStatusEquals(status);
     }
 
-    public StaticScanner save(StaticScanner staticScanner) {
-        return staticScannerRepository.save(staticScanner);
+    public Zap save(Zap zap) {
+        return zapRepository.save(zap);
     }
 }
