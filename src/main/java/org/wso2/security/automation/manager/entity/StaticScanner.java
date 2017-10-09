@@ -30,18 +30,15 @@ public class StaticScanner {
     private String ipAddress;
     private int containerPort;
     private int hostPort;
-    private boolean fileUploaded;
     private boolean fileExtracted;
     private boolean productCloned;
     private boolean dependencyCheckReportReady;
     private boolean findSecBugsReportReady;
 
-    private String fileUploadedTime;
     private String fileExtractedTime;
     private String productClonedTime;
     private String dependencyCheckReportReadyTime;
     private String findSecBugsReportReadyTime;
-
 
     private boolean isProductAvailable;
 
@@ -75,20 +72,12 @@ public class StaticScanner {
         this.status = status;
     }
 
-    public void setFileUploaded(boolean fileUploaded) {
-        this.fileUploaded = fileUploaded;
-    }
-
     public void setFileExtracted(boolean fileExtracted) {
         this.fileExtracted = fileExtracted;
     }
 
     public void setProductCloned(boolean productCloned) {
         this.productCloned = productCloned;
-    }
-
-    public void setFileUploadedTime(String fileUploadedTime) {
-        this.fileUploadedTime = fileUploadedTime;
     }
 
     public void setFileExtractedTime(String fileExtractedTime) {
@@ -137,14 +126,6 @@ public class StaticScanner {
 
     public boolean isFileExtracted() {
         return fileExtracted;
-    }
-
-    public boolean isFileUploaded() {
-        return fileUploaded;
-    }
-
-    public String getFileUploadedTime() {
-        return fileUploadedTime;
     }
 
     public String getFileExtractedTime() {

@@ -1,4 +1,4 @@
-package org.wso2.security.automation.manager.controller;
+package org.wso2.security.automation.manager.controller.viewControllers;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -21,15 +21,18 @@ package org.wso2.security.automation.manager.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.wso2.security.automation.manager.controller.StaticScannerController;
 import org.wso2.security.automation.manager.entity.User;
 import org.wso2.security.automation.manager.repository.UserRepository;
 
 @Controller
-@RequestMapping("/")
-public class UserController {
+public class StaticScannerViewController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private StaticScannerController staticScannerController;
 
     @GetMapping(value = "/add") // Map ONLY GET Requests
     public @ResponseBody
@@ -60,4 +63,25 @@ public class UserController {
     public String index() {
         return "scanners";
     }
+
+    @PostMapping(value = "staticScanner/started")
+    public String started(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam int containerPort, @RequestParam int hostPort) throws InterruptedException {
+        String containerId = staticScannerController.start(userId, ipAddress, containerPort, hostPort);
+        if (containerId != null) {
+            Thread.sleep(4000);
+            staticScannerController.configureNotificationManager(containerId);
+            return "staticScanner/productUploader";
+        }
+        return "scanners";
+    }
+
+    @PostMapping(value = "staticScanner/productCloned")
+    public String productZipUploaded(@RequestParam String containerId, @RequestParam String url, @RequestParam String branch, @RequestParam String tag) throws InterruptedException {
+        String cloned = staticScannerController.clone(containerId, url, branch, tag);
+
+        return "staticScanner";
+
+    }
+
+
 }

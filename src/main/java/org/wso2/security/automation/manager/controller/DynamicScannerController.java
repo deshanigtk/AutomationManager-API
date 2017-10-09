@@ -37,8 +37,7 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 @PropertySource("classpath:global.properties")
 @Controller
@@ -57,7 +56,7 @@ public class DynamicScannerController {
     @Value("${GET_REPORT_AND_MAIL}")
     private String getReportAndMail;
 
-    @Value("${CONFIGURE_NOTIFICATION_MANAGER}")
+    @Value("${DYNAMIC_SCANNER_CONFIGURE_NOTIFICATION_MANAGER}")
     private String configureNotificationManager;
 
     @Value("${AUTOMATION_MANAGER_HOST}")
@@ -81,7 +80,8 @@ public class DynamicScannerController {
     @PostMapping(value = "start")
     public @ResponseBody
     String start(@RequestParam String ipAddress, @RequestParam int containerPort, @RequestParam int hostPort) {
-        String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(containerPort), String.valueOf(hostPort), null);
+        String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(containerPort),
+                String.valueOf(hostPort), null, new String[]{"port=" + containerPort});
 
         if (containerId != null) {
             String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());

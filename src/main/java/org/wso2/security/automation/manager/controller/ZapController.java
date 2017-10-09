@@ -54,7 +54,7 @@ public class ZapController {
 
             Iterable<Zap> runningContainers = zapService.findByStatus("running");
             if (!runningContainers.iterator().hasNext()) {
-                String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, command);
+                String containerId = DockerHandler.createContainer(dockerImage, ipAddress, containerPort, hostPort, command, null);
 
                 if (containerId != null) {
                     String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());

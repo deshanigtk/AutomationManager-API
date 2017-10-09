@@ -80,7 +80,7 @@ public class DockerHandler {
         return false;
     }
 
-    public static String createContainer(String imageName, String ipAddress, String containerPort, String hostPort, List<String> cmd) {
+    public static String createContainer(String imageName, String ipAddress, String containerPort, String hostPort, List<String> cmd, String[] env) {
         String[] ports = {containerPort, hostPort};
         HashMap<String, List<PortBinding>> portBindings = new HashMap<>();
 
@@ -95,6 +95,7 @@ public class DockerHandler {
                 .hostConfig(hostConfig)
                 .image(imageName).exposedPorts(ports)
                 .cmd(cmd)
+                .env(env)
                 .build();
 
         ContainerCreation creation = null;

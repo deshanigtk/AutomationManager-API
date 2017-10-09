@@ -36,21 +36,13 @@ public class StaticScannerNotificationController {
         this.staticScannerService = staticScannerService;
     }
 
-    @GetMapping(value = "fileUploaded")
-    public @ResponseBody
-    void updateFileUploaded(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
-        StaticScanner staticScanner = staticScannerService.findOne(containerId);
-        staticScanner.setFileUploaded(status);
-        staticScanner.setFileUploadedTime(time);
-        staticScannerService.save(staticScanner);
-    }
-
     @GetMapping(value = "fileExtracted")
     public @ResponseBody
     void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
         StaticScanner staticScanner = staticScannerService.findOne(containerId);
         staticScanner.setFileExtracted(status);
         staticScanner.setFileExtractedTime(time);
+        staticScanner.setProductAvailable(true);
         staticScannerService.save(staticScanner);
     }
 
@@ -60,6 +52,7 @@ public class StaticScannerNotificationController {
         StaticScanner staticScanner = staticScannerService.findOne(containerId);
         staticScanner.setProductCloned(status);
         staticScanner.setProductClonedTime(time);
+        staticScanner.setProductAvailable(true);
         staticScannerService.save(staticScanner);
     }
 
@@ -80,7 +73,6 @@ public class StaticScannerNotificationController {
         staticScanner.setFindSecBugsReportReadyTime(time);
         staticScannerService.save(staticScanner);
     }
-
 
 
 }

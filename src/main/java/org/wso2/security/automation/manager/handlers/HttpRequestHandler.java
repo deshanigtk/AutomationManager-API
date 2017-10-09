@@ -70,8 +70,10 @@ public class HttpRequestHandler {
         try {
             HttpPost uploadFile = new HttpPost(uri);
             MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            for (Map.Entry<String, String> entry : textBody.entrySet()) {
-                builder.addTextBody(entry.getKey(), entry.getValue(), ContentType.TEXT_PLAIN);
+            if (textBody != null) {
+                for (Map.Entry<String, String> entry : textBody.entrySet()) {
+                    builder.addTextBody(entry.getKey(), entry.getValue(), ContentType.TEXT_PLAIN);
+                }
             }
             // This attaches the file to the POST:
             InputStream inputStream = file.getInputStream();
