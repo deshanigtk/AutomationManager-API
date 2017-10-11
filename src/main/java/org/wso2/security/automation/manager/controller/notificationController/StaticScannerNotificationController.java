@@ -1,4 +1,4 @@
-package org.wso2.security.automation.manager.controller;/*
+package org.wso2.security.automation.manager.controller.notificationController;/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,

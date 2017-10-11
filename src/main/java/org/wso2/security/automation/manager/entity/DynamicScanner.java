@@ -26,6 +26,7 @@ public class DynamicScanner {
     @Id
     private String id;
     private String userId;
+    private String name;
     private String createdTime;
     private String status;
     private String ipAddress;
@@ -51,13 +52,13 @@ public class DynamicScanner {
     public DynamicScanner(String id, String createdTime, String ipAddress, int containerPort, int hostPort) {
         this.id = id;
 //        this.userId = userId;
+//        this.name = name;
         this.createdTime = createdTime;
         this.status = "created";
         this.ipAddress = ipAddress;
         this.containerPort = containerPort;
         this.hostPort = hostPort;
     }
-
 
     public void setStatus(String status) {
         this.status = status;
@@ -115,10 +116,13 @@ public class DynamicScanner {
         return userId;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getCreatedTime() {
         return createdTime;
     }
-
 
     public String getStatus() {
         return status;
@@ -136,8 +140,28 @@ public class DynamicScanner {
         return hostPort;
     }
 
+    public boolean isFileUploaded() {
+        return fileUploaded;
+    }
+
+    public String getFileUploadedTime() {
+        return fileUploadedTime;
+    }
+
+    public boolean isFileExtracted() {
+        return fileExtracted;
+    }
+
+    public String getFileExtractedTime() {
+        return fileExtractedTime;
+    }
+
     public boolean isServerStarted() {
         return serverStarted;
+    }
+
+    public String getServerStartedTime() {
+        return serverStartedTime;
     }
 
     public String getZapScanStatus() {

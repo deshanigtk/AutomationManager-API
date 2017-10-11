@@ -1,4 +1,4 @@
-package org.wso2.security.automation.manager.controller;
+package org.wso2.security.automation.manager.controller.scannerControllers;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -136,16 +136,16 @@ public class DynamicScannerController {
 
     @GetMapping(value = "runZapScan")
     public @ResponseBody
-    void startZapScan(@RequestParam String containerId,
-                      @RequestParam String zapHost,
-                      @RequestParam int zapPort,
-                      @RequestParam String contextName,
-                      @RequestParam String sessionName,
-                      @RequestParam String productHostRelativeToZap,
-                      @RequestParam String productHostRelativeToDynamicScanner,
-                      @RequestParam int productPort,
-                      @RequestParam String urlListPath,
-                      @RequestParam boolean isAuthenticatedScan) {
+    String startZapScan(@RequestParam String containerId,
+                        @RequestParam String zapHost,
+                        @RequestParam int zapPort,
+                        @RequestParam String contextName,
+                        @RequestParam String sessionName,
+                        @RequestParam String productHostRelativeToZap,
+                        @RequestParam String productHostRelativeToDynamicScanner,
+                        @RequestParam int productPort,
+                        @RequestParam String urlListPath,
+                        @RequestParam boolean isAuthenticatedScan) {
         try {
             DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
             URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress()).setPort(dynamicScanner.getHostPort())
@@ -163,9 +163,10 @@ public class DynamicScannerController {
                     .build();
 
             HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri);
-            HttpRequestHandler.printResponse(httpResponse);
+            return HttpRequestHandler.printResponse(httpResponse);
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
+            return e.toString();
         }
     }
 
@@ -174,12 +175,8 @@ public class DynamicScannerController {
     void getReport(@RequestParam String containerId, @RequestParam String to) throws Exception {
 
         DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
-//        URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-//                .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(getReportAndMail)
-//                .build();
-
-        URI uri = (new URIBuilder()).setHost("localhost")
-                .setPort(8081).setScheme("http").setPath(getReportAndMail)
+        URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
+                .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(getReportAndMail)
                 .build();
         HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri);
 

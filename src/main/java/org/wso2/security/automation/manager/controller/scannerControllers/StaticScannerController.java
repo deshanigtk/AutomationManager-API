@@ -1,4 +1,4 @@
-package org.wso2.security.automation.manager.controller;
+package org.wso2.security.automation.manager.controller.scannerControllers;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -121,28 +121,6 @@ public class StaticScannerController {
                     .addParameter("myContainerId", containerId)
                     .build();
             LOGGER.info("URI to configure notification manager: " + uri);
-
-//            CloseableHttpClient httpClient = HttpClients.createDefault();
-//            httpClient.execute(request);
-//            httpClient.close();
-
-//            HttpClientBuilder httpClient =HttpClientBuilder.create();
-//            httpClient.setRetryHandler(new HttpRequestRetryHandler() {
-//                @Override
-//                public boolean retryRequest(IOException exception, int executionCount,
-//                                            HttpContext context) {
-//                    if (executionCount > 3) {
-//                        LOGGER.warn("Maximum tries reached for client http pool ");
-//                        return false;
-//                    }
-//                    if (exception instanceof org.apache.http.NoHttpResponseException) {
-//                        LOGGER.warn("No response from server on " + executionCount + " call");
-//                        return true;
-//                    }
-//                    return false;
-//                }
-//            });
-//            httpClient.build().execute(request);
             HttpRequestHandler.sendGetRequest(uri);
 
         } catch (URISyntaxException e) {

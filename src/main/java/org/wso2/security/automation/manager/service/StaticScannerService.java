@@ -22,13 +22,15 @@ import org.springframework.stereotype.Service;
 import org.wso2.security.automation.manager.entity.StaticScanner;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
 
+import java.util.ArrayList;
+
 @Service
 public class StaticScannerService {
 
     @Autowired
     private StaticScannerRepository staticScannerRepository;
 
-    public Object findAll() {
+    public Iterable<StaticScanner> findAll() {
         return staticScannerRepository.findAll();
     }
 

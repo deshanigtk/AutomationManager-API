@@ -27,7 +27,7 @@ public class DynamicScannerService {
     @Autowired
     private DynamicScannerRepository dynamicScannerRepository;
 
-    public Object findAll() {
+    public Iterable<DynamicScanner> findAll() {
         return dynamicScannerRepository.findAll();
     }
 
