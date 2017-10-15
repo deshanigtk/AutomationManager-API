@@ -20,6 +20,9 @@ package org.wso2.security.automation.manager.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.wso2.security.automation.manager.entity.DynamicScanner;
 
-public interface DynamicScannerRepository extends CrudRepository<DynamicScanner, String> {
+public interface DynamicScannerRepository extends CrudRepository<DynamicScanner, Integer> {
     Iterable<DynamicScanner> findByUserIdAndStatus(String userId, String status);
+
+    DynamicScanner findOneByContainerId(String containerId);
+
 }

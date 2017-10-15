@@ -20,7 +20,9 @@ package org.wso2.security.automation.manager.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.wso2.security.automation.manager.entity.StaticScanner;
 
-public interface StaticScannerRepository extends CrudRepository<StaticScanner, String> {
+public interface StaticScannerRepository extends CrudRepository<StaticScanner, Integer> {
+
+    StaticScanner findOneByContainerId(String containerId);
 
     Iterable<StaticScanner> findByUserIdAndStatus(String userId, String status);
 }

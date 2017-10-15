@@ -15,14 +15,13 @@
 <div class="container">
     <div class="row">
         <div class="page-header">
-            <h1>Product Source Code Uploader</h1>
-            <h4>Upload the source code in one of the following ways</h4>
+            <h1>Static Scanner</h1>
+            <h4>Upload the source code in one of the following ways and select scan/s you want to proceed</h4>
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="jumbotron" style="background-color: #96978d">
-                <h2>Upload a zip file</h2>
-                <p>Upload a zip file of the product source code
-                ${chkFindSecBugs}</p>
+                <h3><b>Upload a zip file</b></h3>
+                <p>Upload a zip file of the product source code</p>
                 <form action="/staticScanner/productUploaded" method="post"
                       enctype="multipart/form-data">
                     <div class="input-group input-group-md">
@@ -30,28 +29,33 @@
                         <input type="file" name="zipFile" id="zipFile" class="form-control">
                     </div>
                     <br>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown button
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
+                    <h3><b>Select Scan/s</b></h3>
+                    <p>Please select scan/s that you want to proceed</p>
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">
+                                <input type="checkbox" name="chkFindSecBugs" id="chkFindSecBugs">
+                            <input type="hidden" name="chkFindSecBugs" value="0">
+                        </span>
+                        <label class="form-control">Find Security Bugs</label>
                     </div>
                     <br>
-                    <input name="containerId" value="${containerId}" hidden>
-
-                    <button class="btn btn-primary btn-block">Submit</button>
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">
+                            <input type="checkbox" name="chkDependencyCheck" id="chkDependencyCheck">
+                            <input type="hidden" name="chkDependencyCheck" value="0">
+                        </span>
+                        <label class="form-control">OWASP Dependency Check</label>
+                    </div>
+                    <br>
+                    <button class="btn btn-primary btn-block">Submit & Start Scan</button>
                 </form>
             </div>
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="jumbotron" style="background-color: #96978d">
-                <h2>Clone from GitHub</h2>
+                <h3><b>Clone from GitHub</b></h3>
                 <p>Clone a product source code from GitHub repository</p>
-                <form action="/staticScanner/ProductCloned" method="post">
+                <form action="/staticScanner/ProductCloned" method="post" enctype="multipart/form-data">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">GitHub URL</span>
                         <input name="url" id="url" class="form-control">
@@ -67,8 +71,25 @@
                         <input name="tag" id="tag" class="form-control">
                     </div>
                     <br>
-                        <input name="containerId" value="${containerId}" hidden>
-                    <button class="btn btn-primary btn-block">Submit</button>
+                    <h3><b>Select Scan/s</b></h3>
+                    <p>Please select scan/s that you want to proceed</p>
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">
+                                <input type="checkbox" name="chkFindSecBugs">
+                            <input type="hidden" name="chkFindSecBugs" value="0">
+                        </span>
+                        <label class="form-control">Find Security Bugs</label>
+                    </div>
+                    <br>
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">
+                            <input type="checkbox" name="chkDependencyCheck">
+                            <input type="hidden" name="chkDependencyCheck" value="0">
+                        </span>
+                        <label class="form-control">OWASP Dependency Check</label>
+                    </div>
+                    <br>
+                    <button class="btn btn-primary btn-block">Submit & Start Scan</button>
                 </form>
             </div>
         </div>

@@ -34,9 +34,13 @@ public class StaticScannerService {
         return staticScannerRepository.findAll();
     }
 
-    public StaticScanner findOne(String containerId) {
+    public StaticScanner findOne(int id) {
 
-        return staticScannerRepository.findOne(containerId);
+        return staticScannerRepository.findOne(id);
+    }
+
+    public StaticScanner findOneByContainerId(String containerId) {
+        return staticScannerRepository.findOneByContainerId(containerId);
     }
 
     public Iterable<StaticScanner> findByUserIdAndStatus(String userId, String status) {

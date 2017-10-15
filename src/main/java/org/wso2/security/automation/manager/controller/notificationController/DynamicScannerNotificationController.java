@@ -36,7 +36,7 @@ public class DynamicScannerNotificationController {
     @GetMapping(value = "fileUploaded")
     public @ResponseBody
     void updateFileUploaded(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
-        DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
+        DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
         dynamicScanner.setFileUploaded(status);
         dynamicScanner.setFileUploadedTime(time);
         dynamicScannerService.save(dynamicScanner);
@@ -45,7 +45,7 @@ public class DynamicScannerNotificationController {
     @GetMapping(value = "fileExtracted")
     public @ResponseBody
     void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
-        DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
+        DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
         dynamicScanner.setFileExtracted(status);
         dynamicScanner.setFileExtractedTime(time);
         dynamicScannerService.save(dynamicScanner);
@@ -54,7 +54,7 @@ public class DynamicScannerNotificationController {
     @GetMapping(value = "serverStarted")
     public @ResponseBody
     void updateServerStarted(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
-        DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
+        DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
         dynamicScanner.setServerStarted(status);
         dynamicScanner.setServerStartedTime(time);
         dynamicScannerService.save(dynamicScanner);
@@ -63,7 +63,7 @@ public class DynamicScannerNotificationController {
     @GetMapping(value = "zapScanStatus")
     public @ResponseBody
     void updateZapScanStatus(@RequestParam String containerId, @RequestParam String status, @RequestParam int progress, @RequestParam String time) {
-        DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
+        DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
         dynamicScanner.setZapScanStatus(status);
         dynamicScanner.setZapScanProgress(progress);
         dynamicScanner.setZapScanProgressTime(time);
@@ -73,9 +73,10 @@ public class DynamicScannerNotificationController {
     @GetMapping(value = "reportReady")
     public @ResponseBody
     void updateReportReady(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
-        DynamicScanner dynamicScanner = dynamicScannerService.findOne(containerId);
+        DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
         dynamicScanner.setReportReady(status);
         dynamicScanner.setReportReadyTime(time);
         dynamicScannerService.save(dynamicScanner);
+        dynamicScannerService.getReportAndMail(containerId);
     }
 }

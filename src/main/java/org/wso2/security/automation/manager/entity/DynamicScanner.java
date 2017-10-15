@@ -17,14 +17,18 @@ package org.wso2.security.automation.manager.entity;
 * under the License.
 */
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "name"}))
 public class DynamicScanner {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @Column(unique = true)
+    private String containerId;
     private String userId;
     private String name;
     private String createdTime;
@@ -45,18 +49,46 @@ public class DynamicScanner {
     private String zapScanProgressTime;
     private boolean reportReady;
     private String reportReadyTime;
+    private boolean reportSent;
+    private String reportSentTime;
 
     public DynamicScanner() {
     }
 
-    public DynamicScanner(String id, String createdTime, String ipAddress, int containerPort, int hostPort) {
-        this.id = id;
-//        this.userId = userId;
-//        this.name = name;
+    public DynamicScanner(String containerId, String createdTime, String ipAddress, int containerPort, int hostPort) {
+        this.containerId = containerId;
         this.createdTime = createdTime;
         this.status = "created";
         this.ipAddress = ipAddress;
         this.containerPort = containerPort;
+        this.hostPort = hostPort;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public void setContainerPort(int containerPort) {
+        this.containerPort = containerPort;
+    }
+
+    public void setHostPort(int hostPort) {
         this.hostPort = hostPort;
     }
 
@@ -108,8 +140,20 @@ public class DynamicScanner {
         this.reportReadyTime = reportReadyTime;
     }
 
-    public String getId() {
+    public void setReportSent(boolean reportSent) {
+        this.reportSent = reportSent;
+    }
+
+    public void setReportSentTime(String reportSentTime) {
+        this.reportSentTime = reportSentTime;
+    }
+
+    public int getId() {
         return id;
+    }
+
+    public String getContainerId() {
+        return containerId;
     }
 
     public String getUserId() {
@@ -182,5 +226,13 @@ public class DynamicScanner {
 
     public String getReportReadyTime() {
         return reportReadyTime;
+    }
+
+    public boolean isReportSent() {
+        return reportSent;
+    }
+
+    public String getReportSentTime() {
+        return reportSentTime;
     }
 }

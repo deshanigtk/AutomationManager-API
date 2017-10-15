@@ -43,7 +43,7 @@ public class MailHandler {
     }
 
 
-    public void sendMail(String to, String subject, String body, InputStream inputStream, String attachmentFileName) {
+    public boolean sendMail(String to, String subject, String body, InputStream inputStream, String attachmentFileName) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
 
@@ -56,10 +56,12 @@ public class MailHandler {
             mimeMessageHelper.addAttachment(attachmentFileName,
                     new ByteArrayResource(IOUtils.toByteArray(inputStream)));
             mailSender.send(mimeMessageHelper.getMimeMessage());
+            return true;
 
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
             LOGGER.error(e.toString());
+            return false;
         }
     }
 }

@@ -39,7 +39,7 @@ public class StaticScannerNotificationController {
     @GetMapping(value = "fileExtracted")
     public @ResponseBody
     void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
-        StaticScanner staticScanner = staticScannerService.findOne(containerId);
+        StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setFileExtracted(status);
         staticScanner.setFileExtractedTime(time);
         staticScanner.setProductAvailable(true);
@@ -49,7 +49,7 @@ public class StaticScannerNotificationController {
     @GetMapping(value = "productCloned")
     public @ResponseBody
     void updateProductCloned(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
-        StaticScanner staticScanner = staticScannerService.findOne(containerId);
+        StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setProductCloned(status);
         staticScanner.setProductClonedTime(time);
         staticScanner.setProductAvailable(true);
@@ -59,7 +59,7 @@ public class StaticScannerNotificationController {
     @GetMapping(value = "dependencyCheckReportReady")
     public @ResponseBody
     void updateDependencyCheckReportReady(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
-        StaticScanner staticScanner = staticScannerService.findOne(containerId);
+        StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setDependencyCheckReportReady(status);
         staticScanner.setDependencyCheckReportReadyTime(time);
         staticScannerService.save(staticScanner);
@@ -68,7 +68,7 @@ public class StaticScannerNotificationController {
     @GetMapping(value = "findSecBugsReportReady")
     public @ResponseBody
     void updateFindSecBugsReportReady(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
-        StaticScanner staticScanner = staticScannerService.findOne(containerId);
+        StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setFindSecBugsReportReady(status);
         staticScanner.setFindSecBugsReportReadyTime(time);
         staticScannerService.save(staticScanner);

@@ -20,6 +20,8 @@ package org.wso2.security.automation.manager.handlers;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -38,35 +40,47 @@ import java.util.List;
 import java.util.Map;
 
 public class HttpRequestHandler {
-    private static CloseableHttpClient httpClient = HttpClients.createDefault();
+    private static HttpClient httpClient = HttpClients.createDefault();
 
     private static List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
 
     public static HttpResponse sendGetRequest(URI request) {
-        HttpResponse httpResponse = null;
+        HttpResponse httpResponse;
         HttpGet httpGetRequest = new HttpGet(request);
         try {
             httpResponse = httpClient.execute(httpGetRequest);
-            return httpResponse;
+            if (httpResponse != null) {
+                return httpResponse;
+            }
+        } catch (IOException e) {
+//            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public static HttpResponse sendPostRequest(URI request, ArrayList<NameValuePair> parameters) {
+        try {
+            HttpPost httpPostRequest = new HttpPost(request);
+
+            if (parameters != null) {
+                for (NameValuePair parameter : parameters) {
+                    urlParameters.add(new BasicNameValuePair(parameter.getName(), parameter.getValue()));
+                }
+                httpPostRequest.setEntity(new UrlEncodedFormEntity(urlParameters));
+            }
+            HttpResponse httpResponse = httpClient.execute(httpPostRequest);
+            if (httpResponse != null) {
+                return httpResponse;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static HttpResponse sendPostrequest(String request, ArrayList<NameValuePair> parameters) throws IOException {
-        HttpPost httpPostRequest = new HttpPost(request);
-
-        for (NameValuePair parameter : parameters) {
-            urlParameters.add(new BasicNameValuePair(parameter.getName(), parameter.getValue()));
-        }
-
-        httpPostRequest.setEntity(new UrlEncodedFormEntity(urlParameters));
-        return httpClient.execute(httpPostRequest);
-    }
-
-    public static HttpResponse sendMultipartRequest(URI uri, MultipartFile file, Map<String, String> textBody) {
-        CloseableHttpResponse response = null;
+    public static HttpResponse sendMultipartRequest(URI uri, Map<String, MultipartFile> files, Map<String, String> textBody) {
+        HttpResponse response = null;
         try {
             HttpPost uploadFile = new HttpPost(uri);
             MultipartEntityBuilder builder = MultipartEntityBuilder.create();
@@ -76,14 +90,17 @@ public class HttpRequestHandler {
                 }
             }
             // This attaches the file to the POST:
-            InputStream inputStream = file.getInputStream();
+            for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
+                InputStream inputStream = entry.getValue().getInputStream();
 
-            builder.addBinaryBody(
-                    "file",
-                    inputStream,
-                    ContentType.APPLICATION_OCTET_STREAM,
-                    file.getOriginalFilename()
-            );
+                builder.addBinaryBody(
+                        entry.getKey(),
+                        inputStream,
+                        ContentType.APPLICATION_OCTET_STREAM,
+                        entry.getValue().getOriginalFilename()
+                );
+
+            }
 
             HttpEntity multipart = builder.build();
             uploadFile.setEntity(multipart);
@@ -95,17 +112,21 @@ public class HttpRequestHandler {
         return response;
     }
 
-    public static String printResponse(HttpResponse response) throws IOException {
-
-        BufferedReader rd = new BufferedReader(
-                new InputStreamReader(response.getEntity().getContent()));
-
-        StringBuilder result = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
+    public static String printResponse(HttpResponse response) {
+        BufferedReader rd;
+        try {
+            rd = new BufferedReader(
+                    new InputStreamReader(response.getEntity().getContent()));
+            StringBuilder result = new StringBuilder();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+            return result.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return e.toString();
         }
-        return result.toString();
     }
 
     public static boolean saveResponseToFile(HttpResponse response, File destinationFile) throws Exception {

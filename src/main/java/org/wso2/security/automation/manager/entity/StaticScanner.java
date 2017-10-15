@@ -17,13 +17,20 @@ package org.wso2.security.automation.manager.entity;
 * under the License.
 */
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.hibernate.validator.constraints.Email;
+
+import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "name"}))
 public class StaticScanner {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @Column(unique = true)
+    private String containerId;
+
     private String userId;
     private String name;
     private String createdTime;
@@ -45,18 +52,47 @@ public class StaticScanner {
     private boolean findSecBugsReportReady;
     private String findSecBugsReportReadyTime;
 
+
     public StaticScanner() {
     }
 
-    public StaticScanner(String id, String userId, String createdTime, String ipAddress, int containerPort, int hostPort) {
-        this.id = id;
+    public StaticScanner(String containerId, String userId, String name, String createdTime, String ipAddress, int containerPort, int hostPort) {
+        this.containerId = containerId;
         this.userId = userId;
-//        this.name = name;
+        this.name = name;
         this.createdTime = createdTime;
         this.status = "created";
         this.ipAddress = ipAddress;
         this.containerPort = containerPort;
         this.hostPort = hostPort;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public void setContainerPort(int containerPort) {
+        this.containerPort = containerPort;
+    }
+
+    public void setHostPort(int hostPort) {
+        this.hostPort = hostPort;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setStatus(String status) {
@@ -99,8 +135,12 @@ public class StaticScanner {
         this.findSecBugsReportReadyTime = findSecBugsReportReadyTime;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
+    }
+
+    public String getContainerId() {
+        return containerId;
     }
 
     public String getUserId() {
