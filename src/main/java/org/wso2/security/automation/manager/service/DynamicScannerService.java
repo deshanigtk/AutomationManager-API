@@ -15,6 +15,7 @@ package org.wso2.security.automation.manager.service;/*
 * specific language governing permissions and limitations
 * under the License.
 */
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -29,6 +30,7 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.wso2.security.automation.manager.entity.Zap;
 import org.wso2.security.automation.manager.handlers.DockerHandler;
 import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.handlers.MailHandler;
@@ -54,17 +56,11 @@ public class DynamicScannerService {
     @Value("${IS_DYNAMIC_SCANNER_READY}")
     private String isReady;
 
-    @Value("${UPLOAD_EXTRACT_AND_START_SERVER}")
-    private String uploadExtractAndStartServer;
+    @Value("${DYNAMIC_SCANNER_START_SCAN}")
+    private String startScan;
 
-    @Value("${START_ZAP_SCAN}")
-    private String startZapScan;
-
-    @Value("${GET_REPORT_AND_MAIL}")
-    private String getReportAndMail;
-
-    @Value("${DYNAMIC_SCANNER_CONFIGURE_NOTIFICATION_MANAGER}")
-    private String configureNotificationManager;
+    @Value("${DYNAMIC_SCANNER_GET_REPORT}")
+    private String getReport;
 
     @Value("${AUTOMATION_MANAGER_HOST}")
     private String myHost;
@@ -76,12 +72,15 @@ public class DynamicScannerService {
 
     private final DynamicScannerRepository dynamicScannerRepository;
 
+    private final ZapService zapService;
+
     private final MailHandler mailHandler;
 
     @Autowired
-    public DynamicScannerService(DynamicScannerRepository dynamicScannerRepository, MailHandler mailHandler) {
+    public DynamicScannerService(DynamicScannerRepository dynamicScannerRepository, MailHandler mailHandler, ZapService zapService) {
         this.dynamicScannerRepository = dynamicScannerRepository;
         this.mailHandler = mailHandler;
+        this.zapService = zapService;
     }
 
     public Iterable<DynamicScanner> findAll() {
@@ -101,14 +100,19 @@ public class DynamicScannerService {
         return dynamicScannerRepository.findByUserIdAndStatus(userId, status);
     }
 
+    public Iterable<DynamicScanner> findByUserId(String userId) {
+        return dynamicScannerRepository.findByUserId(userId);
+    }
+
     public DynamicScanner save(DynamicScanner dynamicScanner) {
         return dynamicScannerRepository.save(dynamicScanner);
     }
 
-    public DynamicScanner startDynamicScanner(String userId, String name, String ipAddress) {
+    public DynamicScanner startDynamicScanner(String userId, String name, String ipAddress, String relatedZapContainerId) {
         DynamicScanner dynamicScanner = new DynamicScanner();
         dynamicScanner.setUserId(userId);
         dynamicScanner.setName(name);
+        dynamicScanner.setRelatedZapId(relatedZapContainerId);
         dynamicScanner.setStatus("initiated");
         save(dynamicScanner);
 
@@ -118,6 +122,7 @@ public class DynamicScannerService {
                 String.valueOf(port), null, new String[]{"port=" + port});
 
         if (containerId != null) {
+            LOGGER.info("Container Id: " + containerId);
             String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
             dynamicScanner.setContainerId(containerId);
             dynamicScanner.setIpAddress(ipAddress);
@@ -130,6 +135,7 @@ public class DynamicScannerService {
 
             if (DockerHandler.startContainer(containerId)) {
                 dynamicScanner.setStatus("running");
+                dynamicScanner.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings().ipAddress());
                 save(dynamicScanner);
                 return dynamicScanner;
             }
@@ -138,38 +144,61 @@ public class DynamicScannerService {
     }
 
     public String startScan(DynamicScanner dynamicScanner, boolean isFileUpload, MultipartFile zipFile,
-                            MultipartFile urlListFile, String zapHost, int zapPort, String productHostRelativeToZap,
-                            String productHostRelativeToDynamicScanner, int productPort,
+                            MultipartFile urlListFile, String relatedZapContainerId, String wso2ServerHost, int wso2ServerPort,
                             boolean isAuthenticatedScan, boolean isUnauthenticatedScan) {
 
         try {
-            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-                    .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(startZapScan)
-                    .addParameter("automationManagerHost", myHost)
-                    .addParameter("automationManagerPort", String.valueOf(myPort))
-                    .addParameter("myContainerId", dynamicScanner.getContainerId())
-                    .addParameter("isFileUpload", String.valueOf(isFileUpload))
-                    .addParameter("zapHost", zapHost)
-                    .addParameter("zapPort", String.valueOf(zapPort))
-                    .addParameter("productHostRelativeToZap", productHostRelativeToZap)
-                    .addParameter("productHostRelativeToThis", productHostRelativeToDynamicScanner)
-                    .addParameter("productPort", String.valueOf(productPort))
-                    .addParameter("isAuthenticatedScan", String.valueOf(isAuthenticatedScan))
-                    .addParameter("isUnauthenticatedScan", String.valueOf(isUnauthenticatedScan))
-                    .build();
+            String productHostRelativeToZap;
+            String productHostRelativeToDynamicScanner;
+            int productPort;
 
-            Map<String, MultipartFile> files = new HashMap<>();
-            files.put("zipFile", zipFile);
-            files.put("urlListFile", urlListFile);
+            if (isFileUpload) {
+                productHostRelativeToZap = dynamicScanner.getIpAddress();
+                productHostRelativeToDynamicScanner = "localhost";
+                productPort = 9443;
+            } else {
+                productHostRelativeToZap = wso2ServerHost;
+                productHostRelativeToDynamicScanner = wso2ServerHost;
+                productPort = wso2ServerPort;
+            }
 
-            HttpResponse response = HttpRequestHandler.sendMultipartRequest(uri, files, null);
-            return HttpRequestHandler.printResponse(response);
+            Zap zap = zapService.findOneByContainerId(relatedZapContainerId);
 
+            if (zap != null) {
+                if ((isFileUpload && zipFile != null) || (!isFileUpload && wso2ServerHost != null && wso2ServerPort != -1)) {
+                    URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
+                            .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(startScan)
+                            .addParameter("automationManagerHost", myHost)
+                            .addParameter("automationManagerPort", String.valueOf(myPort))
+                            .addParameter("myContainerId", dynamicScanner.getContainerId())
+                            .addParameter("isFileUpload", String.valueOf(isFileUpload))
+                            .addParameter("zapHost", zap.getIpAddress())
+                            .addParameter("zapPort", String.valueOf(zap.getHostPort()))
+                            .addParameter("productHostRelativeToZap", productHostRelativeToZap)
+                            .addParameter("productHostRelativeToThis", productHostRelativeToDynamicScanner)
+                            .addParameter("productPort", String.valueOf(productPort))
+                            .addParameter("isAuthenticatedScan", String.valueOf(isAuthenticatedScan))
+                            .addParameter("isUnauthenticatedScan", String.valueOf(isUnauthenticatedScan))
+                            .build();
+
+                    Map<String, MultipartFile> files = new HashMap<>();
+                    if (zipFile != null) {
+                        files.put("zipFile", zipFile);
+                    }
+                    files.put("urlListFile", urlListFile);
+
+                    HttpResponse response = HttpRequestHandler.sendMultipartRequest(uri, files, null);
+
+                    String message = HttpRequestHandler.printResponse(response);
+                    LOGGER.info("Start zap scan response: " + message);
+                    return message;
+                }
+            }
         } catch (URISyntaxException e) {
             e.printStackTrace();
+            return e.getMessage();
         }
-
-        return null;
+        return "Cannot execute ZAP scan command";
     }
 
     @Retryable(value = IOException.class, maxAttempts = 10, backoff = @Backoff(delay = 3000))
@@ -192,6 +221,7 @@ public class DynamicScannerService {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+        LOGGER.info("Dynamic Scanner is ready: " + status);
         return status;
     }
 
@@ -207,7 +237,7 @@ public class DynamicScannerService {
             DynamicScanner dynamicScanner = findOneByContainerId(containerId);
             if (dynamicScanner != null) {
                 URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-                        .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(getReportAndMail)
+                        .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(getReport)
                         .build();
                 HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
 
@@ -218,9 +248,11 @@ public class DynamicScannerService {
                                 response.getEntity().getContent(), "ZapReport.html")) {
                             dynamicScanner.setReportSent(true);
                             dynamicScanner.setReportSentTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
-                            DockerHandler.killContainer(containerId);
-                            dynamicScanner.setStatus("killed");
-                            save(dynamicScanner);
+                            kill(containerId);
+
+                            String zapContainerId = dynamicScanner.getRelatedZapId();
+                            zapService.kill(zapContainerId);
+
                         }
                     }
                 }
@@ -228,5 +260,12 @@ public class DynamicScannerService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void kill(String containerId) {
+        DynamicScanner dynamicScanner = findOneByContainerId(containerId);
+        DockerHandler.killContainer(containerId);
+        dynamicScanner.setStatus("killed");
+        save(dynamicScanner);
     }
 }

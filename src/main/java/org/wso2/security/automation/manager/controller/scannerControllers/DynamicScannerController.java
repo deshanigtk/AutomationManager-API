@@ -25,15 +25,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.automation.manager.entity.DynamicScanner;
-import org.wso2.security.automation.manager.handlers.DockerHandler;
-import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
 
 import java.io.*;
 
 @PropertySource("classpath:global.properties")
 @Controller
-@RequestMapping("dynamicScanner")
+@RequestMapping("automationManager/dynamicScanner")
 public class DynamicScannerController {
 
 
@@ -46,22 +44,7 @@ public class DynamicScannerController {
         this.dynamicScannerService = dynamicScannerService;
     }
 
-    @PostMapping(value = "start")
-    public @ResponseBody
-    boolean start(@RequestParam String userId, @RequestParam String name,
-                  @RequestParam String ipAddress) {
-        DynamicScanner dynamicScanner = dynamicScannerService.startDynamicScanner(userId, name, ipAddress);
-        try {
-            if (dynamicScannerService.isDynamicScannerReady(dynamicScanner)) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @PostMapping(value = "runZapScan")
+    @PostMapping(value = "startScan")
     public @ResponseBody
     String runZapScan(@RequestParam String userId,
                       @RequestParam String name,
@@ -69,21 +52,19 @@ public class DynamicScannerController {
                       @RequestParam boolean isFileUpload,
                       @RequestParam MultipartFile zipFile,
                       @RequestParam MultipartFile urlListFile,
-                      @RequestParam String zapHost,
-                      @RequestParam int zapPort,
-                      @RequestParam String productHostRelativeToZap,
-                      @RequestParam String productHostRelativeToDynamicScanner,
-                      @RequestParam int productPort,
+                      @RequestParam String relatedZapContainerId,
+                      @RequestParam(required = false) String wso2ServerHost,
+                      @RequestParam(required = false) int wso2ServerPort,
                       @RequestParam boolean isAuthenticatedScan,
                       @RequestParam boolean isUnauthenticatedScan) {
 
         try {
-            DynamicScanner dynamicScanner = dynamicScannerService.startDynamicScanner(userId, name, ipAddress);
+            DynamicScanner dynamicScanner = dynamicScannerService.startDynamicScanner(userId, name, ipAddress, relatedZapContainerId);
+
             if (dynamicScanner != null) {
                 if (dynamicScannerService.isDynamicScannerReady(dynamicScanner)) {
 
-                    return dynamicScannerService.startScan(dynamicScanner, isFileUpload, zipFile, urlListFile, zapHost, zapPort,
-                            productHostRelativeToZap, productHostRelativeToDynamicScanner, productPort,
+                    return dynamicScannerService.startScan(dynamicScanner, isFileUpload, zipFile, urlListFile, relatedZapContainerId, wso2ServerHost, wso2ServerPort,
                             isAuthenticatedScan, isUnauthenticatedScan);
                 } else {
                     return "Unable to start micro service in container";
@@ -95,16 +76,12 @@ public class DynamicScannerController {
             e.printStackTrace();
         }
         return null;
-
     }
 
     @GetMapping(path = "kill")
     public @ResponseBody
-    void kill(@RequestParam String containerId) throws Exception {
-        DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
-        DockerHandler.killContainer(containerId);
-        dynamicScanner.setStatus("killed");
-        dynamicScannerService.save(dynamicScanner);
+    void kill(@RequestParam String containerId) {
+        dynamicScannerService.kill(containerId);
     }
 
 }

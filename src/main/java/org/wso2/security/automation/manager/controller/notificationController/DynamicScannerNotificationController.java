@@ -23,7 +23,7 @@ import org.wso2.security.automation.manager.entity.DynamicScanner;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
 
 @Controller
-@RequestMapping("dynamicScanner/notify")
+@RequestMapping("automationManager/dynamicScanner/notify")
 public class DynamicScannerNotificationController {
 
     private final DynamicScannerService dynamicScannerService;
@@ -78,5 +78,13 @@ public class DynamicScannerNotificationController {
         dynamicScanner.setReportReadyTime(time);
         dynamicScannerService.save(dynamicScanner);
         dynamicScannerService.getReportAndMail(containerId);
+    }
+
+    @GetMapping(value = "message")
+    public @ResponseBody
+    void updateMessage(@RequestParam String containerId, @RequestParam String status) {
+        DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
+        dynamicScanner.setMessage(status);
+        dynamicScannerService.save(dynamicScanner);
     }
 }

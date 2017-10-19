@@ -25,8 +25,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.wso2.security.automation.manager.entity.StaticScanner;
 import org.wso2.security.automation.manager.service.StaticScannerService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
-@RequestMapping("staticScanner/notify")
+@RequestMapping("automationManager/staticScanner/notify")
 public class StaticScannerNotificationController {
 
     private final StaticScannerService staticScannerService;
@@ -38,39 +41,56 @@ public class StaticScannerNotificationController {
 
     @GetMapping(value = "fileExtracted")
     public @ResponseBody
-    void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
+    void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setFileExtracted(status);
-        staticScanner.setFileExtractedTime(time);
+        staticScanner.setFileExtractedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         staticScanner.setProductAvailable(true);
         staticScannerService.save(staticScanner);
     }
 
     @GetMapping(value = "productCloned")
     public @ResponseBody
-    void updateProductCloned(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
+    void updateProductCloned(@RequestParam String containerId, @RequestParam boolean status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setProductCloned(status);
-        staticScanner.setProductClonedTime(time);
+        staticScanner.setProductClonedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         staticScanner.setProductAvailable(true);
+        staticScannerService.save(staticScanner);
+    }
+
+    @GetMapping(value = "findSecBugsStatus")
+    public @ResponseBody
+    void updateFindSecBugsStatus(@RequestParam String containerId, @RequestParam String status) {
+        StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
+        staticScanner.setFindSecBugsStatus(status);
+        staticScannerService.save(staticScanner);
+    }
+
+    @GetMapping(value = "dependencyCheckStatus")
+    public @ResponseBody
+    void updateDependencyCheckStatus(@RequestParam String containerId, @RequestParam String status) {
+        StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
+        staticScanner.setDependencyCheckStatus(status);
         staticScannerService.save(staticScanner);
     }
 
     @GetMapping(value = "dependencyCheckReportReady")
     public @ResponseBody
-    void updateDependencyCheckReportReady(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
+    void updateDependencyCheckReportReady(@RequestParam String containerId, @RequestParam boolean status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setDependencyCheckReportReady(status);
-        staticScanner.setDependencyCheckReportReadyTime(time);
+        staticScanner.setDependencyCheckReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         staticScannerService.save(staticScanner);
+
     }
 
     @GetMapping(value = "findSecBugsReportReady")
     public @ResponseBody
-    void updateFindSecBugsReportReady(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
+    void updateFindSecBugsReportReady(@RequestParam String containerId, @RequestParam boolean status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setFindSecBugsReportReady(status);
-        staticScanner.setFindSecBugsReportReadyTime(time);
+        staticScanner.setFindSecBugsReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         staticScannerService.save(staticScanner);
     }
 

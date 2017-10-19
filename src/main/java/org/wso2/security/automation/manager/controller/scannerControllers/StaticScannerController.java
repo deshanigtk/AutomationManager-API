@@ -28,49 +28,29 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.automation.manager.entity.StaticScanner;
-import org.wso2.security.automation.manager.handlers.DockerHandler;
 import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.service.StaticScannerService;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @PropertySource("classpath:global.properties")
 @Controller
-@RequestMapping("/staticScanner")
+@RequestMapping("automationManager/staticScanner")
 public class StaticScannerController {
 
     @Value("${STATIC_SCANNER_DOCKER_IMAGE}")
     private String dockerImage;
 
-    @Value("${CLONE_FROM_GITHUB}")
-    private String cloneFromGitHub;
-
-    @Value("${UPLOAD_PRODUCT_ZIP_FILE_AND_EXTRACT}")
-    private String uploadProductZipFileAndExtract;
-
-    @Value("${FIND_SEC_BUGS}")
-    private String runFindSecBugs;
-
-    @Value("${DEPENDENCY_CHECK}")
-    private String runDependencyCheck;
-
     @Value("${STATIC_SCANNER_GET_REPORT}")
     private String getReport;
-
-    @Value("${STATIC_SCANNER_CONFIGURE_NOTIFICATION_MANAGER}")
-    private String configureNotificationManager;
 
     @Value("${AUTOMATION_MANAGER_HOST}")
     private String myHost;
 
     @Value("${AUTOMATION_MANAGER_PORT}")
     private int myPort;
-
 
     private final StaticScannerService staticScannerService;
 
@@ -84,144 +64,39 @@ public class StaticScannerController {
         this.mailHandler = mailHandler;
     }
 
-    @PostMapping(value = "start")
+
+    @PostMapping(value = "startScan")
     public @ResponseBody
-    String start(@RequestParam String userId, @RequestParam String ipAddress, @RequestParam int containerPort, @RequestParam int hostPort) {
+    String startScan(@RequestParam String userId,
+                     @RequestParam String name,
+                     @RequestParam String ipAddress,
+                     @RequestParam boolean isFileUpload,
+                     @RequestParam(required = false) MultipartFile zipFile,
+                     @RequestParam(required = false) String url,
+                     @RequestParam(required = false, defaultValue = "master") String branch,
+                     @RequestParam(required = false) String tag,
+                     @RequestParam boolean isFindSecBugs,
+                     @RequestParam boolean isDependencyCheck) {
+
         try {
-            String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(containerPort), String.valueOf(hostPort), null, new String[]{"port=" + containerPort});
-            if (containerId != null) {
-                String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
-                StaticScanner staticScanner = new StaticScanner(containerId, userId, "jhj", createdTime, ipAddress, containerPort, hostPort);
-                staticScannerService.save(staticScanner);
-
-                if (DockerHandler.startContainer(containerId)) {
-                    staticScanner.setStatus("running");
-                    staticScannerService.save(staticScanner);
-                    URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(staticScanner.getHostPort()).setScheme("http").setPath(configureNotificationManager)
-                            .addParameter("automationManagerHost", myHost)
-                            .addParameter("automationManagerPort", String.valueOf(myPort))
-                            .addParameter("myContainerId", containerId)
-                            .build();
-
-                    LOGGER.info("URI to configure notification manager: " + uri);
-                    HttpRequestHandler.sendGetRequest(uri);
-
-                    return containerId;
-                }
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    @PostMapping(value = "cloneProductFromGitHub")
-    public @ResponseBody
-    String clone(@RequestParam String containerId, @RequestParam String url, @RequestParam String branch, @RequestParam String tag) {
-        try {
-            StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
-            if (staticScanner.getStatus().equals("running")) {
-
-
-                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(staticScanner.getHostPort()).setScheme("http").setPath(configureNotificationManager)
-                        .addParameter("automationManagerHost", myHost)
-                        .addParameter("automationManagerPort", String.valueOf(myPort))
-                        .addParameter("myContainerId", containerId)
-                        .build();
-
-                LOGGER.info("URI to configure notification manager: " + uri);
-                HttpRequestHandler.sendGetRequest(uri);
-
-                uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(staticScanner.getHostPort()).setScheme("http")
-                        .setPath(cloneFromGitHub)
-                        .addParameter("url", url)
-                        .addParameter("branch", branch)
-                        .addParameter("tag", tag)
-                        .build();
-
-                HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
-                return HttpRequestHandler.printResponse(response);
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            LOGGER.error(e.toString());
-        }
-        return null;
-    }
-
-    @PostMapping(value = "uploadProductZipFileAndExtract")
-    public @ResponseBody
-    String uploadProductZipFileAndExtract(@RequestParam String containerId, @RequestParam MultipartFile zipFile) throws IOException {
-        try {
-            StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
+            StaticScanner staticScanner = staticScannerService.startStaticScanner(userId, name, ipAddress);
 
             if (staticScanner != null) {
+                if (staticScannerService.isStaticScannerReady(staticScanner)) {
 
-
-                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(staticScanner.getHostPort()).setScheme("http").setPath(configureNotificationManager)
-                        .addParameter("automationManagerHost", myHost)
-                        .addParameter("automationManagerPort", String.valueOf(myPort))
-                        .addParameter("myContainerId", containerId)
-                        .build();
-
-                LOGGER.info("URI to configure notification manager: " + uri);
-                HttpRequestHandler.sendGetRequest(uri);
-
-
-                uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(staticScanner.getHostPort()).setScheme("http")
-                        .setPath(uploadProductZipFileAndExtract)
-                        .build();
-
-                HttpResponse response = HttpRequestHandler.sendMultipartRequest(uri, null, null);
-                return HttpRequestHandler.printResponse(response);
+                    return staticScannerService.startScan(staticScanner, isFileUpload, zipFile, url, branch, tag, isFindSecBugs, isDependencyCheck);
+                } else {
+                    return "Unable to start micro service in container";
+                }
+            } else {
+                return "Unable to create container";
             }
-
-        } catch (URISyntaxException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @PostMapping(value = "runFindSecBugs")
-    public @ResponseBody
-    String runFindSecBugs(@RequestParam String containerId) {
-        try {
-            StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
-            if (staticScanner.getStatus().equals("running") && staticScanner.isProductAvailable()) {
-
-                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(staticScanner.getHostPort()).setScheme("http").setPath(runFindSecBugs)
-                        .build();
-                System.out.println("uri to findsecbugs: " + uri);
-                HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
-                return HttpRequestHandler.printResponse(response);
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return e.getMessage();
-        }
-        return null;
-    }
-
-    @PostMapping(value = "runDependencyCheck")
-    public @ResponseBody
-    String runDependencyCheck(@RequestParam String containerId) {
-        try {
-            StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
-            if (staticScanner.getStatus().equals("running") && staticScanner.isProductAvailable()) {
-
-                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress()).setPort(staticScanner.getHostPort()).setScheme("http").setPath(runDependencyCheck)
-                        .build();
-                HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
-                System.out.println("dependency uri: " + uri);
-                return HttpRequestHandler.printResponse(response);
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return e.getMessage();
-        }
-        return null;
-    }
 
     @PostMapping(path = "getReportAndMail")
     public @ResponseBody
@@ -246,5 +121,11 @@ public class StaticScannerController {
             }
             mailHandler.sendMail(to, subject, "This is auto generated message", httpResponse.getEntity().getContent(), fileName);
         }
+    }
+
+    @GetMapping(path = "kill")
+    public @ResponseBody
+    void kill(@RequestParam String containerId) {
+        staticScannerService.kill(containerId);
     }
 }

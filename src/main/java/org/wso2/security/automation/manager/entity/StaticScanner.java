@@ -46,12 +46,22 @@ public class StaticScanner {
     private boolean productCloned;
     private String productClonedTime;
 
+    private String findSecBugsStatus;
+    private String dependencyCheckStatus;
+
     private boolean dependencyCheckReportReady;
     private String dependencyCheckReportReadyTime;
 
     private boolean findSecBugsReportReady;
     private String findSecBugsReportReadyTime;
 
+    private boolean findSecBugsReportSent;
+    private String findSecBugsReportSentTime;
+
+    private boolean dependencyCheckReportSent;
+    private String dependencyCheckReportSentTime;
+
+    private String message;
 
     public StaticScanner() {
     }
@@ -73,6 +83,10 @@ public class StaticScanner {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
     }
 
     public void setCreatedTime(String createdTime) {
@@ -127,12 +141,40 @@ public class StaticScanner {
         this.productClonedTime = productClonedTime;
     }
 
+    public void setFindSecBugsStatus(String findSecBugsStatus) {
+        this.findSecBugsStatus = findSecBugsStatus;
+    }
+
+    public void setDependencyCheckStatus(String dependencyCheckStatus) {
+        this.dependencyCheckStatus = dependencyCheckStatus;
+    }
+
     public void setDependencyCheckReportReadyTime(String dependencyCheckReportReadyTime) {
         this.dependencyCheckReportReadyTime = dependencyCheckReportReadyTime;
     }
 
     public void setFindSecBugsReportReadyTime(String findSecBugsReportReadyTime) {
         this.findSecBugsReportReadyTime = findSecBugsReportReadyTime;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setFindSecBugsReportSent(boolean findSecBugsReportSent) {
+        this.findSecBugsReportSent = findSecBugsReportSent;
+    }
+
+    public void setFindSecBugsReportSentTime(String findSecBugsReportSentTime) {
+        this.findSecBugsReportSentTime = findSecBugsReportSentTime;
+    }
+
+    public void setDependencyCheckReportSent(boolean dependencyCheckReportSent) {
+        this.dependencyCheckReportSent = dependencyCheckReportSent;
+    }
+
+    public void setDependencyCheckReportSentTime(String dependencyCheckReportSentTime) {
+        this.dependencyCheckReportSentTime = dependencyCheckReportSentTime;
     }
 
     public int getId() {
@@ -191,6 +233,14 @@ public class StaticScanner {
         return productClonedTime;
     }
 
+    public String getFindSecBugsStatus() {
+        return findSecBugsStatus;
+    }
+
+    public String getDependencyCheckStatus() {
+        return dependencyCheckStatus;
+    }
+
     public boolean isDependencyCheckReportReady() {
         return dependencyCheckReportReady;
     }
@@ -207,5 +257,23 @@ public class StaticScanner {
         return findSecBugsReportReadyTime;
     }
 
+    public String getMessage() {
+        return message;
+    }
 
+    public boolean isFindSecBugsReportSent() {
+        return findSecBugsReportSent;
+    }
+
+    public boolean isDependencyCheckReportSent() {
+        return dependencyCheckReportSent;
+    }
+
+    public String getFindSecBugsReportSentTime() {
+        return findSecBugsReportSentTime;
+    }
+
+    public String getDependencyCheckReportSentTime() {
+        return dependencyCheckReportSentTime;
+    }
 }

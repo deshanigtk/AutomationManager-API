@@ -24,5 +24,7 @@ public interface StaticScannerRepository extends CrudRepository<StaticScanner, I
 
     StaticScanner findOneByContainerId(String containerId);
 
-    Iterable<StaticScanner> findByUserIdAndStatus(String userId, String status);
+    Iterable<StaticScanner> findByUserId(String userId);
+
+
 }

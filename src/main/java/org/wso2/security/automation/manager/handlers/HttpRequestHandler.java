@@ -90,16 +90,18 @@ public class HttpRequestHandler {
                 }
             }
             // This attaches the file to the POST:
-            for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
-                InputStream inputStream = entry.getValue().getInputStream();
+            if(files!=null) {
+                for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
+                    InputStream inputStream = entry.getValue().getInputStream();
 
-                builder.addBinaryBody(
-                        entry.getKey(),
-                        inputStream,
-                        ContentType.APPLICATION_OCTET_STREAM,
-                        entry.getValue().getOriginalFilename()
-                );
+                    builder.addBinaryBody(
+                            entry.getKey(),
+                            inputStream,
+                            ContentType.APPLICATION_OCTET_STREAM,
+                            entry.getValue().getOriginalFilename()
+                    );
 
+                }
             }
 
             HttpEntity multipart = builder.build();

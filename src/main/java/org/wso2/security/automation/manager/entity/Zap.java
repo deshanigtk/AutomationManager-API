@@ -17,25 +17,30 @@ package org.wso2.security.automation.manager.entity;
 * under the License.
 */
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Zap {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @Column(unique = true)
+    private String containerId;
+    private String userId;
+    private String name;
     private String createdTime;
     private String status;
     private String ipAddress;
-    private String containerPort;
-    private String hostPort;
+    private int containerPort;
+    private int hostPort;
 
     public Zap() {
     }
 
-    public Zap(String id, String createdTime, String ipAddress, String containerPort, String hostPort) {
-        this.id = id;
+    public Zap(String containerId, String createdTime, String ipAddress, int containerPort, int hostPort) {
+        this.containerId = containerId;
         this.createdTime = createdTime;
         this.status = "created";
         this.ipAddress = ipAddress;
@@ -43,17 +48,58 @@ public class Zap {
         this.hostPort = hostPort;
     }
 
-    public String getId() {
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public void setContainerPort(int containerPort) {
+        this.containerPort = containerPort;
+    }
+
+    public void setHostPort(int hostPort) {
+        this.hostPort = hostPort;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public int getId() {
         return id;
+    }
+
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getCreatedTime() {
         return createdTime;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public String getStatus() {
         return status;
@@ -63,11 +109,11 @@ public class Zap {
         return ipAddress;
     }
 
-    public String getContainerPort() {
+    public int getContainerPort() {
         return containerPort;
     }
 
-    public String getHostPort() {
+    public int getHostPort() {
         return hostPort;
     }
 }

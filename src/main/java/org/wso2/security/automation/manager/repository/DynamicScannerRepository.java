@@ -25,4 +25,6 @@ public interface DynamicScannerRepository extends CrudRepository<DynamicScanner,
 
     DynamicScanner findOneByContainerId(String containerId);
 
+    Iterable<DynamicScanner> findByUserId(String userId);
+
 }

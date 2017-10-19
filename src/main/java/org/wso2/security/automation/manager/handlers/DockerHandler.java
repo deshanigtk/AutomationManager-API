@@ -32,19 +32,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-
 public class DockerHandler {
 
     private static DockerClient dockerClient = null;
     private final static Logger LOGGER = LoggerFactory.getLogger(DockerHandler.class);
-
 
     private static DockerClient getDockerClient() throws DockerCertificateException {
         if (dockerClient == null) {
             dockerClient = DefaultDockerClient.fromEnv().build();
         }
         return dockerClient;
-
     }
 
     public static boolean pullImage(String imageName) {
@@ -117,7 +114,7 @@ public class DockerHandler {
         return "running".equals(inspectContainer(containerId).state().status());
     }
 
-    static ContainerInfo inspectContainer(String containerId) {
+    public static ContainerInfo inspectContainer(String containerId) {
         ContainerInfo containerInfo = null;
         try {
             containerInfo = getDockerClient().inspectContainer(containerId);
@@ -128,16 +125,32 @@ public class DockerHandler {
         return containerInfo;
     }
 
-    public static void killContainer(String containerId) throws Exception {
-        getDockerClient().killContainer(containerId);
+    public static void killContainer(String containerId){
+        try {
+            getDockerClient().killContainer(containerId);
+        } catch (DockerException | InterruptedException | DockerCertificateException e) {
+            LOGGER.error(e.toString());
+            e.printStackTrace();
+        }
     }
 
-    public static void removeContainer(String containerId) throws Exception {
-        getDockerClient().removeContainer(containerId);
+    public static void removeContainer(String containerId){
+        try {
+            getDockerClient().removeContainer(containerId);
+        } catch (DockerException | InterruptedException | DockerCertificateException e) {
+            e.printStackTrace();
+            LOGGER.error(e.toString());
+        }
     }
 
-    public static void restartContainer(String containerId) throws DockerCertificateException, DockerException, InterruptedException {
-        getDockerClient().restartContainer(containerId);
+    public static void restartContainer(String containerId) {
+        try {
+            getDockerClient().restartContainer(containerId);
+        }
+        catch (DockerCertificateException | DockerException| InterruptedException e){
+            e.printStackTrace();
+            LOGGER.error(e.toString());
+        }
     }
 
     public static String getContainerLogs(String container_id) throws Exception {

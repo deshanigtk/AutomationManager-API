@@ -18,6 +18,7 @@ package org.wso2.security.automation.manager.entity;
 */
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "name"}))
@@ -29,7 +30,10 @@ public class DynamicScanner {
 
     @Column(unique = true)
     private String containerId;
+    @NotNull
     private String userId;
+
+    private String relatedZapId;
     private String name;
     private String createdTime;
     private String status;
@@ -51,6 +55,8 @@ public class DynamicScanner {
     private String reportReadyTime;
     private boolean reportSent;
     private String reportSentTime;
+    private String message;
+
 
     public DynamicScanner() {
     }
@@ -70,6 +76,10 @@ public class DynamicScanner {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setRelatedZapId(String relatedZapId) {
+        this.relatedZapId = relatedZapId;
     }
 
     public void setCreatedTime(String createdTime) {
@@ -148,6 +158,10 @@ public class DynamicScanner {
         this.reportSentTime = reportSentTime;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public int getId() {
         return id;
     }
@@ -158,6 +172,10 @@ public class DynamicScanner {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getRelatedZapId() {
+        return relatedZapId;
     }
 
     public String getName() {
@@ -234,5 +252,9 @@ public class DynamicScanner {
 
     public String getReportSentTime() {
         return reportSentTime;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }
