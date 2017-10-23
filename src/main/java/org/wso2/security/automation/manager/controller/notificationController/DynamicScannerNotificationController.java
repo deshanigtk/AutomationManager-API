@@ -23,7 +23,7 @@ import org.wso2.security.automation.manager.entity.DynamicScanner;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
 
 @Controller
-@RequestMapping("automationManager/dynamicScanner/notify")
+@RequestMapping("dynamicScanner/notify")
 public class DynamicScannerNotificationController {
 
     private final DynamicScannerService dynamicScannerService;

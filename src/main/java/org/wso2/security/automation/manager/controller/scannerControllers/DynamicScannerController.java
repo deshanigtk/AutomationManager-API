@@ -31,7 +31,7 @@ import java.io.*;
 
 @PropertySource("classpath:global.properties")
 @Controller
-@RequestMapping("automationManager/dynamicScanner")
+@RequestMapping("dynamicScanner")
 public class DynamicScannerController {
 
 
@@ -55,8 +55,7 @@ public class DynamicScannerController {
                       @RequestParam String relatedZapContainerId,
                       @RequestParam(required = false) String wso2ServerHost,
                       @RequestParam(required = false) int wso2ServerPort,
-                      @RequestParam boolean isAuthenticatedScan,
-                      @RequestParam boolean isUnauthenticatedScan) {
+                      @RequestParam boolean isAuthenticatedScan) {
 
         try {
             DynamicScanner dynamicScanner = dynamicScannerService.startDynamicScanner(userId, name, ipAddress, relatedZapContainerId);
@@ -65,7 +64,7 @@ public class DynamicScannerController {
                 if (dynamicScannerService.isDynamicScannerReady(dynamicScanner)) {
 
                     return dynamicScannerService.startScan(dynamicScanner, isFileUpload, zipFile, urlListFile, relatedZapContainerId, wso2ServerHost, wso2ServerPort,
-                            isAuthenticatedScan, isUnauthenticatedScan);
+                            isAuthenticatedScan);
                 } else {
                     return "Unable to start micro service in container";
                 }

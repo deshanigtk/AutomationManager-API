@@ -26,7 +26,7 @@ import org.wso2.security.automation.manager.service.ZapService;
 
 @PropertySource("classpath:global.properties")
 @Controller
-@RequestMapping("automationManager/zap")
+@RequestMapping("zap")
 public class ZapController {
 
     private final ZapService zapService;

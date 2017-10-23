@@ -145,7 +145,7 @@ public class DynamicScannerService {
 
     public String startScan(DynamicScanner dynamicScanner, boolean isFileUpload, MultipartFile zipFile,
                             MultipartFile urlListFile, String relatedZapContainerId, String wso2ServerHost, int wso2ServerPort,
-                            boolean isAuthenticatedScan, boolean isUnauthenticatedScan) {
+                            boolean isAuthenticatedScan) {
 
         try {
             String productHostRelativeToZap;
@@ -178,7 +178,6 @@ public class DynamicScannerService {
                             .addParameter("productHostRelativeToThis", productHostRelativeToDynamicScanner)
                             .addParameter("productPort", String.valueOf(productPort))
                             .addParameter("isAuthenticatedScan", String.valueOf(isAuthenticatedScan))
-                            .addParameter("isUnauthenticatedScan", String.valueOf(isUnauthenticatedScan))
                             .build();
 
                     Map<String, MultipartFile> files = new HashMap<>();

@@ -31,11 +31,13 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.entity.StaticScanner;
 import org.wso2.security.automation.manager.handlers.DockerHandler;
 import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
+import org.wso2.security.automation.manager.scanners.StaticScannerThread;
 
 import java.io.IOException;
 import java.net.URI;
@@ -45,27 +47,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@PropertySource("classpath:global.properties")
 @Service
 public class StaticScannerService {
-
-    @Value("${STATIC_SCANNER_DOCKER_IMAGE}")
-    private String dockerImage;
-
-    @Value("${IS_STATIC_SCANNER_READY}")
-    private String isReady;
-
-    @Value("${STATIC_SCANNER_START_SCAN}")
-    private String startScan;
-
-    @Value("${STATIC_SCANNER_GET_REPORT}")
-    private String getReport;
-
-    @Value("${AUTOMATION_MANAGER_HOST}")
-    private String myHost;
-
-    @Value("${AUTOMATION_MANAGER_PORT}")
-    private int myPort;
 
     private final StaticScannerRepository staticScannerRepository;
 
@@ -100,83 +83,25 @@ public class StaticScannerService {
         return staticScannerRepository.save(staticScanner);
     }
 
-    public StaticScanner startStaticScanner(String userId, String name, String ipAddress) {
-        StaticScanner staticScanner = new StaticScanner();
-        staticScanner.setUserId(userId);
-        staticScanner.setName(name);
-        staticScanner.setStatus("initiated");
-        save(staticScanner);
+    public String startStaticScan(String userId, String name, String ipAddress, boolean isFileUpload, MultipartFile zipFile, String url, String branch,
+                                  String tag, boolean isFindSecBugs, boolean isDependencyCheck) {
 
-        int port = calculatePort(staticScanner.getId());
-
-        String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(port),
-                String.valueOf(port), null, new String[]{"port=" + port});
-
-        if (containerId != null) {
-            LOGGER.info("Container Id: " + containerId);
-            String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
-            staticScanner.setContainerId(containerId);
-            staticScanner.setIpAddress(ipAddress);
-            staticScanner.setContainerPort(port);
-            staticScanner.setHostPort(port);
-            staticScanner.setStatus("created");
-            staticScanner.setCreatedTime(createdTime);
-
-            save(staticScanner);
-
-            if (DockerHandler.startContainer(containerId)) {
-                staticScanner.setStatus("running");
-                staticScanner.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings().ipAddress());
-                save(staticScanner);
-                return staticScanner;
+        if (isFileUpload) {
+            if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
+                return "Please upload product zip file";
+            }
+        } else {
+            if (url == null || branch == null) {
+                return "Please enter URL and branch to clone";
             }
         }
-        return null;
-    }
-
-    public String startScan(StaticScanner staticScanner, boolean isFileUpload, MultipartFile zipFile, String url, String branch, String tag, boolean isFindSecBugs,
-                            boolean isDependencyCheck) {
-        try {
-            if (isFileUpload) {
-                if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
-                    return "Please upload product zip file";
-                }
-            } else {
-                if (url == null || branch == null) {
-                    return "Please enter URL and branch to clone";
-                }
-            }
-            if (!isFindSecBugs && !isDependencyCheck) {
-                return "Please enter at least one scan";
-            }
-
-            URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                    .setPort(staticScanner.getHostPort()).setScheme("http").setPath(startScan)
-                    .addParameter("automationManagerHost", myHost)
-                    .addParameter("automationManagerPort", String.valueOf(myPort))
-                    .addParameter("myContainerId", staticScanner.getContainerId())
-                    .addParameter("isFileUpload", String.valueOf(isFileUpload))
-                    .addParameter("url", url)
-                    .addParameter("branch", branch)
-                    .addParameter("tag", tag)
-                    .addParameter("isFindSecBugs", String.valueOf(isFindSecBugs))
-                    .addParameter("isDependencyCheck", String.valueOf(isDependencyCheck))
-                    .build();
-
-            Map<String, MultipartFile> files = new HashMap<>();
-            if (zipFile != null) {
-                files.put("zipFile", zipFile);
-            }
-            HttpResponse response = HttpRequestHandler.sendMultipartRequest(uri, files, null);
-            if (response != null) {
-                return HttpRequestHandler.printResponse(response);
-            }
-
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return e.getMessage();
+        if (!isFindSecBugs && !isDependencyCheck) {
+            return "Please enter at least one scan";
         }
-        return "Cannot start scanner";
+        StaticScannerThread staticScannerThread = new StaticScannerThread(userId, name, ipAddress, isFileUpload,
+                zipFile, url, branch, tag, isFindSecBugs, isDependencyCheck);
+        new Thread(staticScannerThread).start();
+        return "Ok";
     }
 
     public void getReportAndMail(String containerId) {
@@ -184,19 +109,18 @@ public class StaticScannerService {
             StaticScanner staticScanner = findOneByContainerId(containerId);
             if (staticScanner != null) {
                 URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                        .setPort(staticScanner.getHostPort()).setScheme("http").setPath(getReport)
+                        .setPort(staticScanner.getHostPort()).setScheme("http").setPath(Constants.STATIC_SCANNER_GET_REPORT)
                         .build();
                 HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
 
                 if (response != null) {
                     if (response.getEntity() != null) {
-                        String subject = "Static Scan Report: ";
+                        String subject = "Static Scan Report: " + staticScanner.getCreatedTime();
                         if (mailHandler.sendMail(staticScanner.getUserId(), subject, "This is auto generated message",
                                 response.getEntity().getContent(), "Reports.zip")) {
-                            staticScanner.setFindSecBugsReportSent(true);
-                            staticScanner.setFindSecBugsReportSentTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+                            staticScanner.setReportSent(true);
+                            staticScanner.setReportSentTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
                             kill(containerId);
-
                         }
                     }
                 }
@@ -212,7 +136,7 @@ public class StaticScannerService {
         try {
 
             URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                    .setPort(staticScanner.getHostPort()).setScheme("http").setPath(isReady)
+                    .setPort(staticScanner.getHostPort()).setScheme("http").setPath(Constants.IS_STATIC_SCANNER_READY)
                     .build();
 
             HttpClient httpClient = HttpClientBuilder.create().build();
@@ -230,12 +154,6 @@ public class StaticScannerService {
         return status;
     }
 
-    private int calculatePort(int id) {
-        if (40000 + id > 65535) {
-            id = 1;
-        }
-        return (40000 + id) % 65535;
-    }
 
     public void kill(String containerId) {
         StaticScanner staticScanner = findOneByContainerId(containerId);
@@ -243,4 +161,5 @@ public class StaticScannerService {
         staticScanner.setStatus("killed");
         save(staticScanner);
     }
+
 }

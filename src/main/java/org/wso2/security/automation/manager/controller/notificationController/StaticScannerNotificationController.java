@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
-@RequestMapping("automationManager/staticScanner/notify")
+@RequestMapping("staticScanner/notify")
 public class StaticScannerNotificationController {
 
     private final StaticScannerService staticScannerService;
@@ -94,5 +94,14 @@ public class StaticScannerNotificationController {
         staticScannerService.save(staticScanner);
     }
 
+    @GetMapping(value = "reportReady")
+    public @ResponseBody
+    void updateReportReady(@RequestParam String containerId, @RequestParam boolean status) {
+        StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
+        staticScanner.setReportReady(status);
+        staticScanner.setReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+        staticScannerService.save(staticScanner);
+        staticScannerService.getReportAndMail(containerId);
+    }
 
 }

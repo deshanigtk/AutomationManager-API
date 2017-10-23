@@ -17,8 +17,6 @@ package org.wso2.security.automation.manager.entity;
 * under the License.
 */
 
-import org.hibernate.validator.constraints.Email;
-
 import javax.persistence.*;
 
 @Entity
@@ -55,11 +53,11 @@ public class StaticScanner {
     private boolean findSecBugsReportReady;
     private String findSecBugsReportReadyTime;
 
-    private boolean findSecBugsReportSent;
-    private String findSecBugsReportSentTime;
+    private boolean reportReady;
+    private String reportReadyTime;
 
-    private boolean dependencyCheckReportSent;
-    private String dependencyCheckReportSentTime;
+    private boolean reportSent;
+    private String reportSentTime;
 
     private String message;
 
@@ -133,6 +131,14 @@ public class StaticScanner {
         this.findSecBugsReportReady = findSecBugsReportReady;
     }
 
+    public void setReportReady(boolean reportReady) {
+        this.reportReady = reportReady;
+    }
+
+    public void setReportReadyTime(String reportReadyTime) {
+        this.reportReadyTime = reportReadyTime;
+    }
+
     public void setFileExtractedTime(String fileExtractedTime) {
         this.fileExtractedTime = fileExtractedTime;
     }
@@ -161,20 +167,12 @@ public class StaticScanner {
         this.message = message;
     }
 
-    public void setFindSecBugsReportSent(boolean findSecBugsReportSent) {
-        this.findSecBugsReportSent = findSecBugsReportSent;
+    public void setReportSent(boolean reportSent) {
+        this.reportSent = reportSent;
     }
 
-    public void setFindSecBugsReportSentTime(String findSecBugsReportSentTime) {
-        this.findSecBugsReportSentTime = findSecBugsReportSentTime;
-    }
-
-    public void setDependencyCheckReportSent(boolean dependencyCheckReportSent) {
-        this.dependencyCheckReportSent = dependencyCheckReportSent;
-    }
-
-    public void setDependencyCheckReportSentTime(String dependencyCheckReportSentTime) {
-        this.dependencyCheckReportSentTime = dependencyCheckReportSentTime;
+    public void setReportSentTime(String reportSentTime) {
+        this.reportSentTime = reportSentTime;
     }
 
     public int getId() {
@@ -261,19 +259,20 @@ public class StaticScanner {
         return message;
     }
 
-    public boolean isFindSecBugsReportSent() {
-        return findSecBugsReportSent;
+    public boolean isReportReady() {
+        return reportReady;
     }
 
-    public boolean isDependencyCheckReportSent() {
-        return dependencyCheckReportSent;
+    public String getReportReadyTime() {
+        return reportReadyTime;
     }
 
-    public String getFindSecBugsReportSentTime() {
-        return findSecBugsReportSentTime;
+    public boolean isReportSent() {
+        return reportSent;
     }
 
-    public String getDependencyCheckReportSentTime() {
-        return dependencyCheckReportSentTime;
+    public String getReportSentTime() {
+        return reportSentTime;
     }
+
 }

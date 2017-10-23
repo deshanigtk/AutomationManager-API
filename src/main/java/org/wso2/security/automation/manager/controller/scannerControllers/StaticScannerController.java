@@ -37,7 +37,7 @@ import java.net.URI;
 
 @PropertySource("classpath:global.properties")
 @Controller
-@RequestMapping("automationManager/staticScanner")
+@RequestMapping("staticScanner")
 public class StaticScannerController {
 
     @Value("${STATIC_SCANNER_DOCKER_IMAGE}")
@@ -78,23 +78,8 @@ public class StaticScannerController {
                      @RequestParam boolean isFindSecBugs,
                      @RequestParam boolean isDependencyCheck) {
 
-        try {
-            StaticScanner staticScanner = staticScannerService.startStaticScanner(userId, name, ipAddress);
-
-            if (staticScanner != null) {
-                if (staticScannerService.isStaticScannerReady(staticScanner)) {
-
-                    return staticScannerService.startScan(staticScanner, isFileUpload, zipFile, url, branch, tag, isFindSecBugs, isDependencyCheck);
-                } else {
-                    return "Unable to start micro service in container";
-                }
-            } else {
-                return "Unable to create container";
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return staticScannerService.startStaticScan(userId, name, ipAddress, isFileUpload, zipFile, url, branch, tag,
+                isFindSecBugs, isDependencyCheck);
     }
 
 
