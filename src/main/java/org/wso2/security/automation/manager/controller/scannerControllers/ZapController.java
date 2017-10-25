@@ -36,16 +36,6 @@ public class ZapController {
         this.zapService = zapService;
     }
 
-    @PostMapping(value = "start")
-    public @ResponseBody
-    String start(@RequestParam String userId, @RequestParam String name, @RequestParam String ipAddress) {
-        Zap zap = zapService.startZap(userId, name, ipAddress);
-        if (zap != null) {
-            return zap.getContainerId();
-        }
-        return null;
-    }
-
     @GetMapping(path = "kill")
     public @ResponseBody
     void kill(@RequestParam String containerId) throws Exception {

@@ -52,29 +52,12 @@ public class DynamicScannerController {
                       @RequestParam boolean isFileUpload,
                       @RequestParam MultipartFile zipFile,
                       @RequestParam MultipartFile urlListFile,
-                      @RequestParam String relatedZapContainerId,
                       @RequestParam(required = false) String wso2ServerHost,
-                      @RequestParam(required = false) int wso2ServerPort,
+                      @RequestParam(required = false, defaultValue = "-1") int wso2ServerPort,
                       @RequestParam boolean isAuthenticatedScan) {
 
-        try {
-            DynamicScanner dynamicScanner = dynamicScannerService.startDynamicScanner(userId, name, ipAddress, relatedZapContainerId);
-
-            if (dynamicScanner != null) {
-                if (dynamicScannerService.isDynamicScannerReady(dynamicScanner)) {
-
-                    return dynamicScannerService.startScan(dynamicScanner, isFileUpload, zipFile, urlListFile, relatedZapContainerId, wso2ServerHost, wso2ServerPort,
-                            isAuthenticatedScan);
-                } else {
-                    return "Unable to start micro service in container";
-                }
-            } else {
-                return "Unable to create container";
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return dynamicScannerService.startScan(userId, name, ipAddress, isFileUpload, zipFile, urlListFile,
+                wso2ServerHost, wso2ServerPort, isAuthenticatedScan);
     }
 
     @GetMapping(path = "kill")

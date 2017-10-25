@@ -67,7 +67,6 @@ public class StaticScannerThread implements Runnable {
         this.isDependencyCheck = isDependencyCheck;
 
         staticScannerService = ApplicationContextUtils.getApplicationContext().getBean(StaticScannerService.class);
-
     }
 
     @Override
@@ -84,6 +83,39 @@ public class StaticScannerThread implements Runnable {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
         }
+    }
+
+    private StaticScanner startStaticScanner(String userId, String name, String ipAddress) {
+        StaticScanner staticScanner = new StaticScanner();
+        staticScanner.setUserId(userId);
+        staticScanner.setName(name);
+        staticScanner.setStatus("initiated");
+        staticScannerService.save(staticScanner);
+
+        int port = calculatePort(staticScanner.getId());
+
+        String containerId = DockerHandler.createContainer(Constants.STATIC_SCANNER_DOCKER_IMAGE, ipAddress, String.valueOf(port),
+                String.valueOf(port), null, new String[]{"port=" + port});
+
+        if (containerId != null) {
+            String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+            staticScanner.setContainerId(containerId);
+            staticScanner.setIpAddress(ipAddress);
+            staticScanner.setContainerPort(port);
+            staticScanner.setHostPort(port);
+            staticScanner.setStatus("created");
+            staticScanner.setCreatedTime(createdTime);
+
+            staticScannerService.save(staticScanner);
+
+            if (DockerHandler.startContainer(containerId)) {
+                staticScanner.setStatus("running");
+                staticScanner.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings().ipAddress());
+                staticScannerService.save(staticScanner);
+                return staticScanner;
+            }
+        }
+        return null;
     }
 
 
@@ -119,38 +151,6 @@ public class StaticScannerThread implements Runnable {
         return "Cannot start scanner";
     }
 
-    private StaticScanner startStaticScanner(String userId, String name, String ipAddress) {
-        StaticScanner staticScanner = new StaticScanner();
-        staticScanner.setUserId(userId);
-        staticScanner.setName(name);
-        staticScanner.setStatus("initiated");
-        staticScannerService.save(staticScanner);
-
-        int port = calculatePort(staticScanner.getId());
-
-        String containerId = DockerHandler.createContainer(Constants.STATIC_SCANNER_DOCKER_IMAGE, ipAddress, String.valueOf(port),
-                String.valueOf(port), null, new String[]{"port=" + port});
-
-        if (containerId != null) {
-            String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
-            staticScanner.setContainerId(containerId);
-            staticScanner.setIpAddress(ipAddress);
-            staticScanner.setContainerPort(port);
-            staticScanner.setHostPort(port);
-            staticScanner.setStatus("created");
-            staticScanner.setCreatedTime(createdTime);
-
-            staticScannerService.save(staticScanner);
-
-            if (DockerHandler.startContainer(containerId)) {
-                staticScanner.setStatus("running");
-                staticScanner.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings().ipAddress());
-                staticScannerService.save(staticScanner);
-                return staticScanner;
-            }
-        }
-        return null;
-    }
 
     private int calculatePort(int id) {
         if (40000 + id > 65535) {

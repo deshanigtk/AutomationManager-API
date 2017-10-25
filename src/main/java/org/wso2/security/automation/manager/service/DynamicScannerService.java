@@ -30,12 +30,14 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.entity.Zap;
 import org.wso2.security.automation.manager.handlers.DockerHandler;
 import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.repository.DynamicScannerRepository;
 import org.wso2.security.automation.manager.entity.DynamicScanner;
+import org.wso2.security.automation.manager.scanners.DynamicScannerThread;
 
 
 import java.io.IOException;
@@ -46,27 +48,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@PropertySource("classpath:global.properties")
 @Service
 public class DynamicScannerService {
-
-    @Value("${DYNAMIC_SCANNER_DOCKER_IMAGE}")
-    private String dockerImage;
-
-    @Value("${IS_DYNAMIC_SCANNER_READY}")
-    private String isReady;
-
-    @Value("${DYNAMIC_SCANNER_START_SCAN}")
-    private String startScan;
-
-    @Value("${DYNAMIC_SCANNER_GET_REPORT}")
-    private String getReport;
-
-    @Value("${AUTOMATION_MANAGER_HOST}")
-    private String myHost;
-
-    @Value("${AUTOMATION_MANAGER_PORT}")
-    private int myPort;
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -108,96 +91,26 @@ public class DynamicScannerService {
         return dynamicScannerRepository.save(dynamicScanner);
     }
 
-    public DynamicScanner startDynamicScanner(String userId, String name, String ipAddress, String relatedZapContainerId) {
-        DynamicScanner dynamicScanner = new DynamicScanner();
-        dynamicScanner.setUserId(userId);
-        dynamicScanner.setName(name);
-        dynamicScanner.setRelatedZapId(relatedZapContainerId);
-        dynamicScanner.setStatus("initiated");
-        save(dynamicScanner);
 
-        int port = calculatePort(dynamicScanner.getId());
-
-        String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(port),
-                String.valueOf(port), null, new String[]{"port=" + port});
-
-        if (containerId != null) {
-            LOGGER.info("Container Id: " + containerId);
-            String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
-            dynamicScanner.setContainerId(containerId);
-            dynamicScanner.setIpAddress(ipAddress);
-            dynamicScanner.setContainerPort(port);
-            dynamicScanner.setHostPort(port);
-            dynamicScanner.setStatus("created");
-            dynamicScanner.setCreatedTime(createdTime);
-
-            save(dynamicScanner);
-
-            if (DockerHandler.startContainer(containerId)) {
-                dynamicScanner.setStatus("running");
-                dynamicScanner.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings().ipAddress());
-                save(dynamicScanner);
-                return dynamicScanner;
-            }
-        }
-        return null;
-    }
-
-    public String startScan(DynamicScanner dynamicScanner, boolean isFileUpload, MultipartFile zipFile,
-                            MultipartFile urlListFile, String relatedZapContainerId, String wso2ServerHost, int wso2ServerPort,
+    public String startScan(String userId, String name, String ipAddress, boolean isFileUpload, MultipartFile zipFile,
+                            MultipartFile urlListFile, String wso2ServerHost, int wso2ServerPort,
                             boolean isAuthenticatedScan) {
 
-        try {
-            String productHostRelativeToZap;
-            String productHostRelativeToDynamicScanner;
-            int productPort;
-
-            if (isFileUpload) {
-                productHostRelativeToZap = dynamicScanner.getIpAddress();
-                productHostRelativeToDynamicScanner = "localhost";
-                productPort = 9443;
-            } else {
-                productHostRelativeToZap = wso2ServerHost;
-                productHostRelativeToDynamicScanner = wso2ServerHost;
-                productPort = wso2ServerPort;
+        if (isFileUpload) {
+            if (zipFile == null) {
+                return "Please upload a zip file";
             }
-
-            Zap zap = zapService.findOneByContainerId(relatedZapContainerId);
-
-            if (zap != null) {
-                if ((isFileUpload && zipFile != null) || (!isFileUpload && wso2ServerHost != null && wso2ServerPort != -1)) {
-                    URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-                            .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(startScan)
-                            .addParameter("automationManagerHost", myHost)
-                            .addParameter("automationManagerPort", String.valueOf(myPort))
-                            .addParameter("myContainerId", dynamicScanner.getContainerId())
-                            .addParameter("isFileUpload", String.valueOf(isFileUpload))
-                            .addParameter("zapHost", zap.getIpAddress())
-                            .addParameter("zapPort", String.valueOf(zap.getHostPort()))
-                            .addParameter("productHostRelativeToZap", productHostRelativeToZap)
-                            .addParameter("productHostRelativeToThis", productHostRelativeToDynamicScanner)
-                            .addParameter("productPort", String.valueOf(productPort))
-                            .addParameter("isAuthenticatedScan", String.valueOf(isAuthenticatedScan))
-                            .build();
-
-                    Map<String, MultipartFile> files = new HashMap<>();
-                    if (zipFile != null) {
-                        files.put("zipFile", zipFile);
-                    }
-                    files.put("urlListFile", urlListFile);
-
-                    HttpResponse response = HttpRequestHandler.sendMultipartRequest(uri, files, null);
-
-                    String message = HttpRequestHandler.printResponse(response);
-                    LOGGER.info("Start zap scan response: " + message);
-                    return message;
-                }
+        } else {
+            if (wso2ServerHost == null || wso2ServerPort == -1) {
+                return "Please enter valid details of running WSO2 server";
             }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return e.getMessage();
         }
-        return "Cannot execute ZAP scan command";
+
+        DynamicScannerThread dynamicScannerThread = new DynamicScannerThread(userId, name, ipAddress, isFileUpload, zipFile,
+                urlListFile, wso2ServerHost, wso2ServerPort, isAuthenticatedScan);
+
+        new Thread(dynamicScannerThread).start();
+        return "Ok";
     }
 
     @Retryable(value = IOException.class, maxAttempts = 10, backoff = @Backoff(delay = 3000))
@@ -206,7 +119,7 @@ public class DynamicScannerService {
         try {
 
             URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-                    .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(isReady)
+                    .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(Constants.IS_DYNAMIC_SCANNER_READY)
                     .build();
 
             HttpClient httpClient = HttpClientBuilder.create().build();
@@ -224,19 +137,12 @@ public class DynamicScannerService {
         return status;
     }
 
-    private int calculatePort(int id) {
-        if (1000 + id > 20000) {
-            id = 1;
-        }
-        return (1000 + id) % 20000;
-    }
-
     public void getReportAndMail(String containerId) {
         try {
             DynamicScanner dynamicScanner = findOneByContainerId(containerId);
             if (dynamicScanner != null) {
                 URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-                        .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(getReport)
+                        .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(Constants.DYNAMIC_SCANNER_GET_REPORT)
                         .build();
                 HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
 

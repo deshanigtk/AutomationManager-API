@@ -32,7 +32,6 @@ import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.service.StaticScannerService;
 
-import java.io.IOException;
 import java.net.URI;
 
 @PropertySource("classpath:global.properties")

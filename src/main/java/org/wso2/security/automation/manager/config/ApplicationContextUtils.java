@@ -17,7 +17,6 @@ package org.wso2.security.automation.manager.config;/*
 */
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
@@ -25,17 +24,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationContextUtils implements ApplicationContextAware {
 
-    private static ApplicationContext ctx;
+    private static ApplicationContext applicationContext;
 
     @Override
-    public void setApplicationContext(ApplicationContext appContext)
-            throws BeansException {
-        ctx = appContext;
-
+    public void setApplicationContext(ApplicationContext appContext) throws BeansException {
+        applicationContext = appContext;
     }
 
     public static ApplicationContext getApplicationContext() {
-        return ctx;
+        return applicationContext;
     }
 
 }

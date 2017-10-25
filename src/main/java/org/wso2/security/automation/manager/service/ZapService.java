@@ -66,50 +66,6 @@ public class ZapService {
         return zapRepository.save(zap);
     }
 
-    public Zap
-    startZap(String userId, String name, String ipAddress) {
-        Zap zap = new Zap();
-        zap.setUserId(userId);
-        zap.setName(name);
-        zap.setStatus("initiated");
-        save(zap);
-
-        int port = calculatePort(zap.getId());
-
-        List<String> command = Arrays.asList("zap.sh", "-daemon", "-config", "api.disablekey=true", "-config",
-                "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true", "-port", String.valueOf(port), "-host", "0.0.0.0");
-
-        String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(port),
-                String.valueOf(port), command, null);
-
-        if (containerId != null) {
-            String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
-            zap.setContainerId(containerId);
-            zap.setIpAddress(ipAddress);
-            zap.setContainerPort(port);
-            zap.setHostPort(port);
-            zap.setStatus("created");
-            zap.setCreatedTime(createdTime);
-
-            save(zap);
-
-            if (DockerHandler.startContainer(containerId)) {
-                zap.setStatus("running");
-                zap.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings().ipAddress());
-                save(zap);
-                return zap;
-            }
-        }
-        return null;
-    }
-
-    private int calculatePort(int id) {
-        if (20000 + id > 40000) {
-            id = 1;
-        }
-        return (20000 + id) % 40000;
-    }
-
     public void kill(String containerId) {
         Zap zap = findOneByContainerId(containerId);
         DockerHandler.killContainer(containerId);
