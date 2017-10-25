@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import org.wso2.security.automation.manager.entity.DynamicScanner;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 @RequestMapping("dynamicScanner/notify")
 public class DynamicScannerNotificationController {
@@ -35,47 +38,47 @@ public class DynamicScannerNotificationController {
 
     @GetMapping(value = "fileUploaded")
     public @ResponseBody
-    void updateFileUploaded(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
+    void updateFileUploaded(@RequestParam String containerId, @RequestParam boolean status) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
         dynamicScanner.setFileUploaded(status);
-        dynamicScanner.setFileUploadedTime(time);
+        dynamicScanner.setFileUploadedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         dynamicScannerService.save(dynamicScanner);
     }
 
     @GetMapping(value = "fileExtracted")
     public @ResponseBody
-    void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
+    void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
         dynamicScanner.setFileExtracted(status);
-        dynamicScanner.setFileExtractedTime(time);
+        dynamicScanner.setFileExtractedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         dynamicScannerService.save(dynamicScanner);
     }
 
     @GetMapping(value = "serverStarted")
     public @ResponseBody
-    void updateServerStarted(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
+    void updateServerStarted(@RequestParam String containerId, @RequestParam boolean status) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
         dynamicScanner.setServerStarted(status);
-        dynamicScanner.setServerStartedTime(time);
+        dynamicScanner.setServerStartedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         dynamicScannerService.save(dynamicScanner);
     }
 
     @GetMapping(value = "zapScanStatus")
     public @ResponseBody
-    void updateZapScanStatus(@RequestParam String containerId, @RequestParam String status, @RequestParam int progress, @RequestParam String time) {
+    void updateZapScanStatus(@RequestParam String containerId, @RequestParam String status, @RequestParam int progress) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
         dynamicScanner.setZapScanStatus(status);
         dynamicScanner.setZapScanProgress(progress);
-        dynamicScanner.setZapScanProgressTime(time);
+        dynamicScanner.setZapScanProgressTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         dynamicScannerService.save(dynamicScanner);
     }
 
     @GetMapping(value = "reportReady")
     public @ResponseBody
-    void updateReportReady(@RequestParam String containerId, @RequestParam boolean status, @RequestParam String time) {
+    void updateReportReady(@RequestParam String containerId, @RequestParam boolean status) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
         dynamicScanner.setReportReady(status);
-        dynamicScanner.setReportReadyTime(time);
+        dynamicScanner.setReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         dynamicScannerService.save(dynamicScanner);
         dynamicScannerService.getReportAndMail(containerId);
     }

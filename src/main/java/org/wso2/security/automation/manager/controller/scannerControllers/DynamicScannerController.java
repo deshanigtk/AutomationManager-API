@@ -20,16 +20,11 @@ package org.wso2.security.automation.manager.controller.scannerControllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.automation.manager.entity.DynamicScanner;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
 
-import java.io.*;
-
-@PropertySource("classpath:global.properties")
 @Controller
 @RequestMapping("dynamicScanner")
 public class DynamicScannerController {

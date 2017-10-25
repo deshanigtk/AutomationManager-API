@@ -28,6 +28,7 @@ import org.wso2.security.automation.manager.handlers.DockerHandler;
 import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.service.StaticScannerService;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,7 +43,7 @@ public class StaticScannerThread implements Runnable {
     private String name;
     private String ipAddress;
     private boolean isFileUpload;
-    private MultipartFile zipFile;
+    private File zipFile;
     private String url;
     private String branch;
     private String tag;
@@ -53,13 +54,15 @@ public class StaticScannerThread implements Runnable {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    public StaticScannerThread(String userId, String name, String ipAddress, boolean isFileUpload, MultipartFile zipFile, String url,
+    public StaticScannerThread(String userId, String name, String ipAddress, boolean isFileUpload, String uploadLocation, String zipFileName, String url,
                                String branch, String tag, boolean isFindSecBugs, boolean isDependencyCheck) {
         this.userId = userId;
         this.name = name;
         this.ipAddress = ipAddress;
         this.isFileUpload = isFileUpload;
-        this.zipFile = zipFile;
+        if (zipFileName != null) {
+            this.zipFile = new File(uploadLocation + File.separator + zipFileName);
+        }
         this.url = url;
         this.branch = branch;
         this.tag = tag;
@@ -135,7 +138,7 @@ public class StaticScannerThread implements Runnable {
                     .addParameter("isDependencyCheck", String.valueOf(isDependencyCheck))
                     .build();
 
-            Map<String, MultipartFile> files = new HashMap<>();
+            Map<String, File> files = new HashMap<>();
             if (zipFile != null) {
                 files.put("zipFile", zipFile);
             }

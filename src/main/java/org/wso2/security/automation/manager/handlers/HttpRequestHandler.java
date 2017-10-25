@@ -79,7 +79,7 @@ public class HttpRequestHandler {
         return null;
     }
 
-    public static HttpResponse sendMultipartRequest(URI uri, Map<String, MultipartFile> files, Map<String, String> textBody) {
+    public static HttpResponse sendMultipartRequest(URI uri, Map<String, File> files, Map<String, String> textBody) {
         HttpResponse response = null;
         try {
             HttpPost uploadFile = new HttpPost(uri);
@@ -90,15 +90,15 @@ public class HttpRequestHandler {
                 }
             }
             // This attaches the file to the POST:
-            if(files!=null) {
-                for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
-                    InputStream inputStream = entry.getValue().getInputStream();
+            if (files != null) {
+                for (Map.Entry<String, File> entry : files.entrySet()) {
+                    InputStream inputStream = new FileInputStream(entry.getValue());
 
                     builder.addBinaryBody(
                             entry.getKey(),
                             inputStream,
                             ContentType.APPLICATION_OCTET_STREAM,
-                            entry.getValue().getOriginalFilename()
+                            entry.getValue().getName()
                     );
 
                 }

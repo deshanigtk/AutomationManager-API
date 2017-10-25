@@ -16,6 +16,7 @@ package org.wso2.security.automation.manager.service;/*
 * under the License.
 */
 
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -33,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.entity.Zap;
 import org.wso2.security.automation.manager.handlers.DockerHandler;
+import org.wso2.security.automation.manager.handlers.FileHandler;
 import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.repository.DynamicScannerRepository;
@@ -40,6 +42,7 @@ import org.wso2.security.automation.manager.entity.DynamicScanner;
 import org.wso2.security.automation.manager.scanners.DynamicScannerThread;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -106,11 +109,30 @@ public class DynamicScannerService {
             }
         }
 
-        DynamicScannerThread dynamicScannerThread = new DynamicScannerThread(userId, name, ipAddress, isFileUpload, zipFile,
-                urlListFile, wso2ServerHost, wso2ServerPort, isAuthenticatedScan);
+        String uploadLocation = Constants.TEMP_FOLDER_PATH + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+        String urlListFileName;
+        String zipFileName = null;
 
-        new Thread(dynamicScannerThread).start();
-        return "Ok";
+        if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
+
+            if (new File(uploadLocation).mkdir()) {
+                urlListFileName = urlListFile.getOriginalFilename();
+                if (FileHandler.uploadFile(urlListFile, uploadLocation + File.separator + urlListFileName)) {
+
+                    if (zipFile != null) {
+                        zipFileName = zipFile.getOriginalFilename();
+                        if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
+                            return "Cannot upload zip file";
+                        }
+                    }
+                    DynamicScannerThread dynamicScannerThread = new DynamicScannerThread(userId, name, ipAddress, isFileUpload, uploadLocation,
+                            urlListFileName, zipFileName, wso2ServerHost, wso2ServerPort, isAuthenticatedScan);
+                    new Thread(dynamicScannerThread).start();
+                    return "Ok";
+                }
+            }
+        }
+        return "Cannot upload files to temp location";
     }
 
     @Retryable(value = IOException.class, maxAttempts = 10, backoff = @Backoff(delay = 3000))

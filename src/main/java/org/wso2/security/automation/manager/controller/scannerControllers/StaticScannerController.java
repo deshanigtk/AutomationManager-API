@@ -22,11 +22,10 @@ import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.entity.StaticScanner;
 import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.handlers.MailHandler;
@@ -34,22 +33,9 @@ import org.wso2.security.automation.manager.service.StaticScannerService;
 
 import java.net.URI;
 
-@PropertySource("classpath:global.properties")
 @Controller
 @RequestMapping("staticScanner")
 public class StaticScannerController {
-
-    @Value("${STATIC_SCANNER_DOCKER_IMAGE}")
-    private String dockerImage;
-
-    @Value("${STATIC_SCANNER_GET_REPORT}")
-    private String getReport;
-
-    @Value("${AUTOMATION_MANAGER_HOST}")
-    private String myHost;
-
-    @Value("${AUTOMATION_MANAGER_PORT}")
-    private int myPort;
 
     private final StaticScannerService staticScannerService;
 
@@ -88,7 +74,7 @@ public class StaticScannerController {
 
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                .setPort(staticScanner.getHostPort()).setScheme("http").setPath(getReport)
+                .setPort(staticScanner.getHostPort()).setScheme("http").setPath(Constants.STATIC_SCANNER_GET_REPORT)
                 .addParameter("dependencyCheckReport", String.valueOf(dependencyCheckReport))
                 .build();
 

@@ -26,10 +26,13 @@ import org.wso2.security.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.automation.manager.entity.DynamicScanner;
 import org.wso2.security.automation.manager.entity.Zap;
 import org.wso2.security.automation.manager.handlers.DockerHandler;
+import org.wso2.security.automation.manager.handlers.FileHandler;
 import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
 import org.wso2.security.automation.manager.service.ZapService;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,8 +45,8 @@ public class DynamicScannerThread implements Runnable {
     private String name;
     private String ipAddress;
     private boolean isFileUpload;
-    private MultipartFile zipFile;
-    private MultipartFile urlListFile;
+    private File zipFile;
+    private File urlListFile;
     private String wso2ServerHost;
     private int wso2ServerPort;
     private boolean isAuthenticatedScan;
@@ -54,14 +57,16 @@ public class DynamicScannerThread implements Runnable {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     public DynamicScannerThread(String userId, String name, String ipAddress, boolean isFileUpload,
-                                MultipartFile zipFile, MultipartFile urlListFile, String wso2ServerHost, int wso2ServerPort,
+                                String uploadLocation, String urlListFileName, String zipFileName, String wso2ServerHost, int wso2ServerPort,
                                 boolean isAuthenticatedScan) {
         this.userId = userId;
         this.name = name;
         this.ipAddress = ipAddress;
         this.isFileUpload = isFileUpload;
-        this.zipFile = zipFile;
-        this.urlListFile = urlListFile;
+        if (zipFileName != null) {
+            this.zipFile = new File(uploadLocation + File.separator + zipFileName);
+        }
+        this.urlListFile = new File(uploadLocation + File.separator + urlListFileName);
         this.wso2ServerHost = wso2ServerHost;
         this.wso2ServerPort = wso2ServerPort;
         this.isAuthenticatedScan = isAuthenticatedScan;
@@ -195,7 +200,7 @@ public class DynamicScannerThread implements Runnable {
                         .addParameter("isAuthenticatedScan", String.valueOf(isAuthenticatedScan))
                         .build();
 
-                Map<String, MultipartFile> files = new HashMap<>();
+                Map<String, File> files = new HashMap<>();
                 if (zipFile != null) {
                     files.put("zipFile", zipFile);
                 }
@@ -216,10 +221,10 @@ public class DynamicScannerThread implements Runnable {
     }
 
     private int calculateZapPort(int id) {
-        if (1000 + id > 20000) {
+        if (5000 + id > 20000) {
             id = 1;
         }
-        return (1000 + id) % 20000;
+        return (5000 + id) % 20000;
     }
 
     private int calculateDynamicScannerPort(int id) {

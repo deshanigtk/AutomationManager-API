@@ -34,11 +34,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.entity.StaticScanner;
 import org.wso2.security.automation.manager.handlers.DockerHandler;
+import org.wso2.security.automation.manager.handlers.FileHandler;
 import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
 import org.wso2.security.automation.manager.scanners.StaticScannerThread;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -98,11 +100,27 @@ public class StaticScannerService {
         if (!isFindSecBugs && !isDependencyCheck) {
             return "Please enter at least one scan";
         }
-        StaticScannerThread staticScannerThread = new StaticScannerThread(userId, name, ipAddress, isFileUpload,
-                zipFile, url, branch, tag, isFindSecBugs, isDependencyCheck);
-        new Thread(staticScannerThread).start();
-        return "Ok";
+
+        String uploadLocation = Constants.TEMP_FOLDER_PATH + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+        String zipFileName = null;
+
+        if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
+
+            if (new File(uploadLocation).mkdir()) {
+                if (zipFile != null) {
+                    zipFileName = zipFile.getOriginalFilename();
+                    if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
+                        return "Cannot upload zip file";
+                    }
+                }
+                StaticScannerThread staticScannerThread = new StaticScannerThread(userId, name, ipAddress, isFileUpload, uploadLocation,
+                        zipFileName, url, branch, tag, isFindSecBugs, isDependencyCheck);
+                new Thread(staticScannerThread).start();
+                return "Ok";
+            }
+        }return "Cannot upload files to temp location";
     }
+
 
     public void getReportAndMail(String containerId) {
         try {

@@ -31,12 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@PropertySource("classpath:global.properties")
 public class ZapService {
-
-    @Value("${ZAP_DOCKER_IMAGE}")
-    private String dockerImage;
-
 
     private final ZapRepository zapRepository;
 

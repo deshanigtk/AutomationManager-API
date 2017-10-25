@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import org.wso2.security.automation.manager.entity.Zap;
 import org.wso2.security.automation.manager.service.ZapService;
 
-@PropertySource("classpath:global.properties")
 @Controller
 @RequestMapping("zap")
 public class ZapController {
