@@ -42,13 +42,13 @@ public class MainController {
         this.dynamicScannerService = dynamicScannerService;
     }
 
-    @PostMapping(value = "getStaticScanners")
+    @GetMapping(value = "getStaticScanners")
     @ResponseBody
     public Iterable<StaticScanner> getStaticScanners(String userId) {
         return staticScannerService.findByUserId(userId);
     }
 
-    @PostMapping(value = "getDynamicScanners")
+    @GetMapping(value = "getDynamicScanners")
     @ResponseBody
     public Iterable<DynamicScanner> getDynamicScanners(String userId) {
         return dynamicScannerService.findByUserId(userId);

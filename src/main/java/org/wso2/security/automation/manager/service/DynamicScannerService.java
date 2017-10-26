@@ -99,9 +99,26 @@ public class DynamicScannerService {
                             MultipartFile urlListFile, String wso2ServerHost, int wso2ServerPort,
                             boolean isAuthenticatedScan) {
 
+        String urlListFileName;
+        String zipFileName = null;
+        String uploadLocation = Constants.TEMP_FOLDER_PATH + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+
         if (isFileUpload) {
-            if (zipFile == null) {
+            if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
                 return "Please upload a zip file";
+            } else {
+                if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
+                    if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
+                        zipFileName = zipFile.getOriginalFilename();
+                        if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
+                            return "Cannot upload zip file";
+                        }
+                    } else {
+                        return "Error occurred while creating upload location";
+                    }
+                } else {
+                    return "Error occurred while creating temp folder";
+                }
             }
         } else {
             if (wso2ServerHost == null || wso2ServerPort == -1) {
@@ -109,22 +126,10 @@ public class DynamicScannerService {
             }
         }
 
-        String uploadLocation = Constants.TEMP_FOLDER_PATH + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
-        String urlListFileName;
-        String zipFileName = null;
-
         if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
-
-            if (new File(uploadLocation).mkdir()) {
+            if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
                 urlListFileName = urlListFile.getOriginalFilename();
                 if (FileHandler.uploadFile(urlListFile, uploadLocation + File.separator + urlListFileName)) {
-
-                    if (zipFile != null) {
-                        zipFileName = zipFile.getOriginalFilename();
-                        if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
-                            return "Cannot upload zip file";
-                        }
-                    }
                     DynamicScannerThread dynamicScannerThread = new DynamicScannerThread(userId, name, ipAddress, isFileUpload, uploadLocation,
                             urlListFileName, zipFileName, wso2ServerHost, wso2ServerPort, isAuthenticatedScan);
                     new Thread(dynamicScannerThread).start();

@@ -87,10 +87,26 @@ public class StaticScannerService {
 
     public String startStaticScan(String userId, String name, String ipAddress, boolean isFileUpload, MultipartFile zipFile, String url, String branch,
                                   String tag, boolean isFindSecBugs, boolean isDependencyCheck) {
+        String zipFileName = null;
+        String uploadLocation = Constants.TEMP_FOLDER_PATH + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
 
         if (isFileUpload) {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
                 return "Please upload product zip file";
+            } else {
+
+                if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
+                    if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
+                        zipFileName = zipFile.getOriginalFilename();
+                        if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
+                            return "Cannot upload zip file";
+                        }
+                    } else {
+                        return "Error occurred while creating upload location";
+                    }
+                } else {
+                    return "Error occurred while creating temp folder";
+                }
             }
         } else {
             if (url == null || branch == null) {
@@ -101,26 +117,11 @@ public class StaticScannerService {
             return "Please enter at least one scan";
         }
 
-        String uploadLocation = Constants.TEMP_FOLDER_PATH + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
-        String zipFileName = null;
-
-        if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
-
-            if (new File(uploadLocation).mkdir()) {
-                if (zipFile != null) {
-                    zipFileName = zipFile.getOriginalFilename();
-                    if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
-                        return "Cannot upload zip file";
-                    }
-                }
-                StaticScannerThread staticScannerThread = new StaticScannerThread(userId, name, ipAddress, isFileUpload, uploadLocation,
-                        zipFileName, url, branch, tag, isFindSecBugs, isDependencyCheck);
-                new Thread(staticScannerThread).start();
-                return "Ok";
-            }
-        }return "Cannot upload files to temp location";
+        StaticScannerThread staticScannerThread = new StaticScannerThread(userId, name, ipAddress, isFileUpload, uploadLocation,
+                zipFileName, url, branch, tag, isFindSecBugs, isDependencyCheck);
+        new Thread(staticScannerThread).start();
+        return "Ok";
     }
-
 
     public void getReportAndMail(String containerId) {
         try {
