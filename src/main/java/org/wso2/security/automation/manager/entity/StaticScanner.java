@@ -44,8 +44,8 @@ public class StaticScanner {
     private boolean productCloned;
     private String productClonedTime;
 
-    private String findSecBugsStatus;
-    private String dependencyCheckStatus;
+    private String findSecBugsStatus = "not initiated";
+    private String dependencyCheckStatus = "not initiated";
 
     private boolean dependencyCheckReportReady;
     private String dependencyCheckReportReadyTime;

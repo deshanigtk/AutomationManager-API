@@ -51,6 +51,14 @@ public class DynamicScannerController {
                       @RequestParam(required = false, defaultValue = "-1") int wso2ServerPort,
                       @RequestParam boolean isAuthenticatedScan) {
 
+        LOGGER.info(userId);
+        LOGGER.info(name);
+        LOGGER.info(ipAddress);
+        if (zipFile != null) {
+            LOGGER.info(zipFile.getName());
+        }else {
+            LOGGER.info("Zip file is null");
+        }
         return dynamicScannerService.startScan(userId, name, ipAddress, isFileUpload, zipFile, urlListFile,
                 wso2ServerHost, wso2ServerPort, isAuthenticatedScan);
     }
