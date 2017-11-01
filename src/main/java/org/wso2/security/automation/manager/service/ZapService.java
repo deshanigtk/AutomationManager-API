@@ -53,8 +53,8 @@ public class ZapService {
         return zapRepository.findOneByContainerId(containerId);
     }
 
-    public Iterable<Zap> findByStatus(String status) {
-        return zapRepository.findByStatusEquals(status);
+    public Iterable<Zap> findByUserId(String userId) {
+        return zapRepository.findByUserId(userId);
     }
 
     public Zap save(Zap zap) {

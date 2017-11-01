@@ -26,7 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.wso2.security.automation.manager.entity.StaticScanner;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -40,47 +40,37 @@ public class StaticScannerRepositoryTest {
     private StaticScannerRepository staticScannerRepository;
 
     @Test
-    public void testFindByContainerId() throws Exception {
+    public void testFindOneByContainerId() throws Exception {
         String containerId = "testContainerId";
         String name = "testName";
-        String userId = "deshani@wso2.com";
+        String userId = "test@test.com";
 
         StaticScanner staticScannerToPersist = new StaticScanner();
         staticScannerToPersist.setContainerId(containerId);
         staticScannerToPersist.setName(name);
         staticScannerToPersist.setUserId(userId);
 
-        this.entityManager.persist(staticScannerToPersist);
-        StaticScanner staticScanner = this.staticScannerRepository.findOneByContainerId(containerId);
-        assertThat(staticScanner.getName()).isEqualTo(name);
-        assertThat(staticScanner.getUserId()).isEqualTo(userId);
+        entityManager.persist(staticScannerToPersist);
+        StaticScanner staticScanner = staticScannerRepository.findOneByContainerId(containerId);
+        assertEquals(name, staticScanner.getName());
     }
 
     @Test
     public void testFindByUserId() throws Exception {
         String containerId = "testContainerId1";
         String name = "testName";
-        String userId = "deshani@wso2.com";
+        String userId = "test@test.com";
 
         StaticScanner staticScannerToPersist = new StaticScanner();
         staticScannerToPersist.setContainerId(containerId);
         staticScannerToPersist.setName(name);
         staticScannerToPersist.setUserId(userId);
 
-        this.entityManager.persist(staticScannerToPersist);
-        containerId = "testContainerId2";
-        name = "testName";
-        userId = "deshani@wso2.com";
+        entityManager.persist(staticScannerToPersist);
 
-        staticScannerToPersist = new StaticScanner();
-        staticScannerToPersist.setContainerId(containerId);
-        staticScannerToPersist.setName(name);
-        staticScannerToPersist.setUserId(userId);
-
-        Iterable<StaticScanner> staticScanners = this.staticScannerRepository.findByUserId(containerId);
+        Iterable<StaticScanner> staticScanners = staticScannerRepository.findByUserId(containerId);
         while (staticScanners.iterator().hasNext()) {
-            assertThat(staticScanners.iterator().next());
-            assertThat(staticScanners.iterator().next());
+            assertEquals(staticScannerToPersist, staticScanners.iterator().next());
         }
     }
 }

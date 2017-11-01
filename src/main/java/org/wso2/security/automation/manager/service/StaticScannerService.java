@@ -92,8 +92,6 @@ public class StaticScannerService {
 
         if (isFileUpload) {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
-                LOGGER.error("No zip file found");
-                LOGGER.error(String.valueOf(zipFile == null));
                 return "Please upload product zip file";
             } else {
 

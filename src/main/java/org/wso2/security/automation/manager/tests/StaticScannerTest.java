@@ -22,25 +22,24 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.wso2.security.automation.manager.controller.scannerControllers.StaticScannerController;
 import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.service.StaticScannerService;
 
-
-import static org.apache.http.client.methods.RequestBuilder.post;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @RunWith(SpringRunner.class)
 @WebMvcTest(StaticScannerController.class)
+//@ContextConfiguration(classes = StaticScannerController.class)
 public class StaticScannerTest {
 
     @Autowired
@@ -63,8 +62,8 @@ public class StaticScannerTest {
         boolean isFindSecBugs = true;
         boolean isDependencyCheck = true;
 
-       Mockito.when(staticScannerService.startStaticScan(userId, name, ipAddress, isFileUpload, null,
-                url, null, null, isFindSecBugs, isDependencyCheck)).thenCallRealMethod();
+        Mockito.when(staticScannerService.startStaticScan(userId, name, ipAddress, isFileUpload, null,
+                url, null, null, isFindSecBugs, isDependencyCheck)).thenReturn("Ok");
 
         System.out.println("PPPPPPPPPPPPPPPPPPPPPP");
 
@@ -78,11 +77,11 @@ public class StaticScannerTest {
                 .param("isFindSecBugs", String.valueOf(isFindSecBugs))
                 .param("isDependencyCheck", String.valueOf(isDependencyCheck));
 
-        MvcResult result = this.mockMvc.perform(requestBuilder).andReturn();
+        this.mockMvc.perform(requestBuilder).andExpect(status().isOk())
 //                .andExpect(status().isOk())
-//                .andExpect(content().string(containsString("Ok")));
+                .andExpect(content().string(containsString("Ok")));
 
-        System.out.println(result.getRequest().getAttributeNames());
-        System.out.println(result.getResponse().getContentAsString().length());
+
+//        System.out.println(result.getResponse().getContentAsString().length());
     }
 }

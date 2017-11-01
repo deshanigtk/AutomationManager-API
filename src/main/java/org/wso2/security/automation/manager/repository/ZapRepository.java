@@ -21,7 +21,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.wso2.security.automation.manager.entity.Zap;
 
 public interface ZapRepository extends CrudRepository<Zap, Integer> {
-    Iterable<Zap> findByStatusEquals(String status);
 
     Zap findOneByContainerId(String containerId);
+
+    Iterable<Zap> findByUserId(String userId);
 }
