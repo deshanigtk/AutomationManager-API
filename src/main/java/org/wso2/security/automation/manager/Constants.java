@@ -31,7 +31,7 @@ public class Constants {
     public static final String STATIC_SCANNER_GET_REPORT = "staticScanner/getReport";
 
     public static final String AUTOMATION_MANAGER_HOST = "172.17.0.1";
-    public static final int AUTOMATION_MANAGER_PORT = 8080;
+    public static final int AUTOMATION_MANAGER_PORT = 9766;
 
     public static final String TEMP_FOLDER_PATH = "/home/deshani/Documents/temp";
 }

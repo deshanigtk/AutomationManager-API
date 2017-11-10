@@ -17,6 +17,8 @@ package org.wso2.security.automation.manager.controller.scannerControllers;
 * under the License.
 */
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,8 @@ import org.wso2.security.automation.manager.service.DynamicScannerService;
 
 @Controller
 @RequestMapping("dynamicScanner")
+@Api(value = "dynamicScanner", description = "Dynamic Scanner container related APIs")
 public class DynamicScannerController {
-
 
     private final DynamicScannerService dynamicScannerService;
 
@@ -40,10 +42,13 @@ public class DynamicScannerController {
     }
 
     @PostMapping(value = "startScan")
+    @ApiOperation(value = "Start Dynamic Scanner container, upload the product zip file or else clone product from GitHub and start scans - FindSecBugs and/or OWASP Dependency Check")
     public @ResponseBody
     String runZapScan(@RequestParam String userId,
-                      @RequestParam String name,
+                      @RequestParam String testName,
                       @RequestParam String ipAddress,
+                      @RequestParam String productName,
+                      @RequestParam String wumLevel,
                       @RequestParam boolean isFileUpload,
                       @RequestParam MultipartFile zipFile,
                       @RequestParam MultipartFile urlListFile,
@@ -51,15 +56,7 @@ public class DynamicScannerController {
                       @RequestParam(required = false, defaultValue = "-1") int wso2ServerPort,
                       @RequestParam boolean isAuthenticatedScan) {
 
-        LOGGER.info(userId);
-        LOGGER.info(name);
-        LOGGER.info(ipAddress);
-        if (zipFile != null) {
-            LOGGER.info(zipFile.getName());
-        }else {
-            LOGGER.info("Zip file is null");
-        }
-        return dynamicScannerService.startScan(userId, name, ipAddress, isFileUpload, zipFile, urlListFile,
+        return dynamicScannerService.startScan(userId, testName, ipAddress, productName, wumLevel, isFileUpload, zipFile, urlListFile,
                 wso2ServerHost, wso2ServerPort, isAuthenticatedScan);
     }
 

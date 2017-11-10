@@ -25,9 +25,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
 import org.wso2.security.automation.manager.scanners.StaticScannerThread;
-import org.wso2.security.automation.manager.service.StaticScannerService;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -44,11 +41,13 @@ public class StaticScannerThreadTest {
     }
 
     @Test
-    public void testStartScan() throws Exception{
+    public void testStartScan() throws Exception {
 
         String userId = "test@gmail.com";
         String name = "staticScannerTest";
         String ipAddress = "0.0.0.0";
+        String productName = "testProduct";
+        String wumLevel = "testWum";
         boolean isFileUpload = false;
         String url = "https://github.com/gabrielf/maven-samples";
         boolean isFindSecBugs = true;
@@ -57,7 +56,7 @@ public class StaticScannerThreadTest {
 //        when(staticScannerRepositoryMock.findOneByContainerId());
 
 
-        staticScannerThread = new StaticScannerThread(userId, name, ipAddress, isFileUpload, null,null,
+        staticScannerThread = new StaticScannerThread(userId, name, ipAddress, productName, wumLevel, isFileUpload, null, null,
                 url, "master", null, isFindSecBugs, isDependencyCheck);
 //        System.out.println(staticScannerThread.findAll());
 //        System.out.println(staticScannerThread());

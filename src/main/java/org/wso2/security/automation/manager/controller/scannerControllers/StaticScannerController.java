@@ -17,6 +17,8 @@ package org.wso2.security.automation.manager.controller.scannerControllers;
 * under the License.
 */
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
@@ -35,13 +37,12 @@ import java.net.URI;
 
 @Controller
 @RequestMapping("staticScanner")
+@Api(value = "staticScanner", description = "Static Scanner container related APIs")
 public class StaticScannerController {
 
     private final StaticScannerService staticScannerService;
 
     private final MailHandler mailHandler;
-
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public StaticScannerController(StaticScannerService staticScannerService, MailHandler mailHandler) {
@@ -51,10 +52,13 @@ public class StaticScannerController {
 
 
     @PostMapping(value = "startScan")
+    @ApiOperation(value = "Start Static Scanner container, upload the product zip file or else clone product from GitHub and start scans - FindSecBugs and/or OWASP Dependency Check")
     public @ResponseBody
     String startScan(@RequestParam String userId,
-                     @RequestParam String name,
+                     @RequestParam String testName,
                      @RequestParam String ipAddress,
+                     @RequestParam String productName,
+                     @RequestParam String wumLevel,
                      @RequestParam boolean isFileUpload,
                      @RequestParam(required = false) MultipartFile zipFile,
                      @RequestParam(required = false) String url,
@@ -63,12 +67,13 @@ public class StaticScannerController {
                      @RequestParam boolean isFindSecBugs,
                      @RequestParam boolean isDependencyCheck) {
 
-        return staticScannerService.startStaticScan(userId, name, ipAddress, isFileUpload, zipFile, url, branch, tag,
+        return staticScannerService.startStaticScan(userId, testName, ipAddress, productName, wumLevel, isFileUpload, zipFile, url, branch, tag,
                 isFindSecBugs, isDependencyCheck);
     }
 
 
     @PostMapping(path = "getReportAndMail")
+    @ApiOperation(value = "Get the generated scan report from a container and mail it to the user")
     public @ResponseBody
     void getReport(@RequestParam String containerId, @RequestParam String to, @RequestParam boolean dependencyCheckReport) throws Exception {
 
@@ -79,7 +84,6 @@ public class StaticScannerController {
                 .build();
 
         HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri);
-        System.out.println(httpResponse.getEntity().getContent());
 
         if (httpResponse.getEntity() != null) {
             String subject = "Static Scan Report: ";
@@ -94,6 +98,7 @@ public class StaticScannerController {
     }
 
     @GetMapping(path = "kill")
+    @ApiOperation(value = "Stop a running container")
     public @ResponseBody
     void kill(@RequestParam String containerId) {
         staticScannerService.kill(containerId);

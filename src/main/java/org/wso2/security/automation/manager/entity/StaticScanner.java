@@ -20,7 +20,7 @@ package org.wso2.security.automation.manager.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "name"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
 public class StaticScanner {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +30,9 @@ public class StaticScanner {
     private String containerId;
 
     private String userId;
-    private String name;
+    private String testName;
+    private String productName;
+    private String wumLevel;
     private String createdTime;
     private String status;
     private String ipAddress;
@@ -61,19 +63,21 @@ public class StaticScanner {
 
     private String message;
 
-    public StaticScanner() {
-    }
-
-    public StaticScanner(String containerId, String userId, String name, String createdTime, String ipAddress, int containerPort, int hostPort) {
-        this.containerId = containerId;
-        this.userId = userId;
-        this.name = name;
-        this.createdTime = createdTime;
-        this.status = "created";
-        this.ipAddress = ipAddress;
-        this.containerPort = containerPort;
-        this.hostPort = hostPort;
-    }
+//    public StaticScanner() {
+//    }
+//
+//    public StaticScanner(String containerId, String userId, String testName, String productName, String wumLevel, String createdTime, String ipAddress, int containerPort, int hostPort) {
+//        this.containerId = containerId;
+//        this.userId = userId;
+//        this.testName = testName;
+//        this.productName = productName;
+//        this.wumLevel = wumLevel;
+//        this.createdTime = createdTime;
+//        this.status = "created";
+//        this.ipAddress = ipAddress;
+//        this.containerPort = containerPort;
+//        this.hostPort = hostPort;
+//    }
 
     public void setId(int id) {
         this.id = id;
@@ -81,6 +85,18 @@ public class StaticScanner {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setWumLevel(String wumLevel) {
+        this.wumLevel = wumLevel;
     }
 
     public void setContainerId(String containerId) {
@@ -101,10 +117,6 @@ public class StaticScanner {
 
     public void setHostPort(int hostPort) {
         this.hostPort = hostPort;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setStatus(String status) {
@@ -187,8 +199,16 @@ public class StaticScanner {
         return userId;
     }
 
-    public String getName() {
-        return name;
+    public String getTestName() {
+        return testName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public String getWumLevel() {
+        return wumLevel;
     }
 
     public String getCreatedTime() {

@@ -25,8 +25,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -46,8 +44,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class StaticScannerService {
@@ -85,7 +81,7 @@ public class StaticScannerService {
         return staticScannerRepository.save(staticScanner);
     }
 
-    public String startStaticScan(String userId, String name, String ipAddress, boolean isFileUpload, MultipartFile zipFile, String url, String branch,
+    public String startStaticScan(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload, MultipartFile zipFile, String url, String branch,
                                   String tag, boolean isFindSecBugs, boolean isDependencyCheck) {
         String zipFileName = null;
         String uploadLocation = Constants.TEMP_FOLDER_PATH + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
@@ -94,7 +90,6 @@ public class StaticScannerService {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
                 return "Please upload product zip file";
             } else {
-
                 if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
                     if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
                         zipFileName = zipFile.getOriginalFilename();
@@ -117,7 +112,7 @@ public class StaticScannerService {
             return "Please enter at least one scan";
         }
 
-        StaticScannerThread staticScannerThread = new StaticScannerThread(userId, name, ipAddress, isFileUpload, uploadLocation,
+        StaticScannerThread staticScannerThread = new StaticScannerThread(userId, testName, ipAddress, productName, wumLevel, isFileUpload, uploadLocation,
                 zipFileName, url, branch, tag, isFindSecBugs, isDependencyCheck);
         new Thread(staticScannerThread).start();
         return "Ok";
@@ -149,11 +144,11 @@ public class StaticScannerService {
         }
     }
 
-    @Retryable(value = IOException.class, maxAttempts = 10, backoff = @Backoff(delay = 3000))
+    @Retryable(value = IOException.class, maxAttempts = 20, backoff = @Backoff(delay = 5000))
     public boolean isStaticScannerReady(StaticScanner staticScanner) throws IOException {
+        LOGGER.info("Checking Micro Service Started....");
         boolean status = false;
         try {
-
             URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
                     .setPort(staticScanner.getHostPort()).setScheme("http").setPath(Constants.IS_STATIC_SCANNER_READY)
                     .build();
@@ -173,12 +168,10 @@ public class StaticScannerService {
         return status;
     }
 
-
     public void kill(String containerId) {
         StaticScanner staticScanner = findOneByContainerId(containerId);
         DockerHandler.killContainer(containerId);
         staticScanner.setStatus("killed");
         save(staticScanner);
     }
-
 }

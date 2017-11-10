@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.wso2.security.automation.manager.entity.StaticScanner;
@@ -28,13 +27,12 @@ import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
 import org.wso2.security.automation.manager.service.StaticScannerService;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-
 public class StaticScannerServiceTest {
 
     private StaticScannerRepository staticScannerRepositoryMock;
@@ -50,38 +48,103 @@ public class StaticScannerServiceTest {
 
     @Test
     public void testStartScan() throws Exception {
-
-        String userId = "test@gmail.com";
-        String name = "staticScannerTest";
+        String userId = "test@test.com";
+        String name = "testName";
         String ipAddress = "0.0.0.0";
+        String productName = "testProduct";
+        String wumLevel = "testWum";
         boolean isFileUpload = false;
         String url = "https://github.com/gabrielf/maven-samples";
         boolean isFindSecBugs = true;
         boolean isDependencyCheck = true;
 
-        assertEquals("Ok", staticScannerService.startStaticScan(userId, name, ipAddress, isFileUpload, null,
+        assertEquals("Ok", staticScannerService.startStaticScan(userId, name, ipAddress, productName, wumLevel, isFileUpload, null,
                 url, "master", null, isFindSecBugs, isDependencyCheck));
-
     }
 
     @Test
     public void testFindOneByContainerId() throws Exception {
-
-        String userId = "test@gmail.com";
-        String name = "staticScannerTest";
+        String userId = "test@test.com";
+        String name = "testName";
         String ipAddress = "0.0.0.0";
         String containerId = "testContainerId";
 
         StaticScanner staticScanner = new StaticScanner();
         staticScanner.setUserId(userId);
-        staticScanner.setName(name);
+        staticScanner.setTestName(name);
         staticScanner.setIpAddress(ipAddress);
         staticScanner.setContainerId(containerId);
 
-
-        assertNotNull(staticScannerService.findOneByContainerId(containerId));
-
+        Mockito.when(staticScannerRepositoryMock.findOneByContainerId(containerId)).thenReturn(staticScanner);
+        assertEquals(staticScanner, staticScannerService.findOneByContainerId(containerId));
     }
 
+    @Test
+    public void testFindByUserId() throws Exception {
+        String userId = "test@test.com";
+        String name = "testName";
+        String ipAddress = "0.0.0.0";
+        String containerId = "testContainerId";
+
+        StaticScanner staticScanner = new StaticScanner();
+        staticScanner.setUserId(userId);
+        staticScanner.setTestName(name);
+        staticScanner.setIpAddress(ipAddress);
+        staticScanner.setContainerId(containerId);
+
+        Mockito.when(staticScannerRepositoryMock.findByUserId(userId)).thenReturn(Collections.singletonList(staticScanner));
+        assertEquals(Collections.singletonList(staticScanner), staticScannerService.findByUserId(userId));
+    }
+
+    @Test
+    public void testFindAll() throws Exception {
+        String userId = "test@test.com";
+        String name = "testName";
+        String ipAddress = "0.0.0.0";
+        String containerId = "testContainerId";
+
+        StaticScanner staticScanner = new StaticScanner();
+        staticScanner.setUserId(userId);
+        staticScanner.setTestName(name);
+        staticScanner.setIpAddress(ipAddress);
+        staticScanner.setContainerId(containerId);
+
+        Mockito.when(staticScannerRepositoryMock.findAll()).thenReturn(Collections.singletonList(staticScanner));
+        assertEquals(Collections.singletonList(staticScanner), staticScannerService.findAll());
+    }
+
+    @Test
+    public void testSave() throws Exception {
+        String userId = "test@test.com";
+        String name = "testName";
+        String ipAddress = "0.0.0.0";
+        String containerId = "testContainerId";
+
+        StaticScanner staticScanner = new StaticScanner();
+        staticScanner.setUserId(userId);
+        staticScanner.setTestName(name);
+        staticScanner.setIpAddress(ipAddress);
+        staticScanner.setContainerId(containerId);
+
+        Mockito.when(staticScannerRepositoryMock.save(staticScanner)).thenReturn(staticScanner);
+        assertEquals(staticScanner, staticScannerService.save(staticScanner));
+    }
+
+//    @Test
+//    public void testGetReportAndMail() throws Exception {
+//        String userId = "test@test.com";
+//        String name = "staticScannerTest";
+//        String ipAddress = "0.0.0.0";
+//        String containerId = "testContainerId";
+//
+//        StaticScanner staticScanner = new StaticScanner();
+//        staticScanner.setUserId(userId);
+//        staticScanner.setTestName(name);
+//        staticScanner.setIpAddress(ipAddress);
+//        staticScanner.setContainerId(containerId);
+//
+//        Mockito.when(staticScannerService.findOneByContainerId(containerId)).thenReturn(staticScanner);
+//        Mockito.when(mailHandlerMock.sendMail(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyObject(), Mockito.anyString()));
+//    }
 
 }

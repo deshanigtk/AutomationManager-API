@@ -16,6 +16,8 @@ package org.wso2.security.automation.manager.controller.notificationController;/
 * under the License.
 */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,8 @@ import java.util.Date;
 public class StaticScannerNotificationController {
 
     private final StaticScannerService staticScannerService;
+
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public StaticScannerNotificationController(StaticScannerService staticScannerService) {
@@ -64,6 +68,7 @@ public class StaticScannerNotificationController {
     void updateFindSecBugsStatus(@RequestParam String containerId, @RequestParam String status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setFindSecBugsStatus(status);
+        LOGGER.info("Find Sec Bugs status: " + status);
         staticScannerService.save(staticScanner);
     }
 
@@ -72,6 +77,7 @@ public class StaticScannerNotificationController {
     void updateDependencyCheckStatus(@RequestParam String containerId, @RequestParam String status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setDependencyCheckStatus(status);
+        LOGGER.info("Dependency Check status: " + status);
         staticScannerService.save(staticScanner);
     }
 
@@ -81,6 +87,7 @@ public class StaticScannerNotificationController {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setDependencyCheckReportReady(status);
         staticScanner.setDependencyCheckReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+        LOGGER.info("Dependency Check report ready");
         staticScannerService.save(staticScanner);
 
     }
@@ -91,6 +98,7 @@ public class StaticScannerNotificationController {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setFindSecBugsReportReady(status);
         staticScanner.setFindSecBugsReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+        LOGGER.info("Find sec bugs report ready");
         staticScannerService.save(staticScanner);
     }
 
@@ -100,6 +108,7 @@ public class StaticScannerNotificationController {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setReportReady(status);
         staticScanner.setReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+        LOGGER.info("Full report ready");
         staticScannerService.save(staticScanner);
         staticScannerService.getReportAndMail(containerId);
     }

@@ -19,15 +19,12 @@ package org.wso2.security.automation.manager.controller;/*
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wso2.security.automation.manager.entity.DynamicScanner;
 import org.wso2.security.automation.manager.entity.StaticScanner;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
 import org.wso2.security.automation.manager.service.StaticScannerService;
-
-import javax.ws.rs.POST;
 
 @Controller
 @RequestMapping("/")

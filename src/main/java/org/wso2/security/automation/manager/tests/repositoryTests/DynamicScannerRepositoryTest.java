@@ -48,12 +48,12 @@ public class DynamicScannerRepositoryTest {
 
         DynamicScanner dynamicScannerToPersist = new DynamicScanner();
         dynamicScannerToPersist.setContainerId(containerId);
-        dynamicScannerToPersist.setName(name);
+        dynamicScannerToPersist.setTestName(name);
         dynamicScannerToPersist.setUserId(userId);
 
         entityManager.persist(dynamicScannerToPersist);
         DynamicScanner dynamicScanner = dynamicScannerRepository.findOneByContainerId(containerId);
-        assertEquals(name, dynamicScanner.getName());
+        assertEquals(name, dynamicScanner.getTestName());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class DynamicScannerRepositoryTest {
 
         DynamicScanner dynamicScannerToPersist = new DynamicScanner();
         dynamicScannerToPersist.setContainerId(containerId);
-        dynamicScannerToPersist.setName(name);
+        dynamicScannerToPersist.setTestName(name);
         dynamicScannerToPersist.setUserId(userId);
 
         entityManager.persist(dynamicScannerToPersist);

@@ -47,23 +47,23 @@ public class StaticScannerRepositoryTest {
 
         StaticScanner staticScannerToPersist = new StaticScanner();
         staticScannerToPersist.setContainerId(containerId);
-        staticScannerToPersist.setName(name);
+        staticScannerToPersist.setTestName(name);
         staticScannerToPersist.setUserId(userId);
 
         entityManager.persist(staticScannerToPersist);
         StaticScanner staticScanner = staticScannerRepository.findOneByContainerId(containerId);
-        assertEquals(name, staticScanner.getName());
+        assertEquals(name, staticScanner.getTestName());
     }
 
     @Test
     public void testFindByUserId() throws Exception {
-        String containerId = "testContainerId1";
+        String containerId = "testContainerId";
         String name = "testName";
         String userId = "test@test.com";
 
         StaticScanner staticScannerToPersist = new StaticScanner();
         staticScannerToPersist.setContainerId(containerId);
-        staticScannerToPersist.setName(name);
+        staticScannerToPersist.setTestName(name);
         staticScannerToPersist.setUserId(userId);
 
         entityManager.persist(staticScannerToPersist);

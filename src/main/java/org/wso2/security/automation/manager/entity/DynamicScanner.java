@@ -21,7 +21,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "name"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
 public class DynamicScanner {
 
     @Id
@@ -34,7 +34,9 @@ public class DynamicScanner {
     private String userId;
 
     private String relatedZapId;
-    private String name;
+    private String testName;
+    private String productName;
+    private String wumLevel;
     private String createdTime;
     private String status;
     private String ipAddress;
@@ -61,14 +63,14 @@ public class DynamicScanner {
     public DynamicScanner() {
     }
 
-    public DynamicScanner(String containerId, String createdTime, String ipAddress, int containerPort, int hostPort) {
-        this.containerId = containerId;
-        this.createdTime = createdTime;
-        this.status = "created";
-        this.ipAddress = ipAddress;
-        this.containerPort = containerPort;
-        this.hostPort = hostPort;
-    }
+//    public DynamicScanner(String containerId, String createdTime, String ipAddress, int containerPort, int hostPort) {
+//        this.containerId = containerId;
+//        this.createdTime = createdTime;
+//        this.status = "created";
+//        this.ipAddress = ipAddress;
+//        this.containerPort = containerPort;
+//        this.hostPort = hostPort;
+//    }
 
     public void setContainerId(String containerId) {
         this.containerId = containerId;
@@ -86,8 +88,16 @@ public class DynamicScanner {
         this.createdTime = createdTime;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setWumLevel(String wumLevel) {
+        this.wumLevel = wumLevel;
     }
 
     public void setIpAddress(String ipAddress) {
@@ -178,8 +188,16 @@ public class DynamicScanner {
         return relatedZapId;
     }
 
-    public String getName() {
-        return name;
+    public String getTestName() {
+        return testName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public String getWumLevel() {
+        return wumLevel;
     }
 
     public String getCreatedTime() {

@@ -92,7 +92,7 @@ public class DynamicScannerService {
     }
 
 
-    public String startScan(String userId, String name, String ipAddress, boolean isFileUpload, MultipartFile zipFile,
+    public String startScan(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload, MultipartFile zipFile,
                             MultipartFile urlListFile, String wso2ServerHost, int wso2ServerPort,
                             boolean isAuthenticatedScan) {
 
@@ -127,7 +127,7 @@ public class DynamicScannerService {
             if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
                 urlListFileName = urlListFile.getOriginalFilename();
                 if (FileHandler.uploadFile(urlListFile, uploadLocation + File.separator + urlListFileName)) {
-                    DynamicScannerThread dynamicScannerThread = new DynamicScannerThread(userId, name, ipAddress, isFileUpload, uploadLocation,
+                    DynamicScannerThread dynamicScannerThread = new DynamicScannerThread(userId, testName, ipAddress, productName, wumLevel, isFileUpload, uploadLocation,
                             urlListFileName, zipFileName, wso2ServerHost, wso2ServerPort, isAuthenticatedScan);
                     new Thread(dynamicScannerThread).start();
                     return "Ok";
@@ -137,8 +137,9 @@ public class DynamicScannerService {
         return "Cannot upload files to temp location";
     }
 
-    @Retryable(value = IOException.class, maxAttempts = 10, backoff = @Backoff(delay = 3000))
+    @Retryable(value = IOException.class, maxAttempts = 20, backoff = @Backoff(delay = 5000))
     public boolean isDynamicScannerReady(DynamicScanner dynamicScanner) throws IOException {
+        LOGGER.info("Checking Micro Service Started....");
         boolean status = false;
         try {
 

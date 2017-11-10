@@ -20,19 +20,16 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.automation.manager.entity.DynamicScanner;
 import org.wso2.security.automation.manager.entity.Zap;
 import org.wso2.security.automation.manager.handlers.DockerHandler;
-import org.wso2.security.automation.manager.handlers.FileHandler;
 import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
 import org.wso2.security.automation.manager.service.ZapService;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,8 +39,10 @@ import java.util.*;
 public class DynamicScannerThread implements Runnable {
 
     private String userId;
-    private String name;
+    private String testName;
     private String ipAddress;
+    private String productName;
+    private String wumLevel;
     private boolean isFileUpload;
     private File zipFile;
     private File urlListFile;
@@ -56,12 +55,14 @@ public class DynamicScannerThread implements Runnable {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    public DynamicScannerThread(String userId, String name, String ipAddress, boolean isFileUpload,
+    public DynamicScannerThread(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload,
                                 String uploadLocation, String urlListFileName, String zipFileName, String wso2ServerHost, int wso2ServerPort,
                                 boolean isAuthenticatedScan) {
         this.userId = userId;
-        this.name = name;
+        this.testName = testName;
         this.ipAddress = ipAddress;
+        this.productName = productName;
+        this.wumLevel = wumLevel;
         this.isFileUpload = isFileUpload;
         if (zipFileName != null) {
             this.zipFile = new File(uploadLocation + File.separator + zipFileName);
@@ -100,14 +101,15 @@ public class DynamicScannerThread implements Runnable {
     private Zap startZap() {
         Zap zap = new Zap();
         zap.setUserId(userId);
-        zap.setName(name);
+        zap.setName(testName);
         zap.setStatus("initiated");
+        LOGGER.info("New zap record");
         zapService.save(zap);
 
         int port = calculateZapPort(zap.getId());
 
         List<String> command = Arrays.asList("zap.sh", "-daemon", "-config", "api.disablekey=true", "-config",
-                "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true", "-port", String.valueOf(port), "-host", "0.0.0.0");
+                "api.addrs.addr.testName=.*", "-config", "api.addrs.addr.regex=true", "-port", String.valueOf(port), "-host", "0.0.0.0");
 
         String containerId = DockerHandler.createContainer(Constants.ZAP_DOCKER_IMAGE, ipAddress, String.valueOf(port),
                 String.valueOf(port), command, null);
@@ -136,7 +138,9 @@ public class DynamicScannerThread implements Runnable {
     private DynamicScanner startDynamicScanner(Zap zap) {
         DynamicScanner dynamicScanner = new DynamicScanner();
         dynamicScanner.setUserId(userId);
-        dynamicScanner.setName(name);
+        dynamicScanner.setTestName(testName);
+        dynamicScanner.setProductName(productName);
+        dynamicScanner.setWumLevel(wumLevel);
         dynamicScanner.setRelatedZapId(zap.getContainerId());
         dynamicScanner.setStatus("initiated");
         dynamicScannerService.save(dynamicScanner);

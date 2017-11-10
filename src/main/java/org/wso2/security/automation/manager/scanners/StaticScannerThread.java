@@ -20,7 +20,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.automation.manager.entity.StaticScanner;
@@ -40,8 +39,10 @@ import java.util.Map;
 public class StaticScannerThread implements Runnable {
 
     private String userId;
-    private String name;
+    private String testName;
     private String ipAddress;
+    private String productName;
+    private String wumLevel;
     private boolean isFileUpload;
     private File zipFile;
     private String url;
@@ -54,11 +55,13 @@ public class StaticScannerThread implements Runnable {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    public StaticScannerThread(String userId, String name, String ipAddress, boolean isFileUpload, String uploadLocation, String zipFileName, String url,
+    public StaticScannerThread(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload, String uploadLocation, String zipFileName, String url,
                                String branch, String tag, boolean isFindSecBugs, boolean isDependencyCheck) {
         this.userId = userId;
-        this.name = name;
+        this.testName = testName;
         this.ipAddress = ipAddress;
+        this.productName = productName;
+        this.wumLevel = wumLevel;
         this.isFileUpload = isFileUpload;
         if (zipFileName != null) {
             this.zipFile = new File(uploadLocation + File.separator + zipFileName);
@@ -75,7 +78,7 @@ public class StaticScannerThread implements Runnable {
     @Override
     public void run() {
         try {
-            StaticScanner staticScanner = startStaticScanner(userId, name, ipAddress);
+            StaticScanner staticScanner = startStaticScanner();
             if (staticScanner != null) {
                 if (staticScannerService.isStaticScannerReady(staticScanner)) {
                     String startScanResponse = startScan(staticScanner);
@@ -88,10 +91,12 @@ public class StaticScannerThread implements Runnable {
         }
     }
 
-    private StaticScanner startStaticScanner(String userId, String name, String ipAddress) {
+    private StaticScanner startStaticScanner() {
         StaticScanner staticScanner = new StaticScanner();
         staticScanner.setUserId(userId);
-        staticScanner.setName(name);
+        staticScanner.setTestName(testName);
+        staticScanner.setProductName(productName);
+        staticScanner.setWumLevel(wumLevel);
         staticScanner.setStatus("initiated");
         staticScannerService.save(staticScanner);
 
