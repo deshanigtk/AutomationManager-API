@@ -19,21 +19,12 @@ package org.wso2.security.automation.manager.controller.scannerControllers;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.utils.URIBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.automation.manager.Constants;
-import org.wso2.security.automation.manager.entity.StaticScanner;
-import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
 import org.wso2.security.automation.manager.handlers.MailHandler;
 import org.wso2.security.automation.manager.service.StaticScannerService;
-
-import java.net.URI;
 
 @Controller
 @RequestMapping("staticScanner")
@@ -69,32 +60,6 @@ public class StaticScannerController {
 
         return staticScannerService.startStaticScan(userId, testName, ipAddress, productName, wumLevel, isFileUpload, zipFile, url, branch, tag,
                 isFindSecBugs, isDependencyCheck);
-    }
-
-
-    @PostMapping(path = "getReportAndMail")
-    @ApiOperation(value = "Get the generated scan report from a container and mail it to the user")
-    public @ResponseBody
-    void getReport(@RequestParam String containerId, @RequestParam String to, @RequestParam boolean dependencyCheckReport) throws Exception {
-
-        StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
-        URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                .setPort(staticScanner.getHostPort()).setScheme("http").setPath(Constants.STATIC_SCANNER_GET_REPORT)
-                .addParameter("dependencyCheckReport", String.valueOf(dependencyCheckReport))
-                .build();
-
-        HttpResponse httpResponse = HttpRequestHandler.sendGetRequest(uri);
-
-        if (httpResponse.getEntity() != null) {
-            String subject = "Static Scan Report: ";
-            String fileName;
-            if (dependencyCheckReport) {
-                fileName = "Dependency-Check-Reports.zip";
-            } else {
-                fileName = "Find-Sec-Bugs-Reports.zip";
-            }
-            mailHandler.sendMail(to, subject, "This is auto generated message", httpResponse.getEntity().getContent(), fileName);
-        }
     }
 
     @GetMapping(path = "kill")

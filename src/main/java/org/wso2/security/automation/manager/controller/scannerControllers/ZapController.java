@@ -17,15 +17,16 @@ package org.wso2.security.automation.manager.controller.scannerControllers;
 * under the License.
 */
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.wso2.security.automation.manager.entity.Zap;
 import org.wso2.security.automation.manager.service.ZapService;
 
 @Controller
 @RequestMapping("zap")
+@Api(value = "zap", description = "ZAP container related APIs")
 public class ZapController {
 
     private final ZapService zapService;
@@ -36,6 +37,7 @@ public class ZapController {
     }
 
     @GetMapping(path = "kill")
+    @ApiOperation(value = "Stop a running container")
     public @ResponseBody
     void kill(@RequestParam String containerId) throws Exception {
         zapService.kill(containerId);

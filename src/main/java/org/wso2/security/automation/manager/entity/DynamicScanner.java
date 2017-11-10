@@ -17,6 +17,8 @@ package org.wso2.security.automation.manager.entity;
 * under the License.
 */
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -26,15 +28,21 @@ public class DynamicScanner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(notes = "Auto incremented Id")
     private int id;
 
     @Column(unique = true)
+    @ApiModelProperty(notes = "Unique container Id given by Docker")
     private String containerId;
     @NotNull
+    @ApiModelProperty(notes = "Authenticated email address")
     private String userId;
 
+    @ApiModelProperty(notes = "ZAP container Id, which is started in parallel with dynamic scanner container")
     private String relatedZapId;
+    @ApiModelProperty(notes = "Unique test name for the scan by user")
     private String testName;
+    @ApiModelProperty(notes = "Name of the product to be scanned")
     private String productName;
     private String wumLevel;
     private String createdTime;

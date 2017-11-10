@@ -42,7 +42,7 @@ public class DynamicScannerController {
     }
 
     @PostMapping(value = "startScan")
-    @ApiOperation(value = "Start Dynamic Scanner container, upload the product zip file or else clone product from GitHub and start scans - FindSecBugs and/or OWASP Dependency Check")
+    @ApiOperation(value = "Start Dynamic Scanner container, upload the product zip file or else give IP address and port of already running server and start OWASP Zap scan")
     public @ResponseBody
     String runZapScan(@RequestParam String userId,
                       @RequestParam String testName,
@@ -61,6 +61,7 @@ public class DynamicScannerController {
     }
 
     @GetMapping(path = "kill")
+    @ApiOperation(value = "Stop a running container")
     public @ResponseBody
     void kill(@RequestParam String containerId) {
         dynamicScannerService.kill(containerId);

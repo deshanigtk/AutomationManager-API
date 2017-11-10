@@ -16,6 +16,8 @@ package org.wso2.security.automation.manager.controller.notificationController;/
 * under the License.
 */
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ import java.util.Date;
 
 @Controller
 @RequestMapping("staticScanner/notify")
+@Api(value = "dynamicScannerNotifications", description = "Static Scanner containers notify status after a task is completed")
 public class StaticScannerNotificationController {
 
     private final StaticScannerService staticScannerService;
@@ -44,6 +47,7 @@ public class StaticScannerNotificationController {
     }
 
     @GetMapping(value = "fileExtracted")
+    @ApiOperation(value = "Update that a zip file is uploaded and the uploaded time to the container")
     public @ResponseBody
     void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
@@ -54,6 +58,7 @@ public class StaticScannerNotificationController {
     }
 
     @GetMapping(value = "productCloned")
+    @ApiOperation(value = "Update that a zip file is extracted and the extracted time to the container")
     public @ResponseBody
     void updateProductCloned(@RequestParam String containerId, @RequestParam boolean status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
@@ -64,6 +69,7 @@ public class StaticScannerNotificationController {
     }
 
     @GetMapping(value = "findSecBugsStatus")
+    @ApiOperation(value = "Update the status of FindSecBugs scan")
     public @ResponseBody
     void updateFindSecBugsStatus(@RequestParam String containerId, @RequestParam String status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
@@ -74,6 +80,7 @@ public class StaticScannerNotificationController {
 
     @GetMapping(value = "dependencyCheckStatus")
     public @ResponseBody
+    @ApiOperation(value = "Update the status of Dependency Check scan")
     void updateDependencyCheckStatus(@RequestParam String containerId, @RequestParam String status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setDependencyCheckStatus(status);
@@ -83,6 +90,7 @@ public class StaticScannerNotificationController {
 
     @GetMapping(value = "dependencyCheckReportReady")
     public @ResponseBody
+    @ApiOperation(value = "Update that the Dependency Check report is ready, and the time")
     void updateDependencyCheckReportReady(@RequestParam String containerId, @RequestParam boolean status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setDependencyCheckReportReady(status);
@@ -93,6 +101,7 @@ public class StaticScannerNotificationController {
     }
 
     @GetMapping(value = "findSecBugsReportReady")
+    @ApiOperation(value = "Update that the FindSecBugs scan report is ready, and the time")
     public @ResponseBody
     void updateFindSecBugsReportReady(@RequestParam String containerId, @RequestParam boolean status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
@@ -104,6 +113,7 @@ public class StaticScannerNotificationController {
 
     @GetMapping(value = "reportReady")
     public @ResponseBody
+    @ApiOperation(value = "Update that the full report is ready (FindSecBugs report and/or Dependency Check report)")
     void updateReportReady(@RequestParam String containerId, @RequestParam boolean status) {
         StaticScanner staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setReportReady(status);

@@ -16,6 +16,8 @@ package org.wso2.security.automation.manager.controller;/*
 * under the License.
 */
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,7 @@ import org.wso2.security.automation.manager.service.StaticScannerService;
 
 @Controller
 @RequestMapping("/")
+@Api(value = "scanners", description = "Get static scans and dynamic scans done by a specific user")
 public class MainController {
 
     private final StaticScannerService staticScannerService;
@@ -40,12 +43,14 @@ public class MainController {
     }
 
     @GetMapping(value = "getStaticScanners")
+    @ApiOperation(value = "Get static scans done by a user")
     @ResponseBody
     public Iterable<StaticScanner> getStaticScanners(String userId) {
         return staticScannerService.findByUserId(userId);
     }
 
     @GetMapping(value = "getDynamicScanners")
+    @ApiOperation(value = "Get dynamic scans done by a user")
     @ResponseBody
     public Iterable<DynamicScanner> getDynamicScanners(String userId) {
         return dynamicScannerService.findByUserId(userId);

@@ -16,6 +16,8 @@ package org.wso2.security.automation.manager.controller.notificationController;/
 * under the License.
 */
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,7 @@ import java.util.Date;
 
 @Controller
 @RequestMapping("dynamicScanner/notify")
+@Api(value = "dynamicScannerNotifications", description = "Dynamic Scanner containers notify status after a task is completed")
 public class DynamicScannerNotificationController {
 
     private final DynamicScannerService dynamicScannerService;
@@ -37,6 +40,7 @@ public class DynamicScannerNotificationController {
     }
 
     @GetMapping(value = "fileUploaded")
+    @ApiOperation(value = "Update that a zip file is uploaded to the container")
     public @ResponseBody
     void updateFileUploaded(@RequestParam String containerId, @RequestParam boolean status) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
@@ -46,6 +50,7 @@ public class DynamicScannerNotificationController {
     }
 
     @GetMapping(value = "fileExtracted")
+    @ApiOperation(value = "Update that a zip file is extracted to the container")
     public @ResponseBody
     void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
@@ -55,6 +60,7 @@ public class DynamicScannerNotificationController {
     }
 
     @GetMapping(value = "serverStarted")
+    @ApiOperation(value = "Update that a server is started inside the container")
     public @ResponseBody
     void updateServerStarted(@RequestParam String containerId, @RequestParam boolean status) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
@@ -64,6 +70,7 @@ public class DynamicScannerNotificationController {
     }
 
     @GetMapping(value = "zapScanStatus")
+    @ApiOperation(value = "Update the progress of a ZAP scan")
     public @ResponseBody
     void updateZapScanStatus(@RequestParam String containerId, @RequestParam String status, @RequestParam int progress) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
@@ -74,6 +81,7 @@ public class DynamicScannerNotificationController {
     }
 
     @GetMapping(value = "reportReady")
+    @ApiOperation(value = "Update that a ZAP report is ready")
     public @ResponseBody
     void updateReportReady(@RequestParam String containerId, @RequestParam boolean status) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
@@ -84,6 +92,7 @@ public class DynamicScannerNotificationController {
     }
 
     @GetMapping(value = "message")
+    @ApiOperation(value = "Update an error message of a container")
     public @ResponseBody
     void updateMessage(@RequestParam String containerId, @RequestParam String status) {
         DynamicScanner dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
