@@ -16,19 +16,19 @@
  * under the License.
  */
 
-package org.wso2.security.automation.manager.repository;
+package org.wso2.security.automation.manager.exception;
 
-import org.springframework.data.repository.CrudRepository;
-import org.wso2.security.automation.manager.entity.StaticScannerEntity;
+public class AutomationManagerRuntimeException extends RuntimeException {
 
-/**
- * Static scanner repository
- *
- * @author Deshani Geethika
- */
-public interface StaticScannerRepository extends CrudRepository<StaticScannerEntity, Integer> {
+    public AutomationManagerRuntimeException() {
+        super();
+    }
 
-    StaticScannerEntity findOneByContainerId(String containerId);
+    public AutomationManagerRuntimeException(String message) {
+        super(message);
+    }
 
-    Iterable<StaticScannerEntity> findByUserId(String userId);
+    public AutomationManagerRuntimeException(String message, Throwable e) {
+        super(message, e);
+    }
 }

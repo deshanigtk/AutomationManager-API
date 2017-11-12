@@ -1,28 +1,27 @@
 /*
+ * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- *  *  Copyright (c) ${YEAR} WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
- *  *
- *  *  WSO2 Inc. licenses this file to you under the Apache License,
- *  *  Version 2.0 (the "License"); you may not use this file except
- *  *  in compliance with the License.
- *  *  You may obtain a copy of the License at
- *  *
- *  *  http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  *  Unless required by applicable law or agreed to in writing,
- *  *  software distributed under the License is distributed on an
- *  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  *  KIND, either express or implied.  See the License for the
- *  *  specific language governing permissions and limitations
- *  *  under the License.
- *  *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
  *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.wso2.security.automation.manager.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.retry.annotation.EnableRetry;
@@ -41,12 +40,38 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Collections;
 import java.util.Properties;
 
-
+/**
+ * This class contains application configurations
+ *
+ * @author Deshani Geethika
+ */
+@PropertySource("classpath:application.properties")
 @Configuration
 @EnableRetry
 @EnableSwagger2
 @EnableWebMvc
 public class AppConfiguration extends WebMvcConfigurerAdapter {
+
+    @Value("${spring.mail.host}")
+    private String SMTP_HOST;
+
+    @Value("${spring.mail.port}")
+    private int SMTP_PORT;
+
+    @Value("${spring.mail.username}")
+    private String SMTP_USERNAME;
+
+    @Value("${spring.mail.password}")
+    private String SMTP_PASSWORD;
+
+    @Value("${spring.mail.properties.mail.smtp.auth}")
+    private boolean SMTP_AUTH = true;
+
+    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
+    private boolean SMTP_STARTTLS_ENABLE = true;
+
+    @Value("${spring.mail.properties.mail.debug}")
+    private boolean SMTP_DEBUG = true;
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -64,17 +89,17 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
+        mailSender.setHost(SMTP_HOST);
+        mailSender.setPort(SMTP_PORT);
 
-        mailSender.setUsername("codeophrenia@gmail.com");
-        mailSender.setPassword("qoqlgzcnwoddinga");
+        mailSender.setUsername(SMTP_USERNAME);
+        mailSender.setPassword(SMTP_PASSWORD);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
+        props.put("mail.smtp.auth", SMTP_AUTH);
+        props.put("mail.smtp.starttls.enable", SMTP_STARTTLS_ENABLE);
+        props.put("mail.debug", SMTP_DEBUG);
 
         return mailSender;
     }

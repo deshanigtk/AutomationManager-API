@@ -16,29 +16,46 @@
  * under the License.
  */
 
-package org.wso2.security.automation.manager.config;
+package org.wso2.security.automation.manager.entity;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Configuration;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
- * This class contains application utility methods
+ * User entity
  *
  * @author Deshani Geethika
  */
-@Configuration
-public class ApplicationContextUtils implements ApplicationContextAware {
+@SuppressWarnings("unused")
+@Entity
+public class UserEntity {
 
-    private static ApplicationContext applicationContext;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String name;
+    private String email;
 
-    @Override
-    public void setApplicationContext(ApplicationContext appContext) throws BeansException {
-        applicationContext = appContext;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
+

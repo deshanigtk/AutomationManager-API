@@ -18,20 +18,25 @@
 
 package org.wso2.security.automation.manager;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.wso2.security.automation.manager.controller.scanner.StaticScannerController;
 
-@SpringBootApplication
-public class Application extends SpringBootServletInitializer {
+import static org.assertj.core.api.Assertions.assertThat;
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ApplicationTest {
+
+    @Autowired
+    private StaticScannerController staticScannerController;
+
+    @Test
+    public void contextLoads() throws Exception {
+        assertThat(staticScannerController).isNotNull();
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
 }

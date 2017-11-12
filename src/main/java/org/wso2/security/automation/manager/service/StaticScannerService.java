@@ -1,21 +1,22 @@
-package org.wso2.security.automation.manager.service;
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-*  WSO2 Inc. licenses this file to you under the Apache License,
-*  Version 2.0 (the "License"); you may not use this file except
-*  in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*    http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied.  See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.wso2.security.automation.manager.service;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -30,13 +31,14 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.automation.manager.Constants;
-import org.wso2.security.automation.manager.entity.StaticScanner;
-import org.wso2.security.automation.manager.handlers.DockerHandler;
-import org.wso2.security.automation.manager.handlers.FileHandler;
-import org.wso2.security.automation.manager.handlers.HttpRequestHandler;
-import org.wso2.security.automation.manager.handlers.MailHandler;
+import org.wso2.security.automation.manager.entity.StaticScannerEntity;
+import org.wso2.security.automation.manager.exception.AutomationManagerRuntimeException;
+import org.wso2.security.automation.manager.handler.DockerHandler;
+import org.wso2.security.automation.manager.handler.FileHandler;
+import org.wso2.security.automation.manager.handler.HttpRequestHandler;
+import org.wso2.security.automation.manager.handler.MailHandler;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
-import org.wso2.security.automation.manager.scanners.StaticScannerThread;
+import org.wso2.security.automation.manager.scanner.StaticScanner;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,14 +47,22 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Static scanner service
+ *
+ * @author Deshani Geethika
+ */
+@SuppressWarnings({"unused", "WeakerAccess"})
 @Service
 public class StaticScannerService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(StaticScannerService.class);
+
+    private static final String STATUS_REMOVED = "removed";
+    private static final String DATE_PATTERN = "yyyy-MM-dd:HH.mm.ss";
+
     private final StaticScannerRepository staticScannerRepository;
-
     private final MailHandler mailHandler;
-
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public StaticScannerService(StaticScannerRepository staticScannerRepository, MailHandler mailHandler) {
@@ -60,70 +70,69 @@ public class StaticScannerService {
         this.mailHandler = mailHandler;
     }
 
-    public Iterable<StaticScanner> findAll() {
+    public Iterable<StaticScannerEntity> findAll() {
         return staticScannerRepository.findAll();
     }
 
-    public StaticScanner findOne(int id) {
-
+    public StaticScannerEntity findOne(int id) {
         return staticScannerRepository.findOne(id);
     }
 
-    public StaticScanner findOneByContainerId(String containerId) {
+    public StaticScannerEntity findOneByContainerId(String containerId) {
         return staticScannerRepository.findOneByContainerId(containerId);
     }
 
-    public Iterable<StaticScanner> findByUserId(String userId) {
+    public Iterable<StaticScannerEntity> findByUserId(String userId) {
         return staticScannerRepository.findByUserId(userId);
     }
 
-    public StaticScanner save(StaticScanner staticScanner) {
+    public StaticScannerEntity save(StaticScannerEntity staticScanner) {
         return staticScannerRepository.save(staticScanner);
     }
 
-    public String startStaticScan(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload, MultipartFile zipFile, String url, String branch,
-                                  String tag, boolean isFindSecBugs, boolean isDependencyCheck) {
+    public void startStaticScan(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload, MultipartFile zipFile, String url, String branch,
+                                String tag, boolean isFindSecBugs, boolean isDependencyCheck) {
         String zipFileName = null;
         String uploadLocation = Constants.TEMP_FOLDER_PATH + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
 
         if (isFileUpload) {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
-                return "Please upload product zip file";
+                throw new AutomationManagerRuntimeException("Please upload product zip file");
             } else {
                 if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
                     if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
                         zipFileName = zipFile.getOriginalFilename();
                         if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
-                            return "Cannot upload zip file";
+                            throw new AutomationManagerRuntimeException("Cannot upload zip file");
                         }
                     } else {
-                        return "Error occurred while creating upload location";
+                        throw new AutomationManagerRuntimeException("Error occurred while creating upload location");
                     }
                 } else {
-                    return "Error occurred while creating temp folder";
+                    throw new AutomationManagerRuntimeException("Error occurred while creating temp folder");
                 }
             }
         } else {
             if (url == null || branch == null) {
-                return "Please enter URL and branch to clone";
+                throw new AutomationManagerRuntimeException("Please enter URL and branch to clone");
             }
         }
         if (!isFindSecBugs && !isDependencyCheck) {
-            return "Please enter at least one scan";
+            throw new AutomationManagerRuntimeException("Please enter at least one scan");
         }
 
-        StaticScannerThread staticScannerThread = new StaticScannerThread(userId, testName, ipAddress, productName, wumLevel, isFileUpload, uploadLocation,
-                zipFileName, url, branch, tag, isFindSecBugs, isDependencyCheck);
+        StaticScanner staticScannerThread = new StaticScanner(userId, testName, ipAddress, productName, wumLevel,
+                isFileUpload, uploadLocation, zipFileName, url, branch, tag, isFindSecBugs, isDependencyCheck);
         new Thread(staticScannerThread).start();
-        return "Ok";
     }
 
     public void getReportAndMail(String containerId) {
         try {
-            StaticScanner staticScanner = findOneByContainerId(containerId);
+            StaticScannerEntity staticScanner = findOneByContainerId(containerId);
             if (staticScanner != null) {
                 URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                        .setPort(staticScanner.getHostPort()).setScheme("http").setPath(Constants.STATIC_SCANNER_GET_REPORT)
+                        .setPort(staticScanner.getHostPort()).setScheme("http")
+                        .setPath(Constants.STATIC_SCANNER_GET_REPORT)
                         .build();
                 HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
 
@@ -133,19 +142,19 @@ public class StaticScannerService {
                         if (mailHandler.sendMail(staticScanner.getUserId(), subject, "This is auto generated message",
                                 response.getEntity().getContent(), "Reports.zip")) {
                             staticScanner.setReportSent(true);
-                            staticScanner.setReportSentTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+                            staticScanner.setReportSentTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
                             kill(containerId);
                         }
                     }
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new AutomationManagerRuntimeException("Error occurred while getting static scanner report and mail");
         }
     }
 
     @Retryable(value = IOException.class, maxAttempts = 20, backoff = @Backoff(delay = 5000))
-    public boolean isStaticScannerReady(StaticScanner staticScanner) throws IOException {
+    public boolean isStaticScannerReady(StaticScannerEntity staticScanner) throws IOException {
         LOGGER.info("Checking Micro Service Started....");
         boolean status = false;
         try {
@@ -156,22 +165,18 @@ public class StaticScannerService {
             HttpClient httpClient = HttpClientBuilder.create().build();
 
             HttpGet httpGet = new HttpGet(uri);
-            HttpResponse response = httpClient.execute(httpGet);
+            return Boolean.parseBoolean(HttpRequestHandler.printResponse(httpClient.execute(httpGet)));
 
-            if (response != null) {
-                status = Boolean.parseBoolean(HttpRequestHandler.printResponse(response));
-            }
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            throw new AutomationManagerRuntimeException("Error occurred while getting static scanner status");
         }
-        LOGGER.info("Static Scanner is ready: " + status);
-        return status;
     }
 
     public void kill(String containerId) {
-        StaticScanner staticScanner = findOneByContainerId(containerId);
+        StaticScannerEntity staticScanner = findOneByContainerId(containerId);
         DockerHandler.killContainer(containerId);
-        staticScanner.setStatus("killed");
+        DockerHandler.removeContainer(containerId);
+        staticScanner.setStatus(STATUS_REMOVED);
         save(staticScanner);
     }
 }

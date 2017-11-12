@@ -1,37 +1,39 @@
-package org.wso2.security.automation.manager.service;
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-*  WSO2 Inc. licenses this file to you under the Apache License,
-*  Version 2.0 (the "License"); you may not use this file except
-*  in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*    http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied.  See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.wso2.security.automation.manager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-import org.wso2.security.automation.manager.entity.Zap;
-import org.wso2.security.automation.manager.handlers.DockerHandler;
+import org.wso2.security.automation.manager.entity.ZapEntity;
+import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.repository.ZapRepository;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
+/**
+ * Zap service
+ *
+ * @author Deshani Geethika
+ */
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 @Service
 public class ZapService {
+
+    private static final String STATUS_REMOVED = "removed";
 
     private final ZapRepository zapRepository;
 
@@ -44,27 +46,28 @@ public class ZapService {
         return zapRepository.findAll();
     }
 
-    public Zap findOne(int id) {
+    public ZapEntity findOne(int id) {
 
         return zapRepository.findOne(id);
     }
 
-    public Zap findOneByContainerId(String containerId) {
+    public ZapEntity findOneByContainerId(String containerId) {
         return zapRepository.findOneByContainerId(containerId);
     }
 
-    public Iterable<Zap> findByUserId(String userId) {
+    public Iterable<ZapEntity> findByUserId(String userId) {
         return zapRepository.findByUserId(userId);
     }
 
-    public Zap save(Zap zap) {
+    public ZapEntity save(ZapEntity zap) {
         return zapRepository.save(zap);
     }
 
     public void kill(String containerId) {
-        Zap zap = findOneByContainerId(containerId);
+        ZapEntity zap = findOneByContainerId(containerId);
         DockerHandler.killContainer(containerId);
-        zap.setStatus("killed");
+        DockerHandler.removeContainer(containerId);
+        zap.setStatus(STATUS_REMOVED);
         save(zap);
     }
 }
