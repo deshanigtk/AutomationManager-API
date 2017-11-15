@@ -22,12 +22,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.automation.manager.entity.StaticScannerEntity;
-import org.wso2.security.automation.manager.exception.AutomationManagerRuntimeException;
 import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.handler.HttpRequestHandler;
+import org.wso2.security.automation.manager.property.ScannerProperty;
 import org.wso2.security.automation.manager.service.StaticScannerService;
 
 import java.io.File;
@@ -114,22 +113,22 @@ public class StaticScanner implements Runnable {
 
         int port = calculatePort(staticScanner.getId());
 
-        String containerId = DockerHandler.createContainer(Constants.STATIC_SCANNER_DOCKER_IMAGE, ipAddress, String.valueOf(port),
+        String containerId = DockerHandler.createContainer(ScannerProperty.getStaticScannerDockerImage(), ipAddress, String.valueOf(port),
                 String.valueOf(port), null, new String[]{"port=" + port});
 
         if (containerId != null) {
-            String createdTime = new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+            String createdTime = new SimpleDateFormat(DATE_PATTERN).format(new Date());
             staticScanner.setContainerId(containerId);
             staticScanner.setIpAddress(ipAddress);
             staticScanner.setContainerPort(port);
             staticScanner.setHostPort(port);
-            staticScanner.setStatus("created");
+            staticScanner.setStatus(STATUS_CREATED);
             staticScanner.setCreatedTime(createdTime);
 
             staticScannerService.save(staticScanner);
 
             if (DockerHandler.startContainer(containerId)) {
-                staticScanner.setStatus("running");
+                staticScanner.setStatus(STATUS_RUNNING);
                 staticScanner.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings().ipAddress());
                 staticScannerService.save(staticScanner);
                 return staticScanner;
@@ -138,14 +137,12 @@ public class StaticScanner implements Runnable {
         return null;
     }
 
-
     private void startScan(StaticScannerEntity staticScanner) {
         try {
-
             URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                    .setPort(staticScanner.getHostPort()).setScheme("http").setPath(Constants.STATIC_SCANNER_START_SCAN)
-                    .addParameter("automationManagerHost", Constants.AUTOMATION_MANAGER_HOST)
-                    .addParameter("automationManagerPort", String.valueOf(Constants.AUTOMATION_MANAGER_PORT))
+                    .setPort(staticScanner.getHostPort()).setScheme("http").setPath(ScannerProperty.getStaticScannerStartScan())
+                    .addParameter("automationManagerHost", ScannerProperty.getAutomationManagerHost())
+                    .addParameter("automationManagerPort", String.valueOf(ScannerProperty.getAutomationManagerPort()))
                     .addParameter("myContainerId", staticScanner.getContainerId())
                     .addParameter("isFileUpload", String.valueOf(isFileUpload))
                     .addParameter("url", url)

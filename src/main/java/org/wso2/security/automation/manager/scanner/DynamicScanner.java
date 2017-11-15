@@ -22,12 +22,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.automation.manager.entity.DynamicScannerEntity;
 import org.wso2.security.automation.manager.entity.ZapEntity;
 import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.handler.HttpRequestHandler;
+import org.wso2.security.automation.manager.property.ScannerProperty;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
 import org.wso2.security.automation.manager.service.ZapService;
 
@@ -124,7 +124,7 @@ public class DynamicScanner implements Runnable {
                 "api.addrs.addr.testName=.*", "-config", "api.addrs.addr.regex=true", "-port", String.valueOf(port),
                 "-host", "0.0.0.0");
 
-        String containerId = DockerHandler.createContainer(Constants.ZAP_DOCKER_IMAGE, ipAddress, String.valueOf(port),
+        String containerId = DockerHandler.createContainer(ScannerProperty.getZapDockerImage(), ipAddress, String.valueOf(port),
                 String.valueOf(port), command, null);
 
         if (containerId != null) {
@@ -160,11 +160,10 @@ public class DynamicScanner implements Runnable {
 
         int port = calculateDynamicScannerPort(dynamicScanner.getId());
 
-        String containerId = DockerHandler.createContainer(Constants.DYNAMIC_SCANNER_DOCKER_IMAGE, ipAddress,
+        String containerId = DockerHandler.createContainer(ScannerProperty.getDynamicScannerDockerImage(), ipAddress,
                 String.valueOf(port), String.valueOf(port), null, new String[]{"port=" + port});
 
         if (containerId != null) {
-            LOGGER.info("Container Id: " + containerId);
             String createdTime = new SimpleDateFormat(DATE_PATTERN).format(new Date());
             dynamicScanner.setContainerId(containerId);
             dynamicScanner.setIpAddress(ipAddress);
@@ -203,9 +202,9 @@ public class DynamicScanner implements Runnable {
             if ((isFileUpload && zipFile != null) || (!isFileUpload && wso2ServerHost != null && wso2ServerPort != -1)) {
                 URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
                         .setPort(dynamicScanner.getHostPort()).setScheme("http")
-                        .setPath(Constants.DYNAMIC_SCANNER_START_SCAN)
-                        .addParameter("automationManagerHost", Constants.AUTOMATION_MANAGER_HOST)
-                        .addParameter("automationManagerPort", String.valueOf(Constants.AUTOMATION_MANAGER_PORT))
+                        .setPath(ScannerProperty.getDynamicScannerStartScan())
+                        .addParameter("automationManagerHost", ScannerProperty.getAutomationManagerHost())
+                        .addParameter("automationManagerPort", String.valueOf(ScannerProperty.getAutomationManagerPort()))
                         .addParameter("myContainerId", dynamicScanner.getContainerId())
                         .addParameter("isFileUpload", String.valueOf(isFileUpload))
                         .addParameter("zapHost", zap.getIpAddress())

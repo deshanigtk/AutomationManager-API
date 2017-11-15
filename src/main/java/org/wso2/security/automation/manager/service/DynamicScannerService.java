@@ -32,13 +32,13 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.entity.DynamicScannerEntity;
 import org.wso2.security.automation.manager.exception.AutomationManagerRuntimeException;
 import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.handler.FileHandler;
 import org.wso2.security.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.automation.manager.handler.MailHandler;
+import org.wso2.security.automation.manager.property.ScannerProperty;
 import org.wso2.security.automation.manager.repository.DynamicScannerRepository;
 import org.wso2.security.automation.manager.scanner.DynamicScanner;
 
@@ -67,7 +67,7 @@ public class DynamicScannerService {
     private final DynamicScannerRepository dynamicScannerRepository;
 
     @Value("${scanner.dynamic.port}")
-    private int productPort = 9443;
+    private int productPort;
 
     private final ZapService zapService;
     private final MailHandler mailHandler;
@@ -106,14 +106,14 @@ public class DynamicScannerService {
 
         String urlListFileName;
         String zipFileName = null;
-        String uploadLocation = Constants.TEMP_FOLDER_PATH + File.separator + userId +
+        String uploadLocation = ScannerProperty.getTempFolderPath() + File.separator + userId +
                 new SimpleDateFormat(DATE_PATTERN).format(new Date());
 
         if (isFileUpload) {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
                 throw new AutomationManagerRuntimeException("Please upload a zip file");
             } else {
-                if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
+                if (new File(ScannerProperty.getTempFolderPath()).exists() || new File(ScannerProperty.getTempFolderPath()).mkdir()) {
                     if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
                         zipFileName = zipFile.getOriginalFilename();
                         if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
@@ -132,7 +132,7 @@ public class DynamicScannerService {
             }
         }
 
-        if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
+        if (new File(ScannerProperty.getTempFolderPath()).exists() || new File(ScannerProperty.getTempFolderPath()).mkdir()) {
             if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
                 urlListFileName = urlListFile.getOriginalFilename();
                 if (FileHandler.uploadFile(urlListFile, uploadLocation + File.separator + urlListFileName)) {
@@ -154,7 +154,7 @@ public class DynamicScannerService {
         try {
 
             URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-                    .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(Constants.IS_DYNAMIC_SCANNER_READY)
+                    .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(ScannerProperty.getDynamicScannerIsReady())
                     .build();
 
             HttpClient httpClient = HttpClientBuilder.create().build();
@@ -172,7 +172,7 @@ public class DynamicScannerService {
             if (dynamicScanner != null) {
                 URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
                         .setPort(dynamicScanner.getHostPort()).setScheme("http")
-                        .setPath(Constants.DYNAMIC_SCANNER_GET_REPORT)
+                        .setPath(ScannerProperty.getDynamicScannerGetReport())
                         .build();
                 HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
 

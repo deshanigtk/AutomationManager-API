@@ -30,13 +30,13 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.automation.manager.Constants;
 import org.wso2.security.automation.manager.entity.StaticScannerEntity;
 import org.wso2.security.automation.manager.exception.AutomationManagerRuntimeException;
 import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.handler.FileHandler;
 import org.wso2.security.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.automation.manager.handler.MailHandler;
+import org.wso2.security.automation.manager.property.ScannerProperty;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
 import org.wso2.security.automation.manager.scanner.StaticScanner;
 
@@ -93,13 +93,13 @@ public class StaticScannerService {
     public void startStaticScan(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload, MultipartFile zipFile, String url, String branch,
                                 String tag, boolean isFindSecBugs, boolean isDependencyCheck) {
         String zipFileName = null;
-        String uploadLocation = Constants.TEMP_FOLDER_PATH + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+        String uploadLocation = ScannerProperty.getTempFolderPath() + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
 
         if (isFileUpload) {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
                 throw new AutomationManagerRuntimeException("Please upload product zip file");
             } else {
-                if (new File(Constants.TEMP_FOLDER_PATH).exists() || new File(Constants.TEMP_FOLDER_PATH).mkdir()) {
+                if (new File(ScannerProperty.getTempFolderPath()).exists() || new File(ScannerProperty.getTempFolderPath()).mkdir()) {
                     if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
                         zipFileName = zipFile.getOriginalFilename();
                         if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
@@ -132,7 +132,7 @@ public class StaticScannerService {
             if (staticScanner != null) {
                 URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
                         .setPort(staticScanner.getHostPort()).setScheme("http")
-                        .setPath(Constants.STATIC_SCANNER_GET_REPORT)
+                        .setPath(ScannerProperty.getStaticScannerGetReport())
                         .build();
                 HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
 
@@ -159,7 +159,7 @@ public class StaticScannerService {
         boolean status = false;
         try {
             URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                    .setPort(staticScanner.getHostPort()).setScheme("http").setPath(Constants.IS_STATIC_SCANNER_READY)
+                    .setPort(staticScanner.getHostPort()).setScheme("http").setPath(ScannerProperty.getStaticScannerIsReady())
                     .build();
 
             HttpClient httpClient = HttpClientBuilder.create().build();

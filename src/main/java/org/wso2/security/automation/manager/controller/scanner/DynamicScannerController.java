@@ -45,7 +45,7 @@ public class DynamicScannerController {
 
     @PostMapping(value = "startScan")
     @ApiOperation(value = "Start Dynamic Scanner container, upload the product zip file or else give IP address and " +
-            "port of already running server and start OWASP Zap scan")
+            "port of already running server and start OWASP ZAP scan")
     public @ResponseBody
     void runZapScan(@RequestParam String userId,
                     @RequestParam String testName,
