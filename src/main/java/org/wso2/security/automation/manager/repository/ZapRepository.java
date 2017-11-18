@@ -19,7 +19,7 @@
 package org.wso2.security.automation.manager.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import org.wso2.security.automation.manager.entity.ZapEntity;
+import org.wso2.security.automation.manager.entity.scanner.dynamic.ZapEntity;
 
 /**
  * Zap repository

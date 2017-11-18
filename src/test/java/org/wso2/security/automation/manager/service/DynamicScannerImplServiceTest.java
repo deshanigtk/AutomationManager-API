@@ -35,7 +35,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DynamicScannerServiceTest {
+public class DynamicScannerImplServiceTest {
 
     private DynamicScannerRepository dynamicScannerRepositoryMock;
     private DynamicScannerService dynamicScannerService;

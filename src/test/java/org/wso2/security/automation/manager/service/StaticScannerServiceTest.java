@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.wso2.security.automation.manager.entity.StaticScannerEntity;
+import org.wso2.security.automation.manager.entity.scanner.statics.StaticScannerEntity;
 import org.wso2.security.automation.manager.handler.MailHandler;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
 

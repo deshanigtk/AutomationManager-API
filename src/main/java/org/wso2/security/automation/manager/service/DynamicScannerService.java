@@ -18,6 +18,7 @@
 
 package org.wso2.security.automation.manager.service;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -32,22 +33,26 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.automation.manager.entity.DynamicScannerEntity;
+import org.wso2.security.automation.manager.entity.scanner.dynamic.DynamicScannerEntity;
 import org.wso2.security.automation.manager.exception.AutomationManagerRuntimeException;
 import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.handler.FileHandler;
 import org.wso2.security.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.automation.manager.handler.MailHandler;
-import org.wso2.security.automation.manager.property.ScannerProperty;
+import org.wso2.security.automation.manager.config.ScannerProperty;
 import org.wso2.security.automation.manager.repository.DynamicScannerRepository;
-import org.wso2.security.automation.manager.scanner.DynamicScanner;
+import org.wso2.security.automation.manager.scanner.dynamic.DynamicScanner;
+import org.wso2.security.automation.manager.scanner.dynamic.zap.ZapScanner;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Dynamic scanner service
@@ -59,7 +64,7 @@ import java.util.Date;
 @Service
 public class DynamicScannerService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicScanner.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicScannerService.class);
 
     private static final String STATUS_REMOVED = "removed";
     private static final String DATE_PATTERN = "yyyy-MM-dd:HH.mm.ss";
@@ -136,64 +141,49 @@ public class DynamicScannerService {
             if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
                 urlListFileName = urlListFile.getOriginalFilename();
                 if (FileHandler.uploadFile(urlListFile, uploadLocation + File.separator + urlListFileName)) {
-                    DynamicScanner dynamicScannerThread = new DynamicScanner(userId, testName, ipAddress, productName,
-                            wumLevel, isFileUpload, uploadLocation, urlListFileName, zipFileName, productPort,
-                            wso2ServerHost, wso2ServerPort, isAuthenticatedScan);
-                    new Thread(dynamicScannerThread).start();
+                    DynamicScanner zapScanner = new ZapScanner(userId, testName, ipAddress, productName,
+                            wumLevel, isFileUpload, uploadLocation, urlListFileName, zipFileName,
+                            wso2ServerHost, wso2ServerPort, ipAddress);
+                    new Thread(zapScanner).start();
                 }
-            }else{
+            } else {
                 throw new AutomationManagerRuntimeException("Cannot upload files to temp location");
             }
         }
     }
 
-    @Retryable(value = IOException.class, maxAttempts = 20, backoff = @Backoff(delay = 5000))
-    public boolean isDynamicScannerReady(DynamicScannerEntity dynamicScanner) throws IOException {
-        LOGGER.info("Checking Micro Service Started....");
-        boolean status = false;
+    public void getReportAndMail(String containerId, String reportFilePath) {
         try {
-
-            URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-                    .setPort(dynamicScanner.getHostPort()).setScheme("http").setPath(ScannerProperty.getDynamicScannerIsReady())
-                    .build();
-
-            HttpClient httpClient = HttpClientBuilder.create().build();
-            HttpGet httpGet = new HttpGet(uri);
-            return Boolean.parseBoolean(HttpRequestHandler.printResponse(httpClient.execute(httpGet)));
-
-        } catch (URISyntaxException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while getting dynamic scanner status");
-        }
-    }
-
-    public void getReportAndMail(String containerId) {
-        try {
-            DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
-            if (dynamicScanner != null) {
-                URI uri = (new URIBuilder()).setHost(dynamicScanner.getIpAddress())
-                        .setPort(dynamicScanner.getHostPort()).setScheme("http")
-                        .setPath(ScannerProperty.getDynamicScannerGetReport())
-                        .build();
-                HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
-
-                if (response != null) {
-                    if (response.getEntity() != null) {
-                        String subject = "Dynamic Scan Report: ";
-                        if (mailHandler.sendMail(dynamicScanner.getUserId(), subject, "This is auto generated message",
-                                response.getEntity().getContent(), "ZapReport.html")) {
-                            dynamicScanner.setReportSent(true);
-                            dynamicScanner.setReportSentTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
-                            kill(containerId);
-
-                            String zapContainerId = dynamicScanner.getRelatedZapId();
-                            zapService.kill(zapContainerId);
-                        }
-                    }
-                }
+            DynamicScannerEntity dynamicScannerEntity = findOneByContainerId(containerId);
+            String subject = "Dynamic Scan Report: ";
+            if (mailHandler.sendMail(dynamicScannerEntity.getUserId(), subject, "This is auto generated message",
+                    new FileInputStream(new File(reportFilePath)), "ZapReport.html")) {
+                dynamicScannerEntity.setReportSent(true);
+                dynamicScannerEntity.setReportSentTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
+                kill(containerId);
             }
         } catch (Exception e) {
             throw new AutomationManagerRuntimeException("Error occurred while getting dynamic scanner report and mail");
         }
+    }
+
+
+    public HttpResponse getReport(HttpServletResponse response, String reportFilePath) {
+        if (new File(reportFilePath).exists()) {
+            try {
+                InputStream inputStream = new FileInputStream(reportFilePath);
+                IOUtils.copy(inputStream, response.getOutputStream());
+                response.flushBuffer();
+                LOGGER.info("Successfully write to output stream");
+                return (HttpResponse) response;
+            } catch (IOException e) {
+                e.printStackTrace();
+                LOGGER.error(e.toString());
+            }
+        } else {
+            LOGGER.error("Report is not found");
+        }
+        return null;
     }
 
     public void kill(String containerId) {
@@ -201,6 +191,28 @@ public class DynamicScannerService {
         DockerHandler.killContainer(containerId);
         DockerHandler.removeContainer(containerId);
         dynamicScanner.setStatus(STATUS_REMOVED);
+        save(dynamicScanner);
+    }
+
+    public void updateScanStatus(String containerId, String status, int progress) {
+        DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
+        dynamicScanner.setScanStatus(status);
+        dynamicScanner.setScanProgress(progress);
+        dynamicScanner.setScanProgressTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+        save(dynamicScanner);
+    }
+
+    public void updateReportReady(String containerId, boolean status) {
+        DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
+        dynamicScanner.setReportReady(status);
+        dynamicScanner.setReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+        save(dynamicScanner);
+        getReportAndMail(containerId,"//home/deshani/Documents/ZapReport.html");
+    }
+
+    public void updateMessage(String containerId, String status) {
+        DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
+        dynamicScanner.setMessage(status);
         save(dynamicScanner);
     }
 }

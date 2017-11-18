@@ -25,22 +25,20 @@
 //import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 //import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 //import org.springframework.test.context.junit4.SpringRunner;
-//import org.wso2.security.automation.manager.entity.scanner.dynamic.ZapEntity;
+//import org.wso2.security.automation.manager.entity.scanner.dynamic.DynamicScannerEntity;
 //
 //import static org.junit.Assert.assertEquals;
 //
 //@RunWith(SpringRunner.class)
 //@DataJpaTest
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//public class ZapRepositoryTest {
-//
+//public class DynamicScannerImplRepositoryTest {
 //
 //    @Autowired
 //    private TestEntityManager entityManager;
 //
 //    @Autowired
-//    private ZapRepository zapRepository;
-//
+//    private DynamicScannerRepository dynamicScannerRepository;
 //
 //    @Test
 //    public void testExample() throws Exception {
@@ -48,14 +46,14 @@
 //        String name = "testName";
 //        String userId = "test@test.com";
 //
-//        ZapEntity zapToPersist = new ZapEntity();
-//        zapToPersist.setContainerId(containerId);
-//        zapToPersist.setName(name);
-//        zapToPersist.setUserId(userId);
+//        DynamicScannerEntity dynamicScannerToPersist = new DynamicScannerEntity();
+//        dynamicScannerToPersist.setContainerId(containerId);
+//        dynamicScannerToPersist.setTestName(name);
+//        dynamicScannerToPersist.setUserId(userId);
 //
-//        entityManager.persist(zapToPersist);
-//        ZapEntity zap = zapRepository.findOneByContainerId(containerId);
-//        assertEquals(name, zap.getName());
+//        entityManager.persist(dynamicScannerToPersist);
+//        DynamicScannerEntity dynamicScanner = dynamicScannerRepository.findOneByContainerId(containerId);
+//        assertEquals(name, dynamicScanner.getTestName());
 //    }
 //
 //    @Test
@@ -64,16 +62,16 @@
 //        String name = "testName";
 //        String userId = "test@test.com";
 //
-//        ZapEntity zapToPersist = new ZapEntity();
-//        zapToPersist.setContainerId(containerId);
-//        zapToPersist.setName(name);
-//        zapToPersist.setUserId(userId);
+//        DynamicScannerEntity dynamicScannerToPersist = new DynamicScannerEntity();
+//        dynamicScannerToPersist.setContainerId(containerId);
+//        dynamicScannerToPersist.setTestName(name);
+//        dynamicScannerToPersist.setUserId(userId);
 //
-//        entityManager.persist(zapToPersist);
+//        entityManager.persist(dynamicScannerToPersist);
 //
-//        Iterable<ZapEntity> zaps = zapRepository.findByUserId(containerId);
-//        while (zaps.iterator().hasNext()) {
-//            assertEquals(zapToPersist, zaps.iterator().next());
+//        Iterable<DynamicScannerEntity> dynamicScanners = dynamicScannerRepository.findByUserId(containerId);
+//        while (dynamicScanners.iterator().hasNext()) {
+//            assertEquals(dynamicScannerToPersist, dynamicScanners.iterator().next());
 //        }
 //    }
 //}

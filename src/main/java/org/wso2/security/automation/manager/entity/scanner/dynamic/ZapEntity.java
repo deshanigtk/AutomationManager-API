@@ -16,19 +16,26 @@
  * under the License.
  */
 
-package org.wso2.security.automation.manager.repository;
+package org.wso2.security.automation.manager.entity.scanner.dynamic;
 
-import org.springframework.data.repository.CrudRepository;
-import org.wso2.security.automation.manager.entity.scanner.statics.StaticScannerEntity;
+import javax.persistence.*;
 
 /**
- * Static scanner repository
+ * Zap entity
  *
  * @author Deshani Geethika
  */
-public interface StaticScannerRepository extends CrudRepository<StaticScannerEntity, Integer> {
+@SuppressWarnings("unused")
+@Entity
+public class ZapEntity extends DynamicScannerEntity{
 
-    StaticScannerEntity findOneByContainerId(String containerId);
+    private String spiderStatus;
 
-    Iterable<StaticScannerEntity> findByUserId(String userId);
+    public void setSpiderStatus(String spiderStatus) {
+        this.spiderStatus = spiderStatus;
+    }
+
+    public String getSpiderStatus() {
+        return spiderStatus;
+    }
 }

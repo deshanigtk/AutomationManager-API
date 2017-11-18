@@ -16,17 +16,18 @@
  * under the License.
  */
 
-package org.wso2.security.automation.manager.scanner;
+package org.wso2.security.automation.manager.scanner.statics;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.security.automation.manager.config.ApplicationContextUtils;
-import org.wso2.security.automation.manager.entity.StaticScannerEntity;
+import org.wso2.security.automation.manager.entity.scanner.statics.FindSecBugsEntity;
+import org.wso2.security.automation.manager.entity.scanner.statics.StaticScannerEntity;
 import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.handler.HttpRequestHandler;
-import org.wso2.security.automation.manager.property.ScannerProperty;
+import org.wso2.security.automation.manager.config.ScannerProperty;
 import org.wso2.security.automation.manager.service.StaticScannerService;
 
 import java.io.File;
@@ -103,7 +104,7 @@ public class StaticScanner implements Runnable {
     }
 
     private StaticScannerEntity startStaticScanner() {
-        StaticScannerEntity staticScanner = new StaticScannerEntity();
+        StaticScannerEntity staticScanner = new FindSecBugsEntity();
         staticScanner.setUserId(userId);
         staticScanner.setTestName(testName);
         staticScanner.setProductName(productName);

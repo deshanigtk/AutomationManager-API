@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.automation.manager.entity;
+package org.wso2.security.automation.manager.entity.scanner.statics;
 
 import javax.persistence.*;
 
@@ -27,8 +27,9 @@ import javax.persistence.*;
  */
 @SuppressWarnings("unused")
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
-public class StaticScannerEntity {
+public abstract class StaticScannerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -46,25 +47,12 @@ public class StaticScannerEntity {
     private int containerPort;
     private int hostPort;
     private boolean isProductAvailable;
-
     private boolean fileExtracted;
     private String fileExtractedTime;
-
     private boolean productCloned;
     private String productClonedTime;
-
-    private String findSecBugsStatus = "not initiated";
-    private String dependencyCheckStatus = "not initiated";
-
-    private boolean dependencyCheckReportReady;
-    private String dependencyCheckReportReadyTime;
-
-    private boolean findSecBugsReportReady;
-    private String findSecBugsReportReadyTime;
-
     private boolean reportReady;
     private String reportReadyTime;
-
     private boolean reportSent;
     private String reportSentTime;
 
@@ -126,14 +114,6 @@ public class StaticScannerEntity {
         this.productCloned = productCloned;
     }
 
-    public void setDependencyCheckReportReady(boolean dependencyCheckReportReady) {
-        this.dependencyCheckReportReady = dependencyCheckReportReady;
-    }
-
-    public void setFindSecBugsReportReady(boolean findSecBugsReportReady) {
-        this.findSecBugsReportReady = findSecBugsReportReady;
-    }
-
     public void setReportReady(boolean reportReady) {
         this.reportReady = reportReady;
     }
@@ -148,22 +128,6 @@ public class StaticScannerEntity {
 
     public void setProductClonedTime(String productClonedTime) {
         this.productClonedTime = productClonedTime;
-    }
-
-    public void setFindSecBugsStatus(String findSecBugsStatus) {
-        this.findSecBugsStatus = findSecBugsStatus;
-    }
-
-    public void setDependencyCheckStatus(String dependencyCheckStatus) {
-        this.dependencyCheckStatus = dependencyCheckStatus;
-    }
-
-    public void setDependencyCheckReportReadyTime(String dependencyCheckReportReadyTime) {
-        this.dependencyCheckReportReadyTime = dependencyCheckReportReadyTime;
-    }
-
-    public void setFindSecBugsReportReadyTime(String findSecBugsReportReadyTime) {
-        this.findSecBugsReportReadyTime = findSecBugsReportReadyTime;
     }
 
     public void setMessage(String message) {
@@ -240,30 +204,6 @@ public class StaticScannerEntity {
 
     public String getProductClonedTime() {
         return productClonedTime;
-    }
-
-    public String getFindSecBugsStatus() {
-        return findSecBugsStatus;
-    }
-
-    public String getDependencyCheckStatus() {
-        return dependencyCheckStatus;
-    }
-
-    public boolean isDependencyCheckReportReady() {
-        return dependencyCheckReportReady;
-    }
-
-    public String getDependencyCheckReportReadyTime() {
-        return dependencyCheckReportReadyTime;
-    }
-
-    public boolean isFindSecBugsReportReady() {
-        return findSecBugsReportReady;
-    }
-
-    public String getFindSecBugsReportReadyTime() {
-        return findSecBugsReportReadyTime;
     }
 
     public String getMessage() {

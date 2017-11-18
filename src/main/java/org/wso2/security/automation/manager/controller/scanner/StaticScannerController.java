@@ -44,7 +44,7 @@ public class StaticScannerController {
     }
 
     @PostMapping(value = "startScan")
-    @ApiOperation(value = "Start Static Scanner container, upload the product zip file or else clone product from GitHub and start scans - FindSecBugs and/or OWASP Dependency Check")
+    @ApiOperation(value = "Start Static Scanner container, upload the product zip file or else clone product from GitHub and start scans - FindSecBugsEntity and/or OWASP Dependency Check")
     public @ResponseBody
     void startScan(@RequestParam String userId,
                    @RequestParam String testName,

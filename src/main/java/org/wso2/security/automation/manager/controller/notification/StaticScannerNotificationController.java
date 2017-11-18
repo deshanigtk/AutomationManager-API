@@ -26,13 +26,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wso2.security.automation.manager.entity.StaticScannerEntity;
+import org.wso2.security.automation.manager.entity.scanner.statics.StaticScannerEntity;
 import org.wso2.security.automation.manager.service.StaticScannerService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
+/**TODO:Describe more
  * Notification controller for dynamic scanner
  *
  * @author Deshani Geethika
@@ -73,48 +73,48 @@ public class StaticScannerNotificationController {
         staticScannerService.save(staticScanner);
     }
 
-    @GetMapping(value = "findSecBugsStatus")
-    @ApiOperation(value = "Update the status of FindSecBugs scan")
-    public @ResponseBody
-    void updateFindSecBugsStatus(@RequestParam String containerId, @RequestParam String status) {
-        StaticScannerEntity staticScanner = staticScannerService.findOneByContainerId(containerId);
-        staticScanner.setFindSecBugsStatus(status);
-        staticScannerService.save(staticScanner);
-    }
-
-    @GetMapping(value = "dependencyCheckStatus")
-    public @ResponseBody
-    @ApiOperation(value = "Update the status of Dependency Check scan")
-    void updateDependencyCheckStatus(@RequestParam String containerId, @RequestParam String status) {
-        StaticScannerEntity staticScanner = staticScannerService.findOneByContainerId(containerId);
-        staticScanner.setDependencyCheckStatus(status);
-        staticScannerService.save(staticScanner);
-    }
-
-    @GetMapping(value = "dependencyCheckReportReady")
-    public @ResponseBody
-    @ApiOperation(value = "Update that the Dependency Check report is ready, and the time")
-    void updateDependencyCheckReportReady(@RequestParam String containerId, @RequestParam boolean status) {
-        StaticScannerEntity staticScanner = staticScannerService.findOneByContainerId(containerId);
-        staticScanner.setDependencyCheckReportReady(status);
-        staticScanner.setDependencyCheckReportReadyTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
-        staticScannerService.save(staticScanner);
-
-    }
-
-    @GetMapping(value = "findSecBugsReportReady")
-    @ApiOperation(value = "Update that the FindSecBugs scan report is ready, and the time")
-    public @ResponseBody
-    void updateFindSecBugsReportReady(@RequestParam String containerId, @RequestParam boolean status) {
-        StaticScannerEntity staticScanner = staticScannerService.findOneByContainerId(containerId);
-        staticScanner.setFindSecBugsReportReady(status);
-        staticScanner.setFindSecBugsReportReadyTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
-        staticScannerService.save(staticScanner);
-    }
+//    @GetMapping(value = "findSecBugsStatus")
+//    @ApiOperation(value = "Update the status of FindSecBugsEntity scan")
+//    public @ResponseBody
+//    void updateFindSecBugsStatus(@RequestParam String containerId, @RequestParam String status) {
+//        StaticScannerEntity staticScanner = staticScannerService.findOneByContainerId(containerId);
+//        staticScanner.setFindSecBugsStatus(status);
+//        staticScannerService.save(staticScanner);
+//    }
+//
+//    @GetMapping(value = "dependencyCheckStatus")
+//    public @ResponseBody
+//    @ApiOperation(value = "Update the status of Dependency Check scan")
+//    void updateDependencyCheckStatus(@RequestParam String containerId, @RequestParam String status) {
+//        StaticScannerEntity staticScanner = staticScannerService.findOneByContainerId(containerId);
+//        staticScanner.setDependencyCheckStatus(status);
+//        staticScannerService.save(staticScanner);
+//    }
+//
+//    @GetMapping(value = "dependencyCheckReportReady")
+//    public @ResponseBody
+//    @ApiOperation(value = "Update that the Dependency Check report is ready, and the time")
+//    void updateDependencyCheckReportReady(@RequestParam String containerId, @RequestParam boolean status) {
+//        StaticScannerEntity staticScanner = staticScannerService.findOneByContainerId(containerId);
+//        staticScanner.setDependencyCheckReportReady(status);
+//        staticScanner.setDependencyCheckReportReadyTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
+//        staticScannerService.save(staticScanner);
+//
+//    }
+//
+//    @GetMapping(value = "findSecBugsReportReady")
+//    @ApiOperation(value = "Update that the FindSecBugsEntity scan report is ready, and the time")
+//    public @ResponseBody
+//    void updateFindSecBugsReportReady(@RequestParam String containerId, @RequestParam boolean status) {
+//        StaticScannerEntity staticScanner = staticScannerService.findOneByContainerId(containerId);
+//        staticScanner.setFindSecBugsReportReady(status);
+//        staticScanner.setFindSecBugsReportReadyTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
+//        staticScannerService.save(staticScanner);
+//    }
 
     @GetMapping(value = "reportReady")
     public @ResponseBody
-    @ApiOperation(value = "Update that the full report is ready (FindSecBugs report and/or Dependency Check report)")
+    @ApiOperation(value = "Update that the full report is ready (FindSecBugsEntity report and/or Dependency Check report)")
     void updateReportReady(@RequestParam String containerId, @RequestParam boolean status) {
         StaticScannerEntity staticScanner = staticScannerService.findOneByContainerId(containerId);
         staticScanner.setReportReady(status);

@@ -16,9 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.automation.manager.entity;
-
-import io.swagger.annotations.ApiModelProperty;
+package org.wso2.security.automation.manager.entity.scanner.dynamic;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -30,39 +28,28 @@ import javax.validation.constraints.NotNull;
  */
 @SuppressWarnings("unused")
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
-public class DynamicScannerEntity {
+public abstract class DynamicScannerEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @ApiModelProperty(notes = "Auto incremented Id")
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
 
     @Column(unique = true)
     private String containerId;
+
     @NotNull
     private String userId;
-
-    private String relatedZapId;
-    private String testName;
-    private String productName;
-    private String wumLevel;
     private String createdTime;
     private String status;
     private String ipAddress;
+    private String dockerIpAddress;
     private int containerPort;
     private int hostPort;
-
-    private boolean fileUploaded;
-    private String fileUploadedTime;
-    private boolean fileExtracted;
-    private String fileExtractedTime;
-    private boolean serverStarted;
-    private String serverStartedTime;
-
-    private String zapScanStatus;
-    private int zapScanProgress = -1;
-    private String zapScanProgressTime;
+    private String scanStatus;
+    private int scanProgress = -1;
+    private String scanProgressTime;
     private boolean reportReady;
     private String reportReadyTime;
     private boolean reportSent;
@@ -77,28 +64,16 @@ public class DynamicScannerEntity {
         this.userId = userId;
     }
 
-    public void setRelatedZapId(String relatedZapId) {
-        this.relatedZapId = relatedZapId;
-    }
-
     public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
 
-    public void setTestName(String testName) {
-        this.testName = testName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void setWumLevel(String wumLevel) {
-        this.wumLevel = wumLevel;
-    }
-
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public void setDockerIpAddress(String dockerIpAddress) {
+        this.dockerIpAddress = dockerIpAddress;
     }
 
     public void setContainerPort(int containerPort) {
@@ -113,40 +88,16 @@ public class DynamicScannerEntity {
         this.status = status;
     }
 
-    public void setFileUploaded(boolean fileUploaded) {
-        this.fileUploaded = fileUploaded;
+    public void setScanStatus(String scanStatus) {
+        this.scanStatus = scanStatus;
     }
 
-    public void setFileUploadedTime(String fileUploadedTime) {
-        this.fileUploadedTime = fileUploadedTime;
+    public void setScanProgress(int scanProgress) {
+        this.scanProgress = scanProgress;
     }
 
-    public void setFileExtracted(boolean fileExtracted) {
-        this.fileExtracted = fileExtracted;
-    }
-
-    public void setFileExtractedTime(String fileExtractedTime) {
-        this.fileExtractedTime = fileExtractedTime;
-    }
-
-    public void setServerStarted(boolean serverStarted) {
-        this.serverStarted = serverStarted;
-    }
-
-    public void setServerStartedTime(String serverStartedTime) {
-        this.serverStartedTime = serverStartedTime;
-    }
-
-    public void setZapScanStatus(String zapScanStatus) {
-        this.zapScanStatus = zapScanStatus;
-    }
-
-    public void setZapScanProgress(int zapScanProgress) {
-        this.zapScanProgress = zapScanProgress;
-    }
-
-    public void setZapScanProgressTime(String zapScanProgressTime) {
-        this.zapScanProgressTime = zapScanProgressTime;
+    public void setScanProgressTime(String scanProgressTime) {
+        this.scanProgressTime = scanProgressTime;
     }
 
     public void setReportReady(boolean reportReady) {
@@ -181,22 +132,6 @@ public class DynamicScannerEntity {
         return userId;
     }
 
-    public String getRelatedZapId() {
-        return relatedZapId;
-    }
-
-    public String getTestName() {
-        return testName;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public String getWumLevel() {
-        return wumLevel;
-    }
-
     public String getCreatedTime() {
         return createdTime;
     }
@@ -209,6 +144,10 @@ public class DynamicScannerEntity {
         return ipAddress;
     }
 
+    public String getDockerIpAddress() {
+        return dockerIpAddress;
+    }
+
     public int getContainerPort() {
         return containerPort;
     }
@@ -217,40 +156,16 @@ public class DynamicScannerEntity {
         return hostPort;
     }
 
-    public boolean isFileUploaded() {
-        return fileUploaded;
+    public String getScanStatus() {
+        return scanStatus;
     }
 
-    public String getFileUploadedTime() {
-        return fileUploadedTime;
+    public int getScanProgress() {
+        return scanProgress;
     }
 
-    public boolean isFileExtracted() {
-        return fileExtracted;
-    }
-
-    public String getFileExtractedTime() {
-        return fileExtractedTime;
-    }
-
-    public boolean isServerStarted() {
-        return serverStarted;
-    }
-
-    public String getServerStartedTime() {
-        return serverStartedTime;
-    }
-
-    public String getZapScanStatus() {
-        return zapScanStatus;
-    }
-
-    public int getZapScanProgress() {
-        return zapScanProgress;
-    }
-
-    public String getZapScanProgressTime() {
-        return zapScanProgressTime;
+    public String getScanProgressTime() {
+        return scanProgressTime;
     }
 
     public boolean isReportReady() {

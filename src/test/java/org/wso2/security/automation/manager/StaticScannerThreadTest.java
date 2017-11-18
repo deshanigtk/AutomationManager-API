@@ -26,7 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.wso2.security.automation.manager.handler.MailHandler;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
-import org.wso2.security.automation.manager.scanner.StaticScanner;
+import org.wso2.security.automation.manager.scanner.statics.StaticScanner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

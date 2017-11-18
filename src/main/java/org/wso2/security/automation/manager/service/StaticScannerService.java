@@ -30,15 +30,15 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.automation.manager.entity.StaticScannerEntity;
+import org.wso2.security.automation.manager.entity.scanner.statics.StaticScannerEntity;
 import org.wso2.security.automation.manager.exception.AutomationManagerRuntimeException;
 import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.handler.FileHandler;
 import org.wso2.security.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.automation.manager.handler.MailHandler;
-import org.wso2.security.automation.manager.property.ScannerProperty;
+import org.wso2.security.automation.manager.config.ScannerProperty;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
-import org.wso2.security.automation.manager.scanner.StaticScanner;
+import org.wso2.security.automation.manager.scanner.statics.StaticScanner;
 
 import java.io.File;
 import java.io.IOException;

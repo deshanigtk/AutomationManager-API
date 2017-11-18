@@ -23,11 +23,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.wso2.security.automation.manager.entity.DynamicScannerEntity;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.wso2.security.automation.manager.service.ProductManagerService;
 
 @Controller
 @RequestMapping("dynamicScanner/notify")
@@ -35,70 +32,32 @@ import java.util.Date;
 public class DynamicScannerNotificationController {
 
     private final DynamicScannerService dynamicScannerService;
+    private final ProductManagerService productManagerService;
 
     @Autowired
-    public DynamicScannerNotificationController(DynamicScannerService dynamicScannerService) {
+    public DynamicScannerNotificationController(DynamicScannerService dynamicScannerService, ProductManagerService productManagerService) {
         this.dynamicScannerService = dynamicScannerService;
+        this.productManagerService = productManagerService;
     }
 
     @GetMapping(value = "fileUploaded")
     @ApiOperation(value = "Update that a zip file is uploaded to the container")
     public @ResponseBody
     void updateFileUploaded(@RequestParam String containerId, @RequestParam boolean status) {
-        DynamicScannerEntity dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
-        dynamicScanner.setFileUploaded(status);
-        dynamicScanner.setFileUploadedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
-        dynamicScannerService.save(dynamicScanner);
+        productManagerService.updateFileUploaded(containerId, status);
     }
 
     @GetMapping(value = "fileExtracted")
     @ApiOperation(value = "Update that a zip file is extracted to the container")
     public @ResponseBody
     void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status) {
-        DynamicScannerEntity dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
-        dynamicScanner.setFileExtracted(status);
-        dynamicScanner.setFileExtractedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
-        dynamicScannerService.save(dynamicScanner);
+        productManagerService.updateFileExtracted(containerId, status);
     }
 
     @GetMapping(value = "serverStarted")
     @ApiOperation(value = "Update that a server is started inside the container")
     public @ResponseBody
     void updateServerStarted(@RequestParam String containerId, @RequestParam boolean status) {
-        DynamicScannerEntity dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
-        dynamicScanner.setServerStarted(status);
-        dynamicScanner.setServerStartedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
-        dynamicScannerService.save(dynamicScanner);
-    }
-
-    @GetMapping(value = "zapScanStatus")
-    @ApiOperation(value = "Update the progress of a ZAP scan")
-    public @ResponseBody
-    void updateZapScanStatus(@RequestParam String containerId, @RequestParam String status, @RequestParam int progress) {
-        DynamicScannerEntity dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
-        dynamicScanner.setZapScanStatus(status);
-        dynamicScanner.setZapScanProgress(progress);
-        dynamicScanner.setZapScanProgressTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
-        dynamicScannerService.save(dynamicScanner);
-    }
-
-    @GetMapping(value = "reportReady")
-    @ApiOperation(value = "Update that a ZAP report is ready")
-    public @ResponseBody
-    void updateReportReady(@RequestParam String containerId, @RequestParam boolean status) {
-        DynamicScannerEntity dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
-        dynamicScanner.setReportReady(status);
-        dynamicScanner.setReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
-        dynamicScannerService.save(dynamicScanner);
-        dynamicScannerService.getReportAndMail(containerId);
-    }
-
-    @GetMapping(value = "message")
-    @ApiOperation(value = "Update an error message of a container")
-    public @ResponseBody
-    void updateMessage(@RequestParam String containerId, @RequestParam String status) {
-        DynamicScannerEntity dynamicScanner = dynamicScannerService.findOneByContainerId(containerId);
-        dynamicScanner.setMessage(status);
-        dynamicScannerService.save(dynamicScanner);
+        productManagerService.updateServerStarted(containerId, status);
     }
 }

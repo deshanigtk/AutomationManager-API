@@ -1,4 +1,4 @@
-package org.wso2.security.automation.manager.property;/*
+package org.wso2.security.automation.manager.config;/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -32,31 +32,33 @@ public class ScannerProperty {
     private static String staticScannerStartScan;
     private static String staticScannerGetReport;
 
-    private static String dynamicScannerIsReady;
-    private static String dynamicScannerStartScan;
-    private static String dynamicScannerGetReport;
+    private static String productManagerIsReady;
+    private static String productManagerStartServer;
+    private static int productManagerProductPort;
 
     private static String automationManagerHost;
     private static String automationManagerPort;
     private static String tempFolderPath;
 
+    private static String zapReport;
 
     static {
         properties = new Properties();
         try {
             properties.load(new FileInputStream(new File(ScannerProperty.class.getClassLoader().getResource("scanner.properties").getFile())));
             staticScannerDockerImage = properties.getProperty("scanner.static.docker.image");
-            dynamicScannerDockerImage = properties.getProperty("scanner.dynamic.docker.image");
+            dynamicScannerDockerImage = properties.getProperty("product.manager.docker.image");
             zapDockerImage = properties.getProperty("scanner.zap.docker.image");
             staticScannerIsReady = properties.getProperty("scanner.static.is-ready");
             staticScannerStartScan = properties.getProperty("scanner.static.start-scan");
             staticScannerGetReport = properties.getProperty("scanner.static.get-report");
-            dynamicScannerIsReady = properties.getProperty("scanner.dynamic.is-ready");
-            dynamicScannerStartScan = properties.getProperty("scanner.dynamic.start-scan");
-            dynamicScannerGetReport = properties.getProperty("scanner.dynamic.get.report");
+            productManagerIsReady = properties.getProperty("product.manager.is-ready");
+            productManagerStartServer = properties.getProperty("product.manager.start-server");
+            productManagerProductPort = Integer.parseInt(properties.getProperty("product.manager.product-port"));
             automationManagerHost = properties.getProperty("automation.manager.host");
             automationManagerPort = properties.getProperty("automation.manager.port");
             tempFolderPath = properties.getProperty("temp.dir");
+            zapReport=properties.getProperty("zap.report");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,16 +89,16 @@ public class ScannerProperty {
         return staticScannerGetReport;
     }
 
-    public static String getDynamicScannerIsReady() {
-        return dynamicScannerIsReady;
+    public static String getProductManagerIsReady() {
+        return productManagerIsReady;
     }
 
-    public static String getDynamicScannerStartScan() {
-        return dynamicScannerStartScan;
+    public static String getProductManagerStartServer() {
+        return productManagerStartServer;
     }
 
-    public static String getDynamicScannerGetReport() {
-        return dynamicScannerGetReport;
+    public static int getProductManagerProductPort() {
+        return productManagerProductPort;
     }
 
     public static String getAutomationManagerHost() {
@@ -109,5 +111,9 @@ public class ScannerProperty {
 
     public static String getTempFolderPath() {
         return tempFolderPath;
+    }
+
+    public static String getZapReport() {
+        return zapReport;
     }
 }

@@ -20,7 +20,7 @@ package org.wso2.security.automation.manager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.wso2.security.automation.manager.entity.ZapEntity;
+import org.wso2.security.automation.manager.entity.scanner.dynamic.ZapEntity;
 import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.repository.ZapRepository;
 

@@ -25,8 +25,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wso2.security.automation.manager.entity.DynamicScannerEntity;
-import org.wso2.security.automation.manager.entity.StaticScannerEntity;
+import org.wso2.security.automation.manager.entity.scanner.dynamic.DynamicScannerEntity;
+import org.wso2.security.automation.manager.entity.scanner.statics.StaticScannerEntity;
 import org.wso2.security.automation.manager.service.DynamicScannerService;
 import org.wso2.security.automation.manager.service.StaticScannerService;
 
