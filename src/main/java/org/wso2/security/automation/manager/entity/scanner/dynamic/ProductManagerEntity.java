@@ -1,4 +1,4 @@
-package org.wso2.security.automation.manager.entity;/*
+package org.wso2.security.automation.manager.entity.scanner.dynamic;/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,8 +16,6 @@ package org.wso2.security.automation.manager.entity;/*
 * under the License.
 */
 
-import io.swagger.annotations.ApiModelProperty;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,21 +31,20 @@ import javax.validation.constraints.NotNull;
 public class ProductManagerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @ApiModelProperty(notes = "Auto incremented Id")
     private int id;
-
+    private boolean isContainer;
     @Column(unique = true)
     private String containerId;
     @NotNull
     private String userId;
-
-    private String relatedZapId;
+    private String relatedDynamicScannerId;
     private String testName;
     private String productName;
     private String wumLevel;
     private String createdTime;
     private String status;
     private String ipAddress;
+    private String dockerIpAddress;
     private int containerPort;
     private int hostPort;
 
@@ -59,6 +56,10 @@ public class ProductManagerEntity {
     private String serverStartedTime;
     private String message;
 
+    public void setContainer(boolean container) {
+        isContainer = container;
+    }
+
     public void setContainerId(String containerId) {
         this.containerId = containerId;
     }
@@ -67,8 +68,8 @@ public class ProductManagerEntity {
         this.userId = userId;
     }
 
-    public void setRelatedZapId(String relatedZapId) {
-        this.relatedZapId = relatedZapId;
+    public void setRelatedDynamicScannerId(String relatedDynamicScannerId) {
+        this.relatedDynamicScannerId = relatedDynamicScannerId;
     }
 
     public void setCreatedTime(String createdTime) {
@@ -89,6 +90,10 @@ public class ProductManagerEntity {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public void setDockerIpAddress(String dockerIpAddress) {
+        this.dockerIpAddress = dockerIpAddress;
     }
 
     public void setContainerPort(int containerPort) {
@@ -135,6 +140,10 @@ public class ProductManagerEntity {
         return id;
     }
 
+    public boolean isContainer() {
+        return isContainer;
+    }
+
     public String getContainerId() {
         return containerId;
     }
@@ -143,8 +152,8 @@ public class ProductManagerEntity {
         return userId;
     }
 
-    public String getRelatedZapId() {
-        return relatedZapId;
+    public String getRelatedDynamicScannerId() {
+        return relatedDynamicScannerId;
     }
 
     public String getTestName() {
@@ -169,6 +178,10 @@ public class ProductManagerEntity {
 
     public String getIpAddress() {
         return ipAddress;
+    }
+
+    public String getDockerIpAddress() {
+        return dockerIpAddress;
     }
 
     public int getContainerPort() {

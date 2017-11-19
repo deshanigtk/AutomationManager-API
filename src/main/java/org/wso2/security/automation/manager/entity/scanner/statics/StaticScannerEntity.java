@@ -27,17 +27,16 @@ import javax.persistence.*;
  */
 @SuppressWarnings("unused")
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
 public abstract class StaticScannerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
     @Column(unique = true)
     private String containerId;
-
     private String userId;
+    private String type;
     private String testName;
     private String productName;
     private String wumLevel;
@@ -55,7 +54,6 @@ public abstract class StaticScannerEntity {
     private String reportReadyTime;
     private boolean reportSent;
     private String reportSentTime;
-
     private String message;
 
     public void setId(int id) {
@@ -64,6 +62,10 @@ public abstract class StaticScannerEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setTestName(String testName) {
@@ -152,6 +154,10 @@ public abstract class StaticScannerEntity {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getTestName() {

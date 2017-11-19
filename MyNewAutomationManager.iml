@@ -162,5 +162,8 @@
     <orderEntry type="library" name="Maven: org.mapstruct:mapstruct:1.1.0.Final" level="project" />
     <orderEntry type="library" name="Maven: io.springfox:springfox-swagger-ui:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20131018" level="project" />
+    <orderEntry type="library" name="Maven: com.google.auto.service:auto-service:1.0-rc1" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup:javapoet:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.hannesdorfmann.annotationprocessing101.factorypattern:annotation:1.0" level="project" />
   </component>
 </module>

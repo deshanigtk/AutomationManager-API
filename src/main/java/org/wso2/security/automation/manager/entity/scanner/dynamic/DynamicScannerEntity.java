@@ -28,33 +28,36 @@ import javax.validation.constraints.NotNull;
  */
 @SuppressWarnings("unused")
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DynamicScannerEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private int id;
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected int id;
+    protected boolean isContainer;
     @Column(unique = true)
-    private String containerId;
-
+    protected String containerId;
     @NotNull
-    private String userId;
-    private String createdTime;
-    private String status;
-    private String ipAddress;
-    private String dockerIpAddress;
-    private int containerPort;
-    private int hostPort;
-    private String scanStatus;
-    private int scanProgress = -1;
-    private String scanProgressTime;
-    private boolean reportReady;
-    private String reportReadyTime;
-    private boolean reportSent;
-    private String reportSentTime;
-    private String message;
+    protected String userId;
+    protected String type;
+    protected String createdTime;
+    protected String status;
+    protected String ipAddress;
+    protected String dockerIpAddress;
+    protected int containerPort;
+    protected int hostPort;
+    protected String scanStatus;
+    protected int scanProgress = -1;
+    protected String scanProgressTime;
+    protected boolean reportReady;
+    protected String reportReadyTime;
+    protected boolean reportSent;
+    protected String reportSentTime;
+    protected String message;
+
+    public void setContainer(boolean container) {
+        isContainer = container;
+    }
 
     public void setContainerId(String containerId) {
         this.containerId = containerId;
@@ -62,6 +65,10 @@ public abstract class DynamicScannerEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setCreatedTime(String createdTime) {
@@ -124,12 +131,20 @@ public abstract class DynamicScannerEntity {
         return id;
     }
 
+    public boolean isContainer() {
+        return isContainer;
+    }
+
     public String getContainerId() {
         return containerId;
     }
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getCreatedTime() {

@@ -1,4 +1,4 @@
-package org.wso2.security.automation.manager.repository;/*
+package org.wso2.security.automation.manager.scanner.dynamic;/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,11 +16,17 @@ package org.wso2.security.automation.manager.repository;/*
 * under the License.
 */
 
-import org.springframework.data.repository.CrudRepository;
-import org.wso2.security.automation.manager.entity.scanner.dynamic.ProductManagerEntity;
+import org.wso2.security.automation.manager.scanner.dynamic.zap.ZapScanner;
 
-public interface ProductManagerRepository extends CrudRepository<ProductManagerEntity, Integer> {
-    ProductManagerEntity findOneByContainerId(String containerId);
+public class DynamicScannerFactory {
 
-    Iterable<ProductManagerEntity> findByUserId(String userId);
+    public DynamicScanner getDynamicScanner(String dynamicScannerType) {
+        if (dynamicScannerType == null) {
+            return null;
+        }
+        if (dynamicScannerType.equalsIgnoreCase("Zap")) {
+            return new ZapScanner();
+        }
+        return null;
+    }
 }

@@ -28,8 +28,10 @@ import java.security.KeyStore;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
@@ -43,7 +45,7 @@ public class HttpsRequestHandler {
     private static final String trustStoreType = "JKS";
     private static final String trustManagerType = "SunX509";
     private static final String protocol = "TLSv1.2";
-    private static final String trustStorePath = "org/wso2/security/dynamic/scanner/truststore.jks";
+    private static final String trustStorePath = "org.wso2.security.automation.manager/truststore.jks";
     private static final String trustStorePassword = "wso2carbon";
 
     private static KeyStore trustStore;
@@ -52,10 +54,19 @@ public class HttpsRequestHandler {
 
     private static boolean isInitialized = false;
 
+    static {
+        HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> {
+            // ip address of the service URL(like.23.28.244.244)
+//                if (hostname.equals("23.28.244.244"))
+            return true;
+
+        });
+    }
 
     private static void init() {
         try {
             trustStore = KeyStore.getInstance(trustStoreType);
+            System.out.println(trustStore);
             InputStream inputStream = HttpsRequestHandler.class.getClassLoader().getResourceAsStream(trustStorePath);
             assert inputStream != null;
             trustStore.load(inputStream, trustStorePassword.toCharArray());
@@ -67,6 +78,8 @@ public class HttpsRequestHandler {
 
             sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
             sslSocketFactory = sslContext.getSocketFactory();
+            System.out.println(sslSocketFactory);
+            System.out.println(sslContext);
 
             isInitialized = true;
 
@@ -106,6 +119,9 @@ public class HttpsRequestHandler {
                     httpsURLConnection.setRequestProperty(entry.getKey(), entry.getValue());
                 }
             }
+
+
+            System.out.println(httpsURLConnection);
             return httpsURLConnection;
 
         } catch (IOException e) {
@@ -122,8 +138,9 @@ public class HttpsRequestHandler {
 
         Map<String, List<String>> headerFields = httpsURLConnection.getHeaderFields();
         for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
-            if (entry.getKey() == null)
+            if (entry.getKey() == null) {
                 continue;
+            }
             builder.append(entry.getKey())
                     .append(": ");
 
@@ -149,8 +166,9 @@ public class HttpsRequestHandler {
         for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
             System.out.println(entry.getKey());
             System.out.println(entry.getValue());
-            if (entry.getKey() == null)
+            if (entry.getKey() == null) {
                 continue;
+            }
 
             if (entry.getKey().equals(key)) {
                 return entry.getValue();

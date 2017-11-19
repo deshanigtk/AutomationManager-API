@@ -27,7 +27,7 @@ import javax.persistence.*;
  */
 @SuppressWarnings("unused")
 @Entity
-public class ZapEntity extends DynamicScannerEntity{
+public class ZapEntity extends DynamicScannerEntity {
 
     private String spiderStatus;
 
@@ -37,5 +37,9 @@ public class ZapEntity extends DynamicScannerEntity{
 
     public String getSpiderStatus() {
         return spiderStatus;
+    }
+
+    public void setIsContainer() {
+        this.isContainer = true;
     }
 }

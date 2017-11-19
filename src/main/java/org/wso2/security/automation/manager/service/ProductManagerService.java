@@ -21,21 +21,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-import org.wso2.security.automation.manager.entity.ProductManagerEntity;
-import org.wso2.security.automation.manager.entity.scanner.dynamic.DynamicScannerEntity;
+import org.wso2.security.automation.manager.entity.scanner.dynamic.ProductManagerEntity;
 import org.wso2.security.automation.manager.repository.ProductManagerRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @SuppressWarnings({"unused", "UnusedReturnValue"})
-@PropertySource("classpath:scanner.properties")
 @Service
 public class ProductManagerService {
-    @Autowired
-    private ProductManagerRepository productManagerRepository;
+    private final ProductManagerRepository productManagerRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductManagerService.class);
+
+    @Autowired
+    public ProductManagerService(ProductManagerRepository productManagerRepository) {
+        this.productManagerRepository = productManagerRepository;
+    }
 
     public Iterable<ProductManagerEntity> findAll() {
         return productManagerRepository.findAll();

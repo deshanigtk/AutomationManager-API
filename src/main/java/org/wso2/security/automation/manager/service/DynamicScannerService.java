@@ -18,49 +18,34 @@
 
 package org.wso2.security.automation.manager.service;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.wso2.security.automation.manager.config.ScannerProperty;
 import org.wso2.security.automation.manager.entity.scanner.dynamic.DynamicScannerEntity;
 import org.wso2.security.automation.manager.exception.AutomationManagerRuntimeException;
 import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.handler.FileHandler;
-import org.wso2.security.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.automation.manager.handler.MailHandler;
-import org.wso2.security.automation.manager.config.ScannerProperty;
 import org.wso2.security.automation.manager.repository.DynamicScannerRepository;
 import org.wso2.security.automation.manager.scanner.dynamic.DynamicScanner;
-import org.wso2.security.automation.manager.scanner.dynamic.zap.ZapScanner;
+import org.wso2.security.automation.manager.scanner.dynamic.DynamicScannerFactory;
+import org.wso2.security.automation.manager.scanner.dynamic.MainScanner;
+import org.wso2.security.automation.manager.scanner.dynamic.ProductManager;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.servlet.http.HttpServletResponse;
 
 /**
- * Dynamic scanner service
+ * Dynamic scanner service level methodss
  *
  * @author Deshani Geethika
  */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
-@PropertySource("classpath:scanner.properties")
 @Service
 public class DynamicScannerService {
 
@@ -68,13 +53,7 @@ public class DynamicScannerService {
 
     private static final String STATUS_REMOVED = "removed";
     private static final String DATE_PATTERN = "yyyy-MM-dd:HH.mm.ss";
-
     private final DynamicScannerRepository dynamicScannerRepository;
-
-    @Value("${scanner.dynamic.port}")
-    private int productPort;
-
-    private final ZapService zapService;
     private final MailHandler mailHandler;
 
     @Autowired
@@ -82,7 +61,6 @@ public class DynamicScannerService {
                                  ZapService zapService) {
         this.dynamicScannerRepository = dynamicScannerRepository;
         this.mailHandler = mailHandler;
-        this.zapService = zapService;
     }
 
     public Iterable<DynamicScannerEntity> findAll() {
@@ -105,21 +83,21 @@ public class DynamicScannerService {
         return dynamicScannerRepository.save(dynamicScanner);
     }
 
-    public void startScan(String userId, String testName, String ipAddress, String productName, String wumLevel,
-                          boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile, String wso2ServerHost,
-                          int wso2ServerPort, boolean isAuthenticatedScan) {
-
+    public void startScan(String scanType, String userId, String testName, String ipAddress, String productName, String wumLevel,
+                          boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile, String wso2ServerHost, int wso2ServerPort) {
         String urlListFileName;
         String zipFileName = null;
-        String uploadLocation = ScannerProperty.getTempFolderPath() + File.separator + userId +
-                new SimpleDateFormat(DATE_PATTERN).format(new Date());
+        String uploadLocation = ScannerProperty.getTempFolderPath() + File.separator + userId + new SimpleDateFormat(DATE_PATTERN).format(new Date());
+        File tempDirectory = new File(ScannerProperty.getTempFolderPath());
+        File uploadDirectory = new File(uploadLocation);
+        DynamicScannerFactory dynamicScannerFactory = new DynamicScannerFactory();
 
         if (isFileUpload) {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
                 throw new AutomationManagerRuntimeException("Please upload a zip file");
             } else {
-                if (new File(ScannerProperty.getTempFolderPath()).exists() || new File(ScannerProperty.getTempFolderPath()).mkdir()) {
-                    if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
+                if (tempDirectory.exists() || tempDirectory.mkdir()) {
+                    if (uploadDirectory.exists() || uploadDirectory.mkdir()) {
                         zipFileName = zipFile.getOriginalFilename();
                         if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
                             throw new AutomationManagerRuntimeException("Cannot upload zip file");
@@ -136,54 +114,23 @@ public class DynamicScannerService {
                 throw new AutomationManagerRuntimeException("Please enter valid details of running WSO2 server");
             }
         }
-
-        if (new File(ScannerProperty.getTempFolderPath()).exists() || new File(ScannerProperty.getTempFolderPath()).mkdir()) {
-            if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
+        if (tempDirectory.exists() || tempDirectory.mkdir()) {
+            if (uploadDirectory.exists() || uploadDirectory.mkdir()) {
                 urlListFileName = urlListFile.getOriginalFilename();
                 if (FileHandler.uploadFile(urlListFile, uploadLocation + File.separator + urlListFileName)) {
-                    DynamicScanner zapScanner = new ZapScanner(userId, testName, ipAddress, productName,
+
+                    ProductManager productManager = new ProductManager(userId, testName, ipAddress, productName,
                             wumLevel, isFileUpload, uploadLocation, urlListFileName, zipFileName,
-                            wso2ServerHost, wso2ServerPort, ipAddress);
-                    new Thread(zapScanner).start();
+                            wso2ServerHost, wso2ServerPort);
+                    DynamicScanner dynamicScanner = dynamicScannerFactory.getDynamicScanner(scanType);
+                    dynamicScanner.init(userId, ipAddress, isFileUpload, uploadLocation, urlListFileName, wso2ServerHost, wso2ServerPort, ipAddress);
+                    MainScanner mainScanner = new MainScanner(productManager, dynamicScanner);
+                    new Thread(mainScanner).start();
                 }
             } else {
                 throw new AutomationManagerRuntimeException("Cannot upload files to temp location");
             }
         }
-    }
-
-    public void getReportAndMail(String containerId, String reportFilePath) {
-        try {
-            DynamicScannerEntity dynamicScannerEntity = findOneByContainerId(containerId);
-            String subject = "Dynamic Scan Report: ";
-            if (mailHandler.sendMail(dynamicScannerEntity.getUserId(), subject, "This is auto generated message",
-                    new FileInputStream(new File(reportFilePath)), "ZapReport.html")) {
-                dynamicScannerEntity.setReportSent(true);
-                dynamicScannerEntity.setReportSentTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
-                kill(containerId);
-            }
-        } catch (Exception e) {
-            throw new AutomationManagerRuntimeException("Error occurred while getting dynamic scanner report and mail");
-        }
-    }
-
-
-    public HttpResponse getReport(HttpServletResponse response, String reportFilePath) {
-        if (new File(reportFilePath).exists()) {
-            try {
-                InputStream inputStream = new FileInputStream(reportFilePath);
-                IOUtils.copy(inputStream, response.getOutputStream());
-                response.flushBuffer();
-                LOGGER.info("Successfully write to output stream");
-                return (HttpResponse) response;
-            } catch (IOException e) {
-                e.printStackTrace();
-                LOGGER.error(e.toString());
-            }
-        } else {
-            LOGGER.error("Report is not found");
-        }
-        return null;
     }
 
     public void kill(String containerId) {
@@ -207,12 +154,26 @@ public class DynamicScannerService {
         dynamicScanner.setReportReady(status);
         dynamicScanner.setReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         save(dynamicScanner);
-        getReportAndMail(containerId,"//home/deshani/Documents/ZapReport.html");
     }
 
     public void updateMessage(String containerId, String status) {
         DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
         dynamicScanner.setMessage(status);
         save(dynamicScanner);
+    }
+
+    public void getReportAndMail(String containerId, String reportFilePath) {
+        try {
+            DynamicScannerEntity dynamicScannerEntity = findOneByContainerId(containerId);
+            String subject = "Dynamic Scan Report: ";
+            if (mailHandler.sendMail(dynamicScannerEntity.getUserId(), subject, "This is auto generated message",
+                    new FileInputStream(new File(reportFilePath)), "ZapReport.html")) {
+                dynamicScannerEntity.setReportSent(true);
+                dynamicScannerEntity.setReportSentTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
+                kill(containerId);
+            }
+        } catch (Exception e) {
+            throw new AutomationManagerRuntimeException("Error occurred while getting dynamic scanner report and mail");
+        }
     }
 }

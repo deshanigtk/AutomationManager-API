@@ -22,8 +22,9 @@ import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.wso2.security.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.automation.manager.config.ScannerProperty;
+import org.wso2.security.automation.manager.entity.scanner.dynamic.ProductManagerEntity;
 import org.wso2.security.automation.manager.entity.scanner.dynamic.DynamicScannerEntity;
 import org.wso2.security.automation.manager.entity.scanner.dynamic.ZapEntity;
 import org.wso2.security.automation.manager.handler.DockerHandler;
@@ -52,7 +53,8 @@ import javax.net.ssl.HttpsURLConnection;
  *
  * @author Deshani Geethika
  */
-public class ZapScanner extends DynamicScanner {
+
+public abstract class ZapScanner implements DynamicScanner {
 
     private final String HTTP_SCHEME = "http";
     private final String HTTPS_SCHEME = "https";
@@ -64,7 +66,7 @@ public class ZapScanner extends DynamicScanner {
     private String productHostRelativeToZap;
     private String productHostRelativeToThis;
     private int productPort;
-
+    private String site;
     private Map<String, Object> loginCredentials;
     private ZapClient zapClient;
     private URI productUriRelativeToZap;
@@ -76,29 +78,64 @@ public class ZapScanner extends DynamicScanner {
     private String loginUrl = "/carbon/admin/login_action.jsp";
     private String logoutUrl = "/carbon/admin/logout_action.jsp";
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ZapScanner.class);
+    private final String STATUS_INITIATED = "initiated";
+    private final String STATUS_CREATED = "created";
+    private final String STATUS_RUNNING = "running";
 
-    @Autowired
+    private final String DATE_PATTERN = "yyyy-MM-dd:HH.mm.ss";
+
+    private int id;
+    private String userId;
+    private String ipAddress;
+    private String fileUploadLocation;
+    private boolean isFileUpload;
+    private File urlListFile;
+    private String wso2ServerHost;
+    private int wso2ServerPort;
+    private String scannerHost;
+
     private DynamicScannerService dynamicScannerService;
 
-    public ZapScanner(String userId, String testName, String ipAddress, String productName, String wumLevel,
-                      boolean isFileUpload, String fileUploadLocation, String urlListFileName, String zipFileName,
-                      String wso2ServerHost, int wso2ServerPort, String scannerHost) {
+    private final static Logger LOGGER = LoggerFactory.getLogger(ZapScanner.class);
+    private ZapEntity zap;
 
-        super(userId, testName, ipAddress, productName, wumLevel, isFileUpload, fileUploadLocation, urlListFileName, zipFileName, wso2ServerHost, wso2ServerPort, scannerHost);
+    public ZapScanner() {
+        dynamicScannerService = ApplicationContextUtils.getApplicationContext().getBean(DynamicScannerService.class);
     }
 
     @Override
-    public ZapEntity startDynamicScanner() {
-        ZapEntity zap = new ZapEntity();
+    public void init(String userId, String ipAddress, boolean isFileUpload, String fileUploadLocation, String urlListFileName,
+                     String wso2ServerHost, int wso2ServerPort, String scannerHost) {
+        this.userId = userId;
+        this.ipAddress = ipAddress;
+        this.isFileUpload = isFileUpload;
+        this.fileUploadLocation = fileUploadLocation;
+        this.urlListFile = new File(fileUploadLocation + File.separator + urlListFileName);
+        this.wso2ServerHost = wso2ServerHost;
+        this.wso2ServerPort = wso2ServerPort;
+        this.scannerHost = scannerHost;
+
+        zap = new ZapEntity();
         zap.setUserId(userId);
         zap.setStatus(STATUS_INITIATED);
         dynamicScannerService.save(zap);
+        id = zap.getId();
+    }
 
-        int port = calculateDynamicScannerPort(zap.getId());
+    @Override
+    public int calculateDynamicScannerPort(int id) {
+        if (5000 + id > 20000) {
+            id = 1;
+        }
+        return (5000 + id) % 20000;
+    }
+
+    @Override
+    public DynamicScannerEntity startDynamicScannerContainer() {
+        int port = calculateDynamicScannerPort(id);
 
         List<String> command = Arrays.asList("zap.sh", "-daemon", "-config", "api.disablekey=true", "-config",
-                "api.addrs.addr.testName=.*", "-config", "api.addrs.addr.regex=true", "-port", String.valueOf(port),
+                "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true", "-port", String.valueOf(port),
                 "-host", "0.0.0.0");
 
         String containerId = DockerHandler.createContainer(ScannerProperty.getZapDockerImage(), ipAddress, String.valueOf(port),
@@ -112,7 +149,6 @@ public class ZapScanner extends DynamicScanner {
             zap.setHostPort(port);
             zap.setStatus(STATUS_CREATED);
             zap.setCreatedTime(createdTime);
-
             dynamicScannerService.save(zap);
 
             if (DockerHandler.startContainer(containerId)) {
@@ -126,30 +162,25 @@ public class ZapScanner extends DynamicScanner {
     }
 
     @Override
-    public void startScan(DynamicScannerEntity dynamicScannerEntity) {
+    public void startScan(DynamicScannerEntity dynamicScannerEntity, ProductManagerEntity productManagerEntity) {
         try {
-
-            String productHostRelativeToZap;
-            String productHostRelativeToThis;
-
             if (isFileUpload) {
-                productHostRelativeToZap = dynamicScannerEntity.getDockerIpAddress();
-                productHostRelativeToThis = dynamicScannerEntity.getDockerIpAddress();
+                productHostRelativeToZap = productManagerEntity.getIpAddress();
+                productHostRelativeToThis = productManagerEntity.getIpAddress();
             } else {
                 productHostRelativeToZap = wso2ServerHost;
                 productHostRelativeToThis = wso2ServerHost;
             }
-
-            Map<String, Object> loginCredentials = new HashMap<>();
-
+            loginCredentials = new HashMap<>();
             loginCredentials.put(keyUsername, valueUserName);
             loginCredentials.put(keyPassword, valuePassword);
 
-            this.productPort = ScannerProperty.getProductManagerProductPort();
-            this.zapClient = new ZapClient(scannerHost, scannerPort, HTTP_SCHEME);
+            productPort = ScannerProperty.getProductManagerProductPort();
+            zapClient = new ZapClient(dynamicScannerEntity.getDockerIpAddress(), dynamicScannerEntity.getHostPort(), HTTP_SCHEME);
 
             productUriRelativeToZap = new URIBuilder().setHost(productHostRelativeToZap).setPort(this.productPort).setScheme(HTTPS_SCHEME).build();
-
+            site = productHostRelativeToZap + ":" + productPort;
+            System.out.println(site);
             LOGGER.info("Starting ZAP scanning process...");
 
             //Create new context
@@ -160,14 +191,14 @@ public class ZapScanner extends DynamicScanner {
             LOGGER.info("Include in context response: " + HttpRequestHandler.printResponse(includeInContextResponse));
 
             //Create an empty session
-            HttpResponse createEmptySessionResponse = zapClient.createEmptySession(productUriRelativeToZap.toString(), sessionName, false);
+            HttpResponse createEmptySessionResponse = zapClient.createEmptySession(site, sessionName, false);
             LOGGER.info("Creating empty session " + HttpRequestHandler.printResponse(createEmptySessionResponse));
 
             //login to wso2 server
             Map<String, String> props = new HashMap<>();
             props.put("Content-Type", "text/plain");
 
-            URI loginUri = (new URIBuilder()).setHost(this.productHostRelativeToThis).setPort(productPort).setScheme("https").setPath(loginUrl).build();
+            URI loginUri = (new URIBuilder()).setHost(productHostRelativeToThis).setPort(productPort).setScheme("https").setPath(loginUrl).build();
             LOGGER.info("URI to login to wso2server: " + loginUri.toString());
             HttpsURLConnection httpsURLConnection = HttpsRequestHandler.sendRequest(loginUri.toString(), props, loginCredentials, POST);
             List<String> setCookieResponseList = HttpsRequestHandler.getResponseValue("Set-Cookie", httpsURLConnection);
@@ -176,11 +207,11 @@ public class ZapScanner extends DynamicScanner {
             String setCookieResponse = setCookieResponseList.get(0);
             String jsessionId = setCookieResponse.substring(setCookieResponse.indexOf("=") + 1, setCookieResponse.indexOf(";"));
 
-            HttpResponse setSessionTokenResponse = zapClient.setSessionTokenValue(productUriRelativeToZap.toString(), sessionName, "JSESSIONID", jsessionId, false);
+            HttpResponse setSessionTokenResponse = zapClient.setSessionTokenValue(site, sessionName, "JSESSIONID", jsessionId, false);
             LOGGER.info("Setting JSESSIONID to the newly created session: " + HttpRequestHandler.printResponse(setSessionTokenResponse));
 
             //Exclude logout url from spider
-            URI logoutUri = (new URIBuilder()).setHost(this.productHostRelativeToThis).setPort(productPort).setScheme("https").setPath(logoutUrl)
+            URI logoutUri = (new URIBuilder()).setHost(productHostRelativeToThis).setPort(productPort).setScheme("https").setPath(logoutUrl)
                     .build();
             LOGGER.info("Logout URI: " + logoutUri.toString());
             HttpsURLConnection httpsURLConnectionLogout = HttpsRequestHandler.sendRequest(logoutUri.toString(), props, null, POST);
@@ -192,6 +223,9 @@ public class ZapScanner extends DynamicScanner {
             HttpResponse excludeFromSpiderResponse = zapClient.excludeFromSpider(logoutUri.toString(), false);
             LOGGER.info("Exclude logout from spider response: " + HttpRequestHandler.printResponse(excludeFromSpiderResponse));
 
+            createEmptySessionResponse = zapClient.createEmptySession(site, sessionName + "2", false);
+            LOGGER.info("Creating empty session " + HttpRequestHandler.printResponse(createEmptySessionResponse));
+
             httpsURLConnection = HttpsRequestHandler.sendRequest(loginUri.toString(), props, loginCredentials, POST);
             setCookieResponseList = HttpsRequestHandler.getResponseValue("Set-Cookie", httpsURLConnection);
 
@@ -199,7 +233,7 @@ public class ZapScanner extends DynamicScanner {
             setCookieResponse = setCookieResponseList.get(0);
             jsessionId = setCookieResponse.substring(setCookieResponse.indexOf("=") + 1, setCookieResponse.indexOf(";"));
 
-            setSessionTokenResponse = zapClient.setSessionTokenValue(productUriRelativeToZap.toString(), sessionName, "JSESSIONID", jsessionId, false);
+            setSessionTokenResponse = zapClient.setSessionTokenValue(site, sessionName + "2", "JSESSIONID", jsessionId, false);
             LOGGER.info("Setting JSESSIONID to the newly created session: " + HttpRequestHandler.printResponse(setSessionTokenResponse));
 
             runSpider();
@@ -222,7 +256,7 @@ public class ZapScanner extends DynamicScanner {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                LOGGER.info("Reading URL list of wso2 product: " + line);
+                LOGGER.info("Reading URL list of wso2 product: " + productUriRelativeToZap.toString() + line);
 
                 HttpResponse spiderResponse = zapClient.spider(productUriRelativeToZap.toString() + line, "", "", "", "", false);
                 LOGGER.info("Spider HTTP Response");
