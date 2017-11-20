@@ -41,11 +41,11 @@ import java.util.Collections;
 import java.util.Properties;
 
 /**
- * <code>AppConfiguration</code> class extends <code>WebMvcConfigurerAdapter</code> contains required application configurations.
- * The <code>WebMvcConfigurerAdapter</code> is for configuring Spring MVC,
+ * {@code AppConfiguration} class extends {@code WebMvcConfigurerAdapter} contains required application configurations.
+ * The {@code WebMvcConfigurerAdapter} is for configuring Spring MVC,
  * the replacement of the xml file loaded by the DispatcherServlet for configuring Spring MVC.
- * The <code>WebMvcConfigurerAdapter</code> gives us a chance to override resources and the default handler.
- * Also, <code>JavaMailSender</code> to send emails, and <code>Docket</code> for generating Swagger are configured
+ * The {@code WebMvcConfigurerAdapter} gives us a chance to override resources and the default handler.
+ * Also, {@code JavaMailSender} to send emails, and {@code Docket} for generating Swagger are configured
  *
  * @author Deshani Geethika
  * @see WebMvcConfigurerAdapter

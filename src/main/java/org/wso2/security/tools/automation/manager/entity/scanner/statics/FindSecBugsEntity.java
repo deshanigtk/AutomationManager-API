@@ -25,5 +25,5 @@ import javax.persistence.Entity;
  */
 @SuppressWarnings("unused")
 @Entity
-public class FindSecBugsEntity extends StaticScannerEntity{
+public class FindSecBugsEntity extends StaticScannerEntity {
 }

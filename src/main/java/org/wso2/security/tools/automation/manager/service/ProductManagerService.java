@@ -65,14 +65,14 @@ public class ProductManagerService {
         save(productManagerEntity);
     }
 
-    public void updateFileExtracted(String containerId, boolean status){
+    public void updateFileExtracted(String containerId, boolean status) {
         ProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
         productManagerEntity.setFileExtracted(status);
         productManagerEntity.setFileExtractedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
         save(productManagerEntity);
     }
 
-    public void updateServerStarted(String containerId, boolean status){
+    public void updateServerStarted(String containerId, boolean status) {
         ProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
         productManagerEntity.setServerStarted(status);
         productManagerEntity.setServerStartedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));

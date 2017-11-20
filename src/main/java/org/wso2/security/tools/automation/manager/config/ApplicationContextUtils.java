@@ -47,6 +47,7 @@ public class ApplicationContextUtils implements ApplicationContextAware {
 
     /**
      * Returns the ApplicationContext which this object runs in.
+     *
      * @return ApplicationContext
      */
     public static ApplicationContext getApplicationContext() {

@@ -45,7 +45,7 @@ public class DynamicScannerController {
 
     /**
      * The general contract of the method is to call {@code startScan} method in {@code DynamicScannerService} class.
-     * Then the
+     * Then the service level method will validate the request and execute the scanning process
      *
      * @param scanType       Indicates the dynamic scan type. Eg: ZAP, Qualis
      * @param userId         Unique identifier of a logged in user. Here email address is taken from authenticated user
@@ -63,8 +63,7 @@ public class DynamicScannerController {
     @ApiOperation(value = "Start ProductManager container, upload the product zip file or else give IP address and " +
             "port of already running server and start a dynamic scan")
     public @ResponseBody
-    void startScan(@RequestParam String scanType,
-                   @RequestParam String userId,
+    void startScan(@RequestParam String scanType, @RequestParam String userId,
                    @RequestParam String testName,
                    @RequestParam String ipAddress,
                    @RequestParam String productName,
@@ -78,9 +77,11 @@ public class DynamicScannerController {
         dynamicScannerService.startScan(scanType, userId, testName, ipAddress, productName, wumLevel, isFileUpload,
                 zipFile, urlListFile, wso2ServerHost, wso2ServerPort);
     }
+
     /**
-     * The class
+     * This method is to kill a running or stopped container, if any error occurs
      *
+     * @param containerId Container Id of the container to be killed
      */
     @GetMapping(path = "kill")
     @ApiOperation(value = "Stop a running container")

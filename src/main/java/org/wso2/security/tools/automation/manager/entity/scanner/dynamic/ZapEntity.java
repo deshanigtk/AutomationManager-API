@@ -27,4 +27,5 @@ import javax.persistence.*;
  */
 @SuppressWarnings("unused")
 @Entity
-public class ZapEntity extends DynamicScannerEntity {}
+public class ZapEntity extends DynamicScannerEntity {
+}

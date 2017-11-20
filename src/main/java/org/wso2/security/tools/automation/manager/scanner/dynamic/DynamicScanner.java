@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.wso2.security.tools.automation.manager.entity.scanner.dynamic.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.entity.scanner.dynamic.DynamicScannerEntity;
 
-public interface DynamicScanner{
+public interface DynamicScanner {
 
     Logger LOGGER = LoggerFactory.getLogger(DynamicScanner.class);
 
