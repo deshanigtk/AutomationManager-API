@@ -26,7 +26,6 @@ import org.wso2.security.automation.manager.config.ScannerProperty;
 import org.wso2.security.automation.manager.entity.scanner.dynamic.ProductManagerEntity;
 import org.wso2.security.automation.manager.handler.DockerHandler;
 import org.wso2.security.automation.manager.handler.HttpRequestHandler;
-import org.wso2.security.automation.manager.service.DynamicScannerService;
 import org.wso2.security.automation.manager.service.ProductManagerService;
 
 import java.io.File;
@@ -40,12 +39,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ProductManager {
-
-    private static final String STATUS_INITIATED = "initiated";
-    private static final String STATUS_CREATED = "created";
-    private static final String STATUS_RUNNING = "running";
-    private static final String DATE_PATTERN = "yyyy-MM-dd:HH.mm.ss";
-
     private int id;
     private String userId;
     private String testName;
@@ -94,7 +87,7 @@ public class ProductManager {
         productManagerEntity.setTestName(testName);
         productManagerEntity.setProductName(productName);
         productManagerEntity.setWumLevel(wumLevel);
-        productManagerEntity.setStatus(STATUS_INITIATED);
+        productManagerEntity.setStatus(ScannerProperty.getStatusInitiated());
         productManagerService.save(productManagerEntity);
         id = productManagerEntity.getId();
         isInitialized = true;
@@ -106,21 +99,21 @@ public class ProductManager {
         }
         ProductManagerEntity productManagerEntity = productManagerService.findOne(id);
         int port = calculateWso2ServerPort(id);
-        String containerId = DockerHandler.createContainer(ScannerProperty.getDynamicScannerDockerImage(), ipAddress,
+        String containerId = DockerHandler.createContainer(ScannerProperty.getProductManagerDockerImage(), ipAddress,
                 String.valueOf(port), String.valueOf(port), null, new String[]{"port=" + port});
 
         if (containerId != null) {
-            String createdTime = new SimpleDateFormat(DATE_PATTERN).format(new Date());
+            String createdTime = new SimpleDateFormat(ScannerProperty.getDatePattern()).format(new Date());
             productManagerEntity.setContainerId(containerId);
             productManagerEntity.setDockerIpAddress(ipAddress);
             productManagerEntity.setContainerPort(port);
             productManagerEntity.setHostPort(port);
-            productManagerEntity.setStatus(STATUS_CREATED);
+            productManagerEntity.setStatus(ScannerProperty.getStatusCreated());
             productManagerEntity.setCreatedTime(createdTime);
             productManagerService.save(productManagerEntity);
 
             if (DockerHandler.startContainer(containerId)) {
-                productManagerEntity.setStatus(STATUS_RUNNING);
+                productManagerEntity.setStatus(ScannerProperty.getStatusRunning());
                 productManagerEntity.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings().ipAddress());
                 productManagerService.save(productManagerEntity);
                 return productManagerEntity;

@@ -31,7 +31,7 @@ public class MainScanner implements Runnable {
 
     @Override
     public void run() {
-        DynamicScannerEntity dynamicScannerEntity = dynamicScanner.startDynamicScannerContainer();
+        DynamicScannerEntity dynamicScannerEntity = dynamicScanner.startContainer();
         if (dynamicScannerEntity != null) {
             if (true) {
                 ProductManagerEntity productManagerEntity = productManager.startContainer();

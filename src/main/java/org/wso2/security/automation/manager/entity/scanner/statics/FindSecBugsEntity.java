@@ -16,5 +16,14 @@ package org.wso2.security.automation.manager.entity.scanner.statics;/*
 * under the License.
 */
 
+import javax.persistence.Entity;
+
+/**
+ * FindSecBugs entity
+ *
+ * @author Deshani Geethika
+ */
+@SuppressWarnings("unused")
+@Entity
 public class FindSecBugsEntity extends StaticScannerEntity{
 }

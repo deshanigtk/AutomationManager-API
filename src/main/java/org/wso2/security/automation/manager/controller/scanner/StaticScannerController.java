@@ -33,7 +33,7 @@ import org.wso2.security.automation.manager.service.StaticScannerService;
  */
 @Controller
 @RequestMapping("staticScanner")
-@Api(value = "staticScanner", description = "Static Scanner container related APIs")
+@Api(value = "staticScanner", description = "Static DependencyCheckScanner container related APIs")
 public class StaticScannerController {
 
     private final StaticScannerService staticScannerService;
@@ -44,23 +44,22 @@ public class StaticScannerController {
     }
 
     @PostMapping(value = "startScan")
-    @ApiOperation(value = "Start Static Scanner container, upload the product zip file or else clone product from GitHub and start scans - FindSecBugsEntity and/or OWASP Dependency Check")
+    @ApiOperation(value = "Start Static DependencyCheckScanner container, upload the product zip file or else clone product from GitHub and start scans - FindSecBugsEntity and/or OWASP Dependency Check")
     public @ResponseBody
-    void startScan(@RequestParam String userId,
+    void startScan(@RequestParam String scanType,
+                   @RequestParam String userId,
                    @RequestParam String testName,
                    @RequestParam String ipAddress,
                    @RequestParam String productName,
                    @RequestParam String wumLevel,
                    @RequestParam boolean isFileUpload,
                    @RequestParam(required = false) MultipartFile zipFile,
-                   @RequestParam(required = false) String url,
-                   @RequestParam(required = false, defaultValue = "master") String branch,
-                   @RequestParam(required = false) String tag,
-                   @RequestParam boolean isFindSecBugs,
-                   @RequestParam boolean isDependencyCheck) {
+                   @RequestParam(required = false) String gitUrl,
+                   @RequestParam(required = false) String gitUsername,
+                   @RequestParam(required = false) String gitPassword) {
 
-        staticScannerService.startStaticScan(userId, testName, ipAddress, productName, wumLevel, isFileUpload,
-                zipFile, url, branch, tag, isFindSecBugs, isDependencyCheck);
+        staticScannerService.startScan(scanType,userId, testName, ipAddress, productName, wumLevel, isFileUpload,
+                zipFile, gitUrl, gitUsername, gitPassword);
     }
 
     @GetMapping(path = "kill")

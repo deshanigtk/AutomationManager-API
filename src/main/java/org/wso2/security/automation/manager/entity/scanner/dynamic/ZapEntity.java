@@ -29,17 +29,4 @@ import javax.persistence.*;
 @Entity
 public class ZapEntity extends DynamicScannerEntity {
 
-    private String spiderStatus;
-
-    public void setSpiderStatus(String spiderStatus) {
-        this.spiderStatus = spiderStatus;
-    }
-
-    public String getSpiderStatus() {
-        return spiderStatus;
-    }
-
-    public void setIsContainer() {
-        this.isContainer = true;
-    }
 }

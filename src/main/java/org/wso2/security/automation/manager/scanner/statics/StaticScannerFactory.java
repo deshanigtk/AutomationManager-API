@@ -16,24 +16,21 @@ package org.wso2.security.automation.manager.scanner.statics;/*
 * under the License.
 */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.wso2.security.automation.manager.entity.scanner.statics.StaticScannerEntity;
+import org.wso2.security.automation.manager.scanner.statics.dc.DependencyCheckScanner;
+import org.wso2.security.automation.manager.scanner.statics.fsb.FindSecBugsScanner;
 
-public interface StaticScanner extends Runnable {
-    Logger LOGGER = LoggerFactory.getLogger(StaticScanner.class);
+public class StaticScannerFactory {
 
-    static int calculatePort(int id) {
-        if (40000 + id > 65535) {
-            id = 1;
+    public StaticScanner getStaticScanner(String type) {
+        if (type == null) {
+            return null;
         }
-        return (40000 + id) % 65535;
+        if (type.equalsIgnoreCase("fsb")) {
+            return new FindSecBugsScanner();
+        }
+        if (type.equalsIgnoreCase("dc")) {
+            return new DependencyCheckScanner();
+        }
+        return null;
     }
-
-    void init(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload, String uploadLocation, String zipFileName, String gitUrl,
-              String gitUserName, String gitPassword);
-
-    StaticScannerEntity startContainer();
-
-    void startScan();
 }

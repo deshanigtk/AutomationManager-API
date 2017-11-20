@@ -23,20 +23,16 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.wso2.security.automation.manager.service.DynamicScannerService;
 import org.wso2.security.automation.manager.service.ProductManagerService;
 
 @Controller
 @RequestMapping("dynamicScanner/notify")
-@Api(value = "dynamicScannerNotifications", description = "Dynamic Scanner containers notify status after a task is completed")
-public class DynamicScannerNotificationController {
-
-    private final DynamicScannerService dynamicScannerService;
+@Api(value = "dynamicScannerNotifications", description = "Dynamic DependencyCheckScanner containers notify status after a task is completed")
+public class ProductManagerNotificationController {
     private final ProductManagerService productManagerService;
 
     @Autowired
-    public DynamicScannerNotificationController(DynamicScannerService dynamicScannerService, ProductManagerService productManagerService) {
-        this.dynamicScannerService = dynamicScannerService;
+    public ProductManagerNotificationController(ProductManagerService productManagerService) {
         this.productManagerService = productManagerService;
     }
 

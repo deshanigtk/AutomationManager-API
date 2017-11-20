@@ -39,6 +39,7 @@ import org.wso2.security.automation.manager.handler.MailHandler;
 import org.wso2.security.automation.manager.config.ScannerProperty;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
 import org.wso2.security.automation.manager.scanner.statics.StaticScanner;
+import org.wso2.security.automation.manager.scanner.statics.StaticScannerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,8 +60,6 @@ public class StaticScannerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(StaticScannerService.class);
 
     private static final String STATUS_REMOVED = "removed";
-    private static final String DATE_PATTERN = "yyyy-MM-dd:HH.mm.ss";
-
     private final StaticScannerRepository staticScannerRepository;
     private final MailHandler mailHandler;
 
@@ -90,8 +89,8 @@ public class StaticScannerService {
         return staticScannerRepository.save(staticScanner);
     }
 
-    public void startStaticScan(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload, MultipartFile zipFile, String url, String branch,
-                                String tag, boolean isFindSecBugs, boolean isDependencyCheck) {
+    public void startScan(String scanType, String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload, MultipartFile zipFile, String gitUrl, String gitUsername,
+                          String gitPassword) {
         String zipFileName = null;
         String uploadLocation = ScannerProperty.getTempFolderPath() + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
 
@@ -113,17 +112,14 @@ public class StaticScannerService {
                 }
             }
         } else {
-            if (url == null || branch == null) {
-                throw new AutomationManagerRuntimeException("Please enter URL and branch to clone");
+            if (gitUrl == null) {
+                throw new AutomationManagerRuntimeException("Please enter URL to clone");
             }
         }
-        if (!isFindSecBugs && !isDependencyCheck) {
-            throw new AutomationManagerRuntimeException("Please enter at least one scan");
-        }
-
-        StaticScanner staticScannerThread = new StaticScanner(userId, testName, ipAddress, productName, wumLevel,
-                isFileUpload, uploadLocation, zipFileName, url, branch, tag, isFindSecBugs, isDependencyCheck);
-        new Thread(staticScannerThread).start();
+        StaticScannerFactory staticScannerFactory = new StaticScannerFactory();
+        StaticScanner staticScanner = staticScannerFactory.getStaticScanner(scanType);
+        staticScanner.init(userId, testName, ipAddress, productName, wumLevel, isFileUpload, uploadLocation, zipFileName, gitUrl, gitUsername, gitPassword);
+        new Thread(staticScanner).start();
     }
 
     public void getReportAndMail(String containerId) {
@@ -142,7 +138,7 @@ public class StaticScannerService {
                         if (mailHandler.sendMail(staticScanner.getUserId(), subject, "This is auto generated message",
                                 response.getEntity().getContent(), "Reports.zip")) {
                             staticScanner.setReportSent(true);
-                            staticScanner.setReportSentTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
+                            staticScanner.setReportSentTime(new SimpleDateFormat(ScannerProperty.getDatePattern()).format(new Date()));
                             kill(containerId);
                         }
                     }
@@ -178,5 +174,36 @@ public class StaticScannerService {
         DockerHandler.removeContainer(containerId);
         staticScanner.setStatus(STATUS_REMOVED);
         save(staticScanner);
+    }
+
+    public void updateFileExtracted(String containerId, boolean status) {
+        StaticScannerEntity staticScanner = findOneByContainerId(containerId);
+        staticScanner.setFileExtracted(status);
+        staticScanner.setFileExtractedTime(new SimpleDateFormat(ScannerProperty.getDatePattern()).format(new Date()));
+        staticScanner.setProductAvailable(true);
+        save(staticScanner);
+    }
+
+    public void updateProductCloned(String containerId, boolean status) {
+        StaticScannerEntity staticScanner = findOneByContainerId(containerId);
+        staticScanner.setProductCloned(status);
+        staticScanner.setProductClonedTime(new SimpleDateFormat(ScannerProperty.getDatePattern()).format(new Date()));
+        staticScanner.setProductAvailable(true);
+        save(staticScanner);
+    }
+
+    public void updateScanStatus(String containerId, String status) {
+        StaticScannerEntity staticScanner = findOneByContainerId(containerId);
+        staticScanner.setScanStatus(status);
+        staticScanner.setScanStatusTime(new SimpleDateFormat(ScannerProperty.getDatePattern()).format(new Date()));
+        save(staticScanner);
+    }
+
+    public void updateReportReady(String containerId, boolean status) {
+        StaticScannerEntity staticScanner = findOneByContainerId(containerId);
+        staticScanner.setReportReady(status);
+        staticScanner.setReportReadyTime(new SimpleDateFormat(ScannerProperty.getDatePattern()).format(new Date()));
+        save(staticScanner);
+        getReportAndMail(containerId);
     }
 }

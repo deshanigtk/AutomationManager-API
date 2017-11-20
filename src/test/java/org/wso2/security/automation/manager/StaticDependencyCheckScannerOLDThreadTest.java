@@ -26,14 +26,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.wso2.security.automation.manager.handler.MailHandler;
 import org.wso2.security.automation.manager.repository.StaticScannerRepository;
-import org.wso2.security.automation.manager.scanner.statics.StaticScanner;
+import org.wso2.security.automation.manager.scanner.statics.StaticScannerOLD;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class StaticScannerThreadTest {
+public class StaticDependencyCheckScannerOLDThreadTest {
 
     private StaticScannerRepository staticScannerRepositoryMock;
-    private StaticScanner staticScannerThread;
+    private StaticScannerOLD staticScannerOLDThread;
     private MailHandler mailHandlerMock;
 
     @Before
@@ -55,7 +55,7 @@ public class StaticScannerThreadTest {
         boolean isFindSecBugs = true;
         boolean isDependencyCheck = true;
 
-        staticScannerThread = new StaticScanner(userId, name, ipAddress, productName, wumLevel, isFileUpload, null, null,
+        staticScannerOLDThread = new StaticScannerOLD(userId, name, ipAddress, productName, wumLevel, isFileUpload, null, null,
                 url, "master", null, isFindSecBugs, isDependencyCheck);
     }
 }

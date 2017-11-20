@@ -24,8 +24,9 @@ import java.util.Properties;
 public class ScannerProperty {
 
     private static Properties properties;
-    private static String staticScannerDockerImage;
-    private static String dynamicScannerDockerImage;
+    private static String findsecbugsScannerDockerImage;
+    private static String dependencyCheckDockerImage;
+    private static String productManagerDockerImage;
     private static String zapDockerImage;
 
     private static String staticScannerIsReady;
@@ -42,12 +43,28 @@ public class ScannerProperty {
 
     private static String zapReport;
 
+    private static String wso2ProductKeyUsername;
+    private static String wso2ProductValueUsername;
+    private static String wso2ProductKeyPassword;
+    private static String wso2ProductValuePassword;
+    private static String wso2ProductManagementConsoleLoginUrl;
+    private static String wso2ProductManagementConsoleLogoutUrl;
+
+    private static String statusInitiated;
+    private static String statusCreated;
+    private static String statusRunning;
+    private static String statusCompleted;
+    private static String statusFailed;
+
+    private static String datePattern;
+
     static {
         properties = new Properties();
         try {
             properties.load(new FileInputStream(new File(ScannerProperty.class.getClassLoader().getResource("scanner.properties").getFile())));
-            staticScannerDockerImage = properties.getProperty("scanner.static.docker.image");
-            dynamicScannerDockerImage = properties.getProperty("product.manager.docker.image");
+            findsecbugsScannerDockerImage = properties.getProperty("scanner.findsecbugs.docker.image");
+            dependencyCheckDockerImage = properties.getProperty("scanner.dependency-check.docker.image");
+            productManagerDockerImage = properties.getProperty("product.manager.docker.image");
             zapDockerImage = properties.getProperty("scanner.zap.docker.image");
             staticScannerIsReady = properties.getProperty("scanner.static.is-ready");
             staticScannerStartScan = properties.getProperty("scanner.static.start-scan");
@@ -58,19 +75,36 @@ public class ScannerProperty {
             automationManagerHost = properties.getProperty("automation.manager.host");
             automationManagerPort = properties.getProperty("automation.manager.port");
             tempFolderPath = properties.getProperty("temp.dir");
-            zapReport=properties.getProperty("zap.report");
+            zapReport = properties.getProperty("zap.report");
+            wso2ProductKeyUsername = properties.getProperty("wso2.product.key.username");
+            wso2ProductValueUsername = properties.getProperty("wso2.product.value.username");
+            wso2ProductKeyPassword = properties.getProperty("wso2.product.key.password");
+            wso2ProductValuePassword = properties.getProperty("wso2.product.value.password");
+            wso2ProductManagementConsoleLoginUrl = properties.getProperty("wso2.product.login.url");
+            wso2ProductManagementConsoleLogoutUrl = properties.getProperty("wso2.product.logout.url");
+
+            statusInitiated = properties.getProperty("status.initiated");
+            statusCreated = properties.getProperty("status.created");
+            statusRunning = properties.getProperty("status.running");
+            statusCompleted = properties.getProperty("status.completed");
+            statusFailed = properties.getProperty("status.failed");
+            datePattern = properties.getProperty("date.pattern");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static String getStaticScannerDockerImage() {
-        return staticScannerDockerImage;
+    public static String getFindsecbugsScannerDockerImage() {
+        return findsecbugsScannerDockerImage;
     }
 
-    public static String getDynamicScannerDockerImage() {
-        return dynamicScannerDockerImage;
+    public static String getDependencyCheckDockerImage() {
+        return dependencyCheckDockerImage;
+    }
+
+    public static String getProductManagerDockerImage() {
+        return productManagerDockerImage;
     }
 
     public static String getZapDockerImage() {
@@ -115,5 +149,53 @@ public class ScannerProperty {
 
     public static String getZapReport() {
         return zapReport;
+    }
+
+    public static String getWso2ProductKeyUsername() {
+        return wso2ProductKeyUsername;
+    }
+
+    public static String getWso2ProductValueUsername() {
+        return wso2ProductValueUsername;
+    }
+
+    public static String getWso2ProductKeyPassword() {
+        return wso2ProductKeyPassword;
+    }
+
+    public static String getWso2ProductValuePassword() {
+        return wso2ProductValuePassword;
+    }
+
+    public static String getWso2ProductManagementConsoleLoginUrl() {
+        return wso2ProductManagementConsoleLoginUrl;
+    }
+
+    public static String getWso2ProductManagementConsoleLogoutUrl() {
+        return wso2ProductManagementConsoleLogoutUrl;
+    }
+
+    public static String getStatusInitiated() {
+        return statusInitiated;
+    }
+
+    public static String getStatusCreated() {
+        return statusCreated;
+    }
+
+    public static String getStatusRunning() {
+        return statusRunning;
+    }
+
+    public static String getStatusCompleted() {
+        return statusCompleted;
+    }
+
+    public static String getStatusFailed() {
+        return statusFailed;
+    }
+
+    public static String getDatePattern() {
+        return datePattern;
     }
 }

@@ -34,7 +34,7 @@ import org.wso2.security.automation.manager.service.DynamicScannerService;
  */
 @Controller
 @RequestMapping("dynamicScanner")
-@Api(value = "dynamicScanner", description = "Dynamic Scanner container related APIs")
+@Api(value = "dynamicScanner", description = "Dynamic DependencyCheckScanner container related APIs")
 public class DynamicScannerController {
 
     private final DynamicScannerService dynamicScannerService;
@@ -60,7 +60,7 @@ public class DynamicScannerController {
      * @param wso2ServerPort Port of a product which is in up and running state
      */
     @PostMapping(value = "startScan")
-    @ApiOperation(value = "Start Dynamic Scanner container, upload the product zip file or else give IP address and " +
+    @ApiOperation(value = "Start Dynamic DependencyCheckScanner container, upload the product zip file or else give IP address and " +
             "port of already running server and start OWASP ZAP scan")
     public @ResponseBody
     void startScan(@RequestParam String scanType,

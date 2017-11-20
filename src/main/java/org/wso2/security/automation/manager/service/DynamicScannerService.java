@@ -52,13 +52,11 @@ public class DynamicScannerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DynamicScannerService.class);
 
     private static final String STATUS_REMOVED = "removed";
-    private static final String DATE_PATTERN = "yyyy-MM-dd:HH.mm.ss";
     private final DynamicScannerRepository dynamicScannerRepository;
     private final MailHandler mailHandler;
 
     @Autowired
-    public DynamicScannerService(DynamicScannerRepository dynamicScannerRepository, MailHandler mailHandler,
-                                 ZapService zapService) {
+    public DynamicScannerService(DynamicScannerRepository dynamicScannerRepository, MailHandler mailHandler) {
         this.dynamicScannerRepository = dynamicScannerRepository;
         this.mailHandler = mailHandler;
     }
@@ -87,7 +85,7 @@ public class DynamicScannerService {
                           boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile, String wso2ServerHost, int wso2ServerPort) {
         String urlListFileName;
         String zipFileName = null;
-        String uploadLocation = ScannerProperty.getTempFolderPath() + File.separator + userId + new SimpleDateFormat(DATE_PATTERN).format(new Date());
+        String uploadLocation = ScannerProperty.getTempFolderPath() + File.separator + userId + new SimpleDateFormat(ScannerProperty.getDatePattern()).format(new Date());
         File tempDirectory = new File(ScannerProperty.getTempFolderPath());
         File uploadDirectory = new File(uploadLocation);
         DynamicScannerFactory dynamicScannerFactory = new DynamicScannerFactory();
@@ -145,14 +143,14 @@ public class DynamicScannerService {
         DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
         dynamicScanner.setScanStatus(status);
         dynamicScanner.setScanProgress(progress);
-        dynamicScanner.setScanProgressTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+        dynamicScanner.setScanProgressTime(new SimpleDateFormat(ScannerProperty.getDatePattern()).format(new Date()));
         save(dynamicScanner);
     }
 
     public void updateReportReady(String containerId, boolean status) {
         DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
         dynamicScanner.setReportReady(status);
-        dynamicScanner.setReportReadyTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+        dynamicScanner.setReportReadyTime(new SimpleDateFormat(ScannerProperty.getDatePattern()).format(new Date()));
         save(dynamicScanner);
     }
 
@@ -169,7 +167,7 @@ public class DynamicScannerService {
             if (mailHandler.sendMail(dynamicScannerEntity.getUserId(), subject, "This is auto generated message",
                     new FileInputStream(new File(reportFilePath)), "ZapReport.html")) {
                 dynamicScannerEntity.setReportSent(true);
-                dynamicScannerEntity.setReportSentTime(new SimpleDateFormat(DATE_PATTERN).format(new Date()));
+                dynamicScannerEntity.setReportSentTime(new SimpleDateFormat(ScannerProperty.getDatePattern()).format(new Date()));
                 kill(containerId);
             }
         } catch (Exception e) {

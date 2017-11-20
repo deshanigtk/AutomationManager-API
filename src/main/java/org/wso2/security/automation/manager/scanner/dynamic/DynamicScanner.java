@@ -30,7 +30,7 @@ public interface DynamicScanner{
     void init(String userId, String ipAddress, boolean isFileUpload, String fileUploadLocation, String urlListFileName,
               String wso2ServerHost, int wso2ServerPort, String scannerHost);
 
-    DynamicScannerEntity startDynamicScannerContainer();
+    DynamicScannerEntity startContainer();
 
     void startScan(DynamicScannerEntity dynamicScannerEntity, ProductManagerEntity productManagerEntity);
 }

@@ -59,7 +59,7 @@
 //        boolean isFindSecBugs = true;
 //        boolean isDependencyCheck = true;
 //
-//        staticScannerService.startStaticScan(userId, name, ipAddress, productName, wumLevel, isFileUpload, null,
+//        staticScannerService.startScan(userId, name, ipAddress, productName, wumLevel, isFileUpload, null,
 //                url, "master", null, isFindSecBugs, isDependencyCheck);
 //    }
 //
@@ -138,7 +138,7 @@
 ////        String ipAddress = "0.0.0.0";
 ////        String containerId = "testContainerId";
 ////
-////        StaticScanner staticScanner = new StaticScanner();
+////        StaticScannerOLD staticScanner = new StaticScannerOLD();
 ////        staticScanner.setUserId(userId);
 ////        staticScanner.setTestName(name);
 ////        staticScanner.setIpAddress(ipAddress);

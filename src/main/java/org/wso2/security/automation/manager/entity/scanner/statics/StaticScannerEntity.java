@@ -28,7 +28,6 @@ import javax.persistence.*;
 @SuppressWarnings("unused")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
 public abstract class StaticScannerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,6 +49,8 @@ public abstract class StaticScannerEntity {
     private String fileExtractedTime;
     private boolean productCloned;
     private String productClonedTime;
+    private String scanStatus;
+    private String scanStatusTime;
     private boolean reportReady;
     private String reportReadyTime;
     private boolean reportSent;
@@ -132,6 +133,14 @@ public abstract class StaticScannerEntity {
         this.productClonedTime = productClonedTime;
     }
 
+    public void setScanStatus(String scanStatus) {
+        this.scanStatus = scanStatus;
+    }
+
+    public void setScanStatusTime(String scanStatusTime) {
+        this.scanStatusTime = scanStatusTime;
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }
@@ -210,6 +219,14 @@ public abstract class StaticScannerEntity {
 
     public String getProductClonedTime() {
         return productClonedTime;
+    }
+
+    public String getScanStatus() {
+        return scanStatus;
+    }
+
+    public String getScanStatusTime() {
+        return scanStatusTime;
     }
 
     public String getMessage() {

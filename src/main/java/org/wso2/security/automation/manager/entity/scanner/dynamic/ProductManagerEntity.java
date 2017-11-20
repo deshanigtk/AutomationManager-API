@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("unused")
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
+//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
 public class ProductManagerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
