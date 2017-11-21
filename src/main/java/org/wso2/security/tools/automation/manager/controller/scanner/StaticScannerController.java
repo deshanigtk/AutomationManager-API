@@ -48,7 +48,7 @@ public class StaticScannerController {
      * The general contract of the method is to call {@code startScan} method in {@code StaticScannerService} class.
      * Then the service level method will validate the request and execute the scanning process
      *
-     * @param scanType     Indicates the dynamicscanner scan type. Eg: ZAP, Qualis
+     * @param scanType     Indicates the dynamic scan type. Eg: ZAP, Qualis
      * @param userId       Unique identifier of a logged in user. Here email address is taken from authenticated user
      * @param testName     User defined name for the test
      * @param ipAddress    Ip address to spawn the containers
@@ -78,7 +78,6 @@ public class StaticScannerController {
                    @RequestParam(required = false) String gitUrl,
                    @RequestParam(required = false) String gitUsername,
                    @RequestParam(required = false) String gitPassword) {
-
         staticScannerService.startScan(scanType, userId, testName, ipAddress, productName, wumLevel, isFileUpload,
                 zipFile, gitUrl, gitUsername, gitPassword);
     }

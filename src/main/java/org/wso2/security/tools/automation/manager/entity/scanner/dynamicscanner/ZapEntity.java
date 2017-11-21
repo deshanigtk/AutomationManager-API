@@ -21,7 +21,7 @@ package org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner
 import javax.persistence.*;
 
 /**
- * Zap entity
+ * The {@code ZapEntity} class is inherited from {@link DynamicScannerEntity}
  *
  * @author Deshani Geethika
  */

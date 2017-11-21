@@ -31,11 +31,12 @@ import java.util.Properties;
  */
 public class ScannerProperties {
     private static Properties properties;
+    //Names of the Docker images
     private static String findsecbugsScannerDockerImage;
     private static String dependencyCheckDockerImage;
     private static String productManagerDockerImage;
     private static String zapDockerImage;
-
+    //
     private static String staticScannerIsReady;
     private static String staticScannerStartScan;
     private static String staticScannerGetReport;
@@ -43,11 +44,9 @@ public class ScannerProperties {
     private static String productManagerIsReady;
     private static String productManagerStartServer;
     private static int productManagerProductPort;
-
     private static String automationManagerHost;
     private static String automationManagerPort;
     private static String tempFolderPath;
-
     private static String zapReport;
 
     private static String wso2ProductKeyUsername;

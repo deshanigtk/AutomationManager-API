@@ -46,61 +46,53 @@ import java.util.Map;
 @SuppressWarnings("WeakerAccess")
 public class ProductManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(DynamicScanner.class);
-    private int id;
     private String userId;
     private String testName;
     private String ipAddress;
     private String productName;
     private String wumLevel;
-    private String fileUploadLocation;
     private boolean isFileUpload;
     private File zipFile;
-    private File urlListFile;
     private String wso2ServerHost;
     private int wso2ServerPort;
     private boolean isInitialized = false;
     private ProductManagerService productManagerService;
+    private ProductManagerEntity productManagerEntity;
 
     public ProductManager(String userId, String testName, String ipAddress, String productName, String wumLevel,
-                          boolean isFileUpload, String fileUploadLocation, String urlListFileName, String zipFileName,
+                          boolean isFileUpload, String fileUploadLocation, String zipFileName,
                           String wso2ServerHost, int wso2ServerPort) {
         this.userId = userId;
         this.testName = testName;
         this.ipAddress = ipAddress;
         this.productName = productName;
         this.wumLevel = wumLevel;
-        this.fileUploadLocation = fileUploadLocation;
         this.isFileUpload = isFileUpload;
-
         if (zipFileName != null) {
             this.zipFile = new File(fileUploadLocation + File.separator + zipFileName);
         }
-
-        this.urlListFile = new File(fileUploadLocation + File.separator + urlListFileName);
         this.wso2ServerHost = wso2ServerHost;
         this.wso2ServerPort = wso2ServerPort;
-
         productManagerService = ApplicationContextUtils.getApplicationContext().getBean(ProductManagerService.class);
     }
 
     public void init() {
-        ProductManagerEntity productManagerEntity = new ProductManagerEntity();
+        productManagerEntity = new ProductManagerEntity();
         productManagerEntity.setUserId(userId);
         productManagerEntity.setTestName(testName);
+        productManagerEntity.setIpAddress(ipAddress);
         productManagerEntity.setProductName(productName);
         productManagerEntity.setWumLevel(wumLevel);
         productManagerEntity.setStatus(ScannerProperties.getStatusInitiated());
         productManagerService.save(productManagerEntity);
-        id = productManagerEntity.getId();
         isInitialized = true;
     }
 
-    public ProductManagerEntity startContainer() {
+    public ProductManagerEntity startContainer(String relatedDynamicScannerId) {
         if (!isInitialized) {
             init();
         }
-        ProductManagerEntity productManagerEntity = productManagerService.findOne(id);
-        int port = calculateWso2ServerPort(id);
+        int port = calculateWso2ServerPort(productManagerEntity.getId());
         String containerId = DockerHandler.createContainer(ScannerProperties.getProductManagerDockerImage(), ipAddress,
                 String.valueOf(port), String.valueOf(port), null, new String[]{"port=" + port});
 
@@ -112,11 +104,12 @@ public class ProductManager {
             productManagerEntity.setHostPort(port);
             productManagerEntity.setStatus(ScannerProperties.getStatusCreated());
             productManagerEntity.setCreatedTime(createdTime);
+            productManagerEntity.setRelatedDynamicScannerId(relatedDynamicScannerId);
             productManagerService.save(productManagerEntity);
 
             if (DockerHandler.startContainer(containerId)) {
                 productManagerEntity.setStatus(ScannerProperties.getStatusRunning());
-                productManagerEntity.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings()
+                productManagerEntity.setDockerIpAddress(DockerHandler.inspectContainer(containerId).networkSettings()
                         .ipAddress());
                 productManagerService.save(productManagerEntity);
                 return productManagerEntity;
@@ -127,7 +120,6 @@ public class ProductManager {
 
     public boolean startWso2Server() {
         try {
-            ProductManagerEntity productManagerEntity = productManagerService.findOne(id);
             if (isFileUpload && zipFile != null) {
                 URI uri = (new URIBuilder()).setHost(productManagerEntity.getDockerIpAddress())
                         .setPort(productManagerEntity.getHostPort()).setScheme("http")

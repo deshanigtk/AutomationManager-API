@@ -22,7 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.wso2.security.tools.automation.manager.config.ScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.repository.ProductManagerRepository;
 
 import java.text.SimpleDateFormat;
@@ -77,6 +79,14 @@ public class ProductManagerService {
         ProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
         productManagerEntity.setServerStarted(status);
         productManagerEntity.setServerStartedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
+        save(productManagerEntity);
+    }
+
+    public void kill(String containerId) {
+        ProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
+        DockerHandler.killContainer(containerId);
+        DockerHandler.removeContainer(containerId);
+        productManagerEntity.setStatus("removed");
         save(productManagerEntity);
     }
 }

@@ -42,8 +42,8 @@ import java.util.Properties;
 
 /**
  * {@code AppConfiguration} class extends {@code WebMvcConfigurerAdapter} contains required application configurations.
- * The {@code WebMvcConfigurerAdapter} is for configuring Spring MVC,
- * the replacement of the xml file loaded by the DispatcherServlet for configuring Spring MVC.
+ * The {@code WebMvcConfigurerAdapter} is for configuring Spring MVC,the replacement of the xml file loaded by the
+ * DispatcherServlet for configuring Spring MVC.
  * The {@code WebMvcConfigurerAdapter} gives us a chance to override resources and the default handler.
  * Also, {@code JavaMailSender} to send emails, and {@code Docket} for generating Swagger are configured
  *

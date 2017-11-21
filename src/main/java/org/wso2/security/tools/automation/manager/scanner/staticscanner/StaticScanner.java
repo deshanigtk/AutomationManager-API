@@ -20,7 +20,7 @@ package org.wso2.security.tools.automation.manager.scanner.staticscanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.security.tools.automation.manager.entity.scanner.statics.StaticScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.scanner.staticscanner.StaticScannerEntity;
 
 public interface StaticScanner extends Runnable {
     Logger LOGGER = LoggerFactory.getLogger(StaticScanner.class);

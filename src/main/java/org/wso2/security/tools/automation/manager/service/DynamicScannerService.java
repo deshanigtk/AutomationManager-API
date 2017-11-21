@@ -41,7 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Dynamic scanner service level methodss
+ * Dynamic scanner service level methods
  *
  * @author Deshani Geethika
  */
@@ -121,7 +121,7 @@ public class DynamicScannerService {
                 if (FileHandler.uploadFile(urlListFile, uploadLocation + File.separator + urlListFileName)) {
 
                     ProductManager productManager = new ProductManager(userId, testName, ipAddress, productName,
-                            wumLevel, isFileUpload, uploadLocation, urlListFileName, zipFileName,
+                            wumLevel, isFileUpload, uploadLocation, zipFileName,
                             wso2ServerHost, wso2ServerPort);
                     DynamicScanner dynamicScanner = dynamicScannerFactory.getDynamicScanner(scanType);
                     dynamicScanner.init(userId, ipAddress, isFileUpload, uploadLocation, urlListFileName,
@@ -151,11 +151,12 @@ public class DynamicScannerService {
         save(dynamicScanner);
     }
 
-    public void updateReportReady(String containerId, boolean status) {
+    public void updateReportReady(String containerId, boolean status, String reportFilePath) {
         DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
         dynamicScanner.setReportReady(status);
         dynamicScanner.setReportReadyTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
         save(dynamicScanner);
+        getReportAndMail(containerId, reportFilePath);
     }
 
     public void updateMessage(String containerId, String status) {
@@ -164,7 +165,7 @@ public class DynamicScannerService {
         save(dynamicScanner);
     }
 
-    public void getReportAndMail(String containerId, String reportFilePath) {
+    private void getReportAndMail(String containerId, String reportFilePath) {
         try {
             DynamicScannerEntity dynamicScannerEntity = findOneByContainerId(containerId);
             String subject = "Dynamic Scan Report: ";

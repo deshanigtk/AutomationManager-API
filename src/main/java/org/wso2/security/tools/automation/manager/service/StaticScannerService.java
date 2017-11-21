@@ -31,7 +31,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.scanner.statics.StaticScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.scanner.staticscanner.StaticScannerEntity;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerRuntimeException;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.FileHandler;

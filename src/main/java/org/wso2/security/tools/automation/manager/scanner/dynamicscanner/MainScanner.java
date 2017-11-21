@@ -18,6 +18,7 @@
 
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 
+import org.wso2.security.tools.automation.manager.config.ScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.DynamicScannerEntity;
 import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.handler.ServerHandler;
@@ -28,7 +29,6 @@ import org.wso2.security.tools.automation.manager.handler.ServerHandler;
  * @author Deshani Geethika
  */
 public class MainScanner implements Runnable {
-
     private ProductManager productManager;
     private DynamicScanner dynamicScanner;
 
@@ -39,27 +39,36 @@ public class MainScanner implements Runnable {
 
     @Override
     public void run() {
-
-        DynamicScannerEntity dynamicScannerEntity = dynamicScanner.startContainer();
-
+        String productHostRelativeToScanner;
+        String productHostRelativeToThis;
+        int productPort;
+        DynamicScannerEntity dynamicScannerEntity = dynamicScanner.startScanner();
         if (dynamicScannerEntity != null) {
             if (productManager.isFileUpload()) {
-                ProductManagerEntity productManagerEntity = productManager.startContainer();
+                ProductManagerEntity productManagerEntity = productManager.startContainer(dynamicScannerEntity
+                        .getContainerId());
                 if (productManagerEntity != null) {
-                    if (ServerHandler.hostAvailabilityCheck(productManagerEntity.getIpAddress(),
+                    if (ServerHandler.hostAvailabilityCheck(productManagerEntity.getDockerIpAddress(),
                             productManagerEntity.getHostPort(), 12 * 3)) {
                         if (productManager.startWso2Server()) {
-                            if (ServerHandler.hostAvailabilityCheck(productManagerEntity.getIpAddress(), 9443, 12 *
-                                    5)) {
-                                dynamicScanner.startScan(dynamicScannerEntity, productManagerEntity);
+                            if (ServerHandler.hostAvailabilityCheck(productManagerEntity.getDockerIpAddress(),
+                                    ScannerProperties.getProductManagerProductPort(), 12 * 5)) {
+                                productHostRelativeToScanner = productManagerEntity.getDockerIpAddress();
+                                productHostRelativeToThis = productManagerEntity.getDockerIpAddress();
+                                productPort = ScannerProperties.getProductManagerProductPort();
+                                dynamicScanner.startScan(productHostRelativeToScanner, productHostRelativeToThis,
+                                        productPort);
                             }
                         }
                     }
                 }
             } else {
-                if (ServerHandler.hostAvailabilityCheck(productManager.getWso2ServerHost(),
-                        productManager.getWso2ServerPort(), 10)) {
-                    // complete
+                if (ServerHandler.hostAvailabilityCheck(productManager.getWso2ServerHost(), productManager
+                        .getWso2ServerPort(), 10)) {
+                    productHostRelativeToScanner = productManager.getWso2ServerHost();
+                    productHostRelativeToThis = productManager.getWso2ServerHost();
+                    productPort = productManager.getWso2ServerPort();
+                    dynamicScanner.startScan(productHostRelativeToScanner, productHostRelativeToThis, productPort);
                 }
             }
         }

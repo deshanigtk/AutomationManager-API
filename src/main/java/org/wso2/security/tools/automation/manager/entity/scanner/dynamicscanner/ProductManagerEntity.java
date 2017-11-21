@@ -1,4 +1,4 @@
-package org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner;/*
+/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -15,10 +15,18 @@ package org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner
 * specific language governing permissions and limitations
 * under the License.
 */
+package org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The class {@code ProductManagerEntity} is a database entity to store product manager objects related to dynamic
+ * scans. {@code ProductManagerEntity} can be a Docker container or else a product that is already in up and running
+ * state.
+ *
+ * @author Deshani Geethika
+ */
 @SuppressWarnings("unused")
 @Entity
 //@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
@@ -48,87 +56,9 @@ public class ProductManagerEntity {
     private String fileExtractedTime;
     private boolean serverStarted;
     private String serverStartedTime;
+    private boolean scanFinished;
+    private String scanFinishedTime;
     private String message;
-
-    public void setContainer(boolean container) {
-        isContainer = container;
-    }
-
-    public void setContainerId(String containerId) {
-        this.containerId = containerId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setRelatedDynamicScannerId(String relatedDynamicScannerId) {
-        this.relatedDynamicScannerId = relatedDynamicScannerId;
-    }
-
-    public void setCreatedTime(String createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public void setTestName(String testName) {
-        this.testName = testName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void setWumLevel(String wumLevel) {
-        this.wumLevel = wumLevel;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public void setDockerIpAddress(String dockerIpAddress) {
-        this.dockerIpAddress = dockerIpAddress;
-    }
-
-    public void setContainerPort(int containerPort) {
-        this.containerPort = containerPort;
-    }
-
-    public void setHostPort(int hostPort) {
-        this.hostPort = hostPort;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setFileUploaded(boolean fileUploaded) {
-        this.fileUploaded = fileUploaded;
-    }
-
-    public void setFileUploadedTime(String fileUploadedTime) {
-        this.fileUploadedTime = fileUploadedTime;
-    }
-
-    public void setFileExtracted(boolean fileExtracted) {
-        this.fileExtracted = fileExtracted;
-    }
-
-    public void setFileExtractedTime(String fileExtractedTime) {
-        this.fileExtractedTime = fileExtractedTime;
-    }
-
-    public void setServerStarted(boolean serverStarted) {
-        this.serverStarted = serverStarted;
-    }
-
-    public void setServerStartedTime(String serverStartedTime) {
-        this.serverStartedTime = serverStartedTime;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     public int getId() {
         return id;
@@ -138,79 +68,175 @@ public class ProductManagerEntity {
         return isContainer;
     }
 
+    public void setContainer(boolean container) {
+        isContainer = container;
+    }
+
     public String getContainerId() {
         return containerId;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
     }
 
     public String getUserId() {
         return userId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getRelatedDynamicScannerId() {
         return relatedDynamicScannerId;
+    }
+
+    public void setRelatedDynamicScannerId(String relatedDynamicScannerId) {
+        this.relatedDynamicScannerId = relatedDynamicScannerId;
     }
 
     public String getTestName() {
         return testName;
     }
 
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
     public String getProductName() {
         return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getWumLevel() {
         return wumLevel;
     }
 
+    public void setWumLevel(String wumLevel) {
+        this.wumLevel = wumLevel;
+    }
+
     public String getCreatedTime() {
         return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
     }
 
     public String getStatus() {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getIpAddress() {
         return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     public String getDockerIpAddress() {
         return dockerIpAddress;
     }
 
+    public void setDockerIpAddress(String dockerIpAddress) {
+        this.dockerIpAddress = dockerIpAddress;
+    }
+
     public int getContainerPort() {
         return containerPort;
+    }
+
+    public void setContainerPort(int containerPort) {
+        this.containerPort = containerPort;
     }
 
     public int getHostPort() {
         return hostPort;
     }
 
+    public void setHostPort(int hostPort) {
+        this.hostPort = hostPort;
+    }
+
     public boolean isFileUploaded() {
         return fileUploaded;
+    }
+
+    public void setFileUploaded(boolean fileUploaded) {
+        this.fileUploaded = fileUploaded;
     }
 
     public String getFileUploadedTime() {
         return fileUploadedTime;
     }
 
+    public void setFileUploadedTime(String fileUploadedTime) {
+        this.fileUploadedTime = fileUploadedTime;
+    }
+
     public boolean isFileExtracted() {
         return fileExtracted;
+    }
+
+    public void setFileExtracted(boolean fileExtracted) {
+        this.fileExtracted = fileExtracted;
     }
 
     public String getFileExtractedTime() {
         return fileExtractedTime;
     }
 
+    public void setFileExtractedTime(String fileExtractedTime) {
+        this.fileExtractedTime = fileExtractedTime;
+    }
+
     public boolean isServerStarted() {
         return serverStarted;
+    }
+
+    public void setServerStarted(boolean serverStarted) {
+        this.serverStarted = serverStarted;
     }
 
     public String getServerStartedTime() {
         return serverStartedTime;
     }
 
+    public void setServerStartedTime(String serverStartedTime) {
+        this.serverStartedTime = serverStartedTime;
+    }
+
+    public boolean isScanFinished() {
+        return scanFinished;
+    }
+
+    public void setScanFinished(boolean scanFinished) {
+        this.scanFinished = scanFinished;
+    }
+
+    public String getScanFinishedTime() {
+        return scanFinishedTime;
+    }
+
+    public void setScanFinishedTime(String scanFinishedTime) {
+        this.scanFinishedTime = scanFinishedTime;
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

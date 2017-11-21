@@ -37,20 +37,20 @@ public class ApplicationContextUtils implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
     /**
-     * Set the ApplicationContext that this object runs in.
-     * Normally this call will be used to initialize the object.
-     */
-    @Override
-    public void setApplicationContext(ApplicationContext appContext) throws BeansException {
-        applicationContext = appContext;
-    }
-
-    /**
      * Returns the ApplicationContext which this object runs in.
      *
      * @return ApplicationContext
      */
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
+    }
+
+    /**
+     * Set the ApplicationContext that this object runs in.
+     * Normally this call will be used to initialize the object.
+     */
+    @Override
+    public void setApplicationContext(ApplicationContext appContext) throws BeansException {
+        applicationContext = appContext;
     }
 }

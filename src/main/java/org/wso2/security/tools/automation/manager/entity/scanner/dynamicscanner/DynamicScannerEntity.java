@@ -22,7 +22,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * Dynamic scanner entity
+ * The abstract class {@code DynamicScannerEntity} is a database entity to store dynamic scanners.
+ * <p>{@code Inheritance} type is defined as {@code JOINED}, so that a database table for {@code
+ * DynamicScannerEntity} is created and any entity inherited from this class is stored in this table. Also tables are
+ * generated for each sub class, and only sub class specific fields are saved in those tables</p>
  *
  * @author Deshani Geethika
  */
@@ -55,18 +58,6 @@ public abstract class DynamicScannerEntity {
     protected String reportSentTime;
     protected String message;
 
-    public int getId() {
-        return id;
-    }
-
-    public boolean isContainer() {
-        return isContainer;
-    }
-
-    public void setContainer(boolean container) {
-        isContainer = container;
-    }
-
     public String getContainerId() {
         return containerId;
     }
@@ -81,6 +72,26 @@ public abstract class DynamicScannerEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public boolean isContainer() {
+        return isContainer;
+    }
+
+    public void setContainer(boolean container) {
+        isContainer = container;
     }
 
     public String getType() {
@@ -193,13 +204,5 @@ public abstract class DynamicScannerEntity {
 
     public void setReportSentTime(String reportSentTime) {
         this.reportSentTime = reportSentTime;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }

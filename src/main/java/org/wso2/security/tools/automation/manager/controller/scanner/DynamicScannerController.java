@@ -66,7 +66,7 @@ public class DynamicScannerController {
      */
     @PostMapping(value = "startScan")
     @ApiOperation(value = "Start ProductManager container, upload the product zip file or else give IP address and " +
-            "port of already running server and start a dynamicscanner scan")
+            "port of already running server and start a dynamic scan")
     public @ResponseBody
     void startScan(@RequestParam String scanType, @RequestParam String userId,
                    @RequestParam String testName,

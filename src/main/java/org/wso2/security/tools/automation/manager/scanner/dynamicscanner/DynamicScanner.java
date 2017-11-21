@@ -20,8 +20,8 @@ package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.DynamicScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
 
 /**
  * Dynamic scanner interface to be
@@ -37,7 +37,9 @@ public interface DynamicScanner {
     void init(String userId, String ipAddress, boolean isFileUpload, String fileUploadLocation, String urlListFileName,
               String wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort);
 
-    DynamicScannerEntity startContainer();
+    DynamicScannerEntity startScanner();
 
-    void startScan(DynamicScannerEntity dynamicScannerEntity, ProductManagerEntity productManagerEntity);
+    void startScan(String productHostRelativeToScanner, String productHostRelativeToThis, int productPort);
+
+    boolean isContainer();
 }

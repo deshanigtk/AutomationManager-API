@@ -31,8 +31,8 @@ import org.wso2.security.tools.automation.manager.service.ProductManagerService;
  * The main contract of the {@code ProductManagerNotificationController} class is to provide an API to be called by
  * ProductManager Docker containers.
  * When a {@code ProductManager} Docker container is initialized to run a task, it will run asynchronously. Therefore
- * in order to track whether a task is completed or not,
- * Docker container is configured to send back notifications to APIs defined here.
+ * in order to track whether a task is completed or not, Docker container is configured to send back notifications to
+ * APIs defined here.
  *
  * @author Deshani Geethika
  */

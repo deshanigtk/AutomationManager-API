@@ -16,12 +16,12 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.entity.scanner.statics;
+package org.wso2.security.tools.automation.manager.entity.scanner.staticscanner;
 
 import javax.persistence.*;
 
 /**
- * Static scanner entity
+ * The class {@code StaticScannerEntity} is the database entity to store
  *
  * @author Deshani Geethika
  */
@@ -57,195 +57,195 @@ public abstract class StaticScannerEntity {
     private String reportSentTime;
     private String message;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setTestName(String testName) {
-        this.testName = testName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void setWumLevel(String wumLevel) {
-        this.wumLevel = wumLevel;
-    }
-
-    public void setContainerId(String containerId) {
-        this.containerId = containerId;
-    }
-
-    public void setCreatedTime(String createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public void setContainerPort(int containerPort) {
-        this.containerPort = containerPort;
-    }
-
-    public void setHostPort(int hostPort) {
-        this.hostPort = hostPort;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setProductAvailable(boolean productAvailable) {
-        this.isProductAvailable = productAvailable;
-    }
-
-    public void setFileExtracted(boolean fileExtracted) {
-        this.fileExtracted = fileExtracted;
-    }
-
-    public void setProductCloned(boolean productCloned) {
-        this.productCloned = productCloned;
-    }
-
-    public void setReportReady(boolean reportReady) {
-        this.reportReady = reportReady;
-    }
-
-    public void setReportReadyTime(String reportReadyTime) {
-        this.reportReadyTime = reportReadyTime;
-    }
-
-    public void setFileExtractedTime(String fileExtractedTime) {
-        this.fileExtractedTime = fileExtractedTime;
-    }
-
-    public void setProductClonedTime(String productClonedTime) {
-        this.productClonedTime = productClonedTime;
-    }
-
-    public void setScanStatus(String scanStatus) {
-        this.scanStatus = scanStatus;
-    }
-
-    public void setScanStatusTime(String scanStatusTime) {
-        this.scanStatusTime = scanStatusTime;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setReportSent(boolean reportSent) {
-        this.reportSent = reportSent;
-    }
-
-    public void setReportSentTime(String reportSentTime) {
-        this.reportSentTime = reportSentTime;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getContainerId() {
         return containerId;
     }
 
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
+    }
+
     public String getUserId() {
         return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getType() {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getTestName() {
         return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
     }
 
     public String getProductName() {
         return productName;
     }
 
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     public String getWumLevel() {
         return wumLevel;
+    }
+
+    public void setWumLevel(String wumLevel) {
+        this.wumLevel = wumLevel;
     }
 
     public String getCreatedTime() {
         return createdTime;
     }
 
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getIpAddress() {
         return ipAddress;
     }
 
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
     public int getContainerPort() {
         return containerPort;
+    }
+
+    public void setContainerPort(int containerPort) {
+        this.containerPort = containerPort;
     }
 
     public int getHostPort() {
         return hostPort;
     }
 
+    public void setHostPort(int hostPort) {
+        this.hostPort = hostPort;
+    }
+
     public boolean isProductAvailable() {
         return isProductAvailable;
+    }
+
+    public void setProductAvailable(boolean productAvailable) {
+        this.isProductAvailable = productAvailable;
     }
 
     public boolean isFileExtracted() {
         return fileExtracted;
     }
 
+    public void setFileExtracted(boolean fileExtracted) {
+        this.fileExtracted = fileExtracted;
+    }
+
     public String getFileExtractedTime() {
         return fileExtractedTime;
+    }
+
+    public void setFileExtractedTime(String fileExtractedTime) {
+        this.fileExtractedTime = fileExtractedTime;
     }
 
     public boolean isProductCloned() {
         return productCloned;
     }
 
+    public void setProductCloned(boolean productCloned) {
+        this.productCloned = productCloned;
+    }
+
     public String getProductClonedTime() {
         return productClonedTime;
+    }
+
+    public void setProductClonedTime(String productClonedTime) {
+        this.productClonedTime = productClonedTime;
     }
 
     public String getScanStatus() {
         return scanStatus;
     }
 
+    public void setScanStatus(String scanStatus) {
+        this.scanStatus = scanStatus;
+    }
+
     public String getScanStatusTime() {
         return scanStatusTime;
+    }
+
+    public void setScanStatusTime(String scanStatusTime) {
+        this.scanStatusTime = scanStatusTime;
     }
 
     public String getMessage() {
         return message;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public boolean isReportReady() {
         return reportReady;
+    }
+
+    public void setReportReady(boolean reportReady) {
+        this.reportReady = reportReady;
     }
 
     public String getReportReadyTime() {
         return reportReadyTime;
     }
 
+    public void setReportReadyTime(String reportReadyTime) {
+        this.reportReadyTime = reportReadyTime;
+    }
+
     public boolean isReportSent() {
         return reportSent;
     }
 
+    public void setReportSent(boolean reportSent) {
+        this.reportSent = reportSent;
+    }
+
     public String getReportSentTime() {
         return reportSentTime;
+    }
+
+    public void setReportSentTime(String reportSentTime) {
+        this.reportSentTime = reportSentTime;
     }
 }
