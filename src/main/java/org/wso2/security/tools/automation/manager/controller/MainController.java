@@ -25,21 +25,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamic.DynamicScannerEntity;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamic.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.DynamicScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.entity.scanner.statics.StaticScannerEntity;
 import org.wso2.security.tools.automation.manager.service.DynamicScannerService;
 import org.wso2.security.tools.automation.manager.service.ProductManagerService;
 import org.wso2.security.tools.automation.manager.service.StaticScannerService;
 
 /**
- * The class {@code MainController} is the web controller which defines the routines for getting static scans, dynamic scans and product managers
+ * The class {@code MainController} is the web controller which defines the routines for getting static scans,
+ * dynamicscanner scans and product managers
  *
  * @author Deshani Geethika
  */
 @Controller
 @RequestMapping("/")
-@Api(value = "scanners", description = "Get static scans and dynamic scans done by a specific user")
+@Api(value = "scanners", description = "Get static scans and dynamicscanner scans done by a specific user")
 public class MainController {
 
     private final StaticScannerService staticScannerService;
@@ -47,7 +48,8 @@ public class MainController {
     private final ProductManagerService productManagerService;
 
     @Autowired
-    public MainController(StaticScannerService staticScannerService, DynamicScannerService dynamicScannerService, ProductManagerService productManagerService) {
+    public MainController(StaticScannerService staticScannerService, DynamicScannerService dynamicScannerService,
+                          ProductManagerService productManagerService) {
         this.staticScannerService = staticScannerService;
         this.dynamicScannerService = dynamicScannerService;
         this.productManagerService = productManagerService;
@@ -67,13 +69,13 @@ public class MainController {
     }
 
     /**
-     * Returns a list of {@code DynamicScannerEntity} in other words, dynamic scans done by a user
+     * Returns a list of {@code DynamicScannerEntity} in other words, dynamicscanner scans done by a user
      *
      * @param userId Email address of the user
      * @return Iterable list of DynamicScannerEntity
      */
     @GetMapping(value = "getDynamicScanners")
-    @ApiOperation(value = "Get dynamic scans done by a user")
+    @ApiOperation(value = "Get dynamicscanner scans done by a user")
     @ResponseBody
     public Iterable<DynamicScannerEntity> getDynamicScanners(String userId) {
         return dynamicScannerService.findByUserId(userId);

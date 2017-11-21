@@ -19,6 +19,10 @@ package org.wso2.security.tools.automation.manager.handler;
 
 import org.apache.http.impl.execchain.RequestAbortedException;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -28,10 +32,6 @@ import java.security.KeyStore;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManagerFactory;
 
 /**
  * Utility methods for HTTPS request handling
@@ -86,8 +86,10 @@ public class HttpsRequestHandler {
         }
     }
 
-    public static HttpsURLConnection sendRequest(String link, Map<String, String> requestHeaders, Map<String, Object> requestParams,
-                                                 String method) throws RequestAbortedException, UnsupportedEncodingException {
+    public static HttpsURLConnection sendRequest(String link, Map<String, String> requestHeaders, Map<String, Object>
+            requestParams,
+                                                 String method) throws RequestAbortedException,
+            UnsupportedEncodingException {
 
         if (!isInitialized) {
             init();

@@ -29,15 +29,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.wso2.security.tools.automation.manager.service.StaticScannerService;
 
 /**
- * The main contract of the {@code StaticScannerNotificationController} class is to provide an API to be called by {@code StaticScanner} Docker containers. (eg: findsecbugs_scanner, dependency_check_scanner)
- * When a {@code StaticScanner} Docker container is initialized to run a task, it will run asynchronously. Therefore in order to track whether a task is completed or not,
+ * The main contract of the {@code StaticScannerNotificationController} class is to provide an API to be called by
+ * {@code StaticScanner} Docker containers. (eg: findsecbugs_scanner, dependency_check_scanner)
+ * When a {@code StaticScanner} Docker container is initialized to run a task, it will run asynchronously. Therefore
+ * in order to track whether a task is completed or not,
  * Docker container is configured to send back notifications to APIs defined here.
  *
  * @author Deshani Geethika
  */
 @Controller
 @RequestMapping("staticScanner/notify")
-@Api(value = "staticScannerNotifications", description = "Static DependencyCheckScanner containers notify status after a task is completed")
+@Api(value = "staticScannerNotifications", description = "Static DependencyCheckScanner containers notify status " +
+        "after a task is completed")
 public class StaticScannerNotificationController {
 
     private final StaticScannerService staticScannerService;

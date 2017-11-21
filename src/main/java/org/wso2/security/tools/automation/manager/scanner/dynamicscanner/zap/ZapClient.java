@@ -1,21 +1,22 @@
-package org.wso2.security.tools.automation.manager.scanner.dynamic.zap;
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-*  WSO2 Inc. licenses this file to you under the Apache License,
-*  Version 2.0 (the "License"); you may not use this file except
-*  in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*    http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied.  See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.zap;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -34,32 +35,29 @@ import java.net.URISyntaxException;
  *
  * @author Deshani Geethika
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class ZapClient {
 
-    private final String SAVE_SESSION_PATH = "/JSON/core/action/newSession/";
-    private final String REMOVE_SESSION_PATH = "/JSON/httpSessions/action/removeSession/";
-    private final String CREATE_EMPTY_SESSION = "/JSON/httpSessions/action/createEmptySession/";
-    private final String SET_SESSION_TOKEN_VALUE = "/JSON/httpSessions/action/setSessionTokenValue/";
-    private final String EXCLUDE_FROM_SCAN = "/JSON/spider/action/excludeFromScan/";
-    private final String NEW_CONTEXT = "/JSON/context/action/newContext/";
-    private final String INCLUDE_IN_CONTEXT = "/JSON/context/action/includeInContext/";
-    private final String SPIDER_SCAN = "/JSON/spider/action/scan/";
-    private final String SPIDER_STATUS = "/JSON/spider/view/status/";
-    private final String AJAX_SPIDER_SCAN = "/JSON/ajaxSpider/action/scan/";
-    private final String AJAX_SPIDER_STATUS = "/JSON/ajaxSpider/view/status/";
-    private final String ACTIVE_SCAN = "/JSON/ascan/action/scan/";
-    private final String ACTIVE_SCAN_STATUS = "/JSON/ascan/view/status/";
-    private final String HTML_REPORT = "/OTHER/core/other/htmlreport/";
-
+    private static final String SAVE_SESSION_PATH = "/JSON/core/action/newSession/";
+    private static final String REMOVE_SESSION_PATH = "/JSON/httpSessions/action/removeSession/";
+    private static final String CREATE_EMPTY_SESSION = "/JSON/httpSessions/action/createEmptySession/";
+    private static final String SET_SESSION_TOKEN_VALUE = "/JSON/httpSessions/action/setSessionTokenValue/";
+    private static final String EXCLUDE_FROM_SCAN = "/JSON/spider/action/excludeFromScan/";
+    private static final String NEW_CONTEXT = "/JSON/context/action/newContext/";
+    private static final String INCLUDE_IN_CONTEXT = "/JSON/context/action/includeInContext/";
+    private static final String SPIDER_SCAN = "/JSON/spider/action/scan/";
+    private static final String SPIDER_STATUS = "/JSON/spider/view/status/";
+    private static final String AJAX_SPIDER_SCAN = "/JSON/ajaxSpider/action/scan/";
+    private static final String AJAX_SPIDER_STATUS = "/JSON/ajaxSpider/view/status/";
+    private static final String ACTIVE_SCAN = "/JSON/ascan/action/scan/";
+    private static final String ACTIVE_SCAN_STATUS = "/JSON/ascan/view/status/";
+    private static final String HTML_REPORT = "/OTHER/core/other/htmlreport/";
+    private final static String GET = "GET";
+    private final static String POST = "POST";
     private final HttpClient httpClient;
     private final String host;
     private final int port;
     private final String scheme;
-
-    private final static String GET = "GET";
-    private final static String POST = "POST";
-
     private final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     public ZapClient(String host, int port, String scheme) {
@@ -73,7 +71,8 @@ public class ZapClient {
     public HttpResponse saveSession(String name, boolean overwrite, Boolean post)
             throws IOException, URISyntaxException {
 
-        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(SAVE_SESSION_PATH)
+        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
+                .setPath(SAVE_SESSION_PATH)
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("name", name)
                 .addParameter("overwrite", overwrite ? "true" : "false")
@@ -86,7 +85,8 @@ public class ZapClient {
     public HttpResponse removeSession(String site, String session, boolean post)
             throws IOException, URISyntaxException {
 
-        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(REMOVE_SESSION_PATH)
+        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
+                .setPath(REMOVE_SESSION_PATH)
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("site", site)
                 .addParameter("session", session)
@@ -99,7 +99,8 @@ public class ZapClient {
     public HttpResponse createEmptySession(String site, String session, boolean post)
             throws IOException, URISyntaxException {
 
-        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(CREATE_EMPTY_SESSION)
+        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
+                .setPath(CREATE_EMPTY_SESSION)
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("site", site)
                 .addParameter("session", session)
@@ -112,7 +113,8 @@ public class ZapClient {
     public HttpResponse setSessionTokenValue(String site, String session, String sessionToken, String tokenValue,
                                              boolean post) throws IOException, URISyntaxException {
 
-        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(SET_SESSION_TOKEN_VALUE)
+        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
+                .setPath(SET_SESSION_TOKEN_VALUE)
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("site", site)
                 .addParameter("session", session)
@@ -127,7 +129,8 @@ public class ZapClient {
     public HttpResponse excludeFromSpider(String regex, boolean post)
             throws IOException, URISyntaxException {
 
-        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(EXCLUDE_FROM_SCAN)
+        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
+                .setPath(EXCLUDE_FROM_SCAN)
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("regex", regex)
                 .build();
@@ -151,7 +154,8 @@ public class ZapClient {
     public HttpResponse includeInContext(String contextName, String regex, boolean post)
             throws IOException, URISyntaxException {
 
-        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(INCLUDE_IN_CONTEXT)
+        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
+                .setPath(INCLUDE_IN_CONTEXT)
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("contextName", contextName)
                 .addParameter("regex", regex)
@@ -191,7 +195,8 @@ public class ZapClient {
     public HttpResponse ajaxSpider(String url, String inScope, String contextName, String subtreeOnly, boolean post)
             throws IOException, URISyntaxException {
 
-        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(AJAX_SPIDER_SCAN)
+        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
+                .setPath(AJAX_SPIDER_SCAN)
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("url", url)
                 .addParameter("inScope", inScope)
@@ -205,7 +210,8 @@ public class ZapClient {
 
     public HttpResponse ajaxSpiderStatus(boolean post) throws IOException, URISyntaxException {
 
-        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(AJAX_SPIDER_STATUS)
+        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
+                .setPath(AJAX_SPIDER_STATUS)
                 .addParameter("formMethod", post ? POST : GET)
                 .build();
 
@@ -234,7 +240,8 @@ public class ZapClient {
 
     public HttpResponse activeScanStatus(String scanId, boolean post) throws IOException, URISyntaxException {
 
-        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(ACTIVE_SCAN_STATUS)
+        URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
+                .setPath(ACTIVE_SCAN_STATUS)
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("scanId", scanId)
                 .build();

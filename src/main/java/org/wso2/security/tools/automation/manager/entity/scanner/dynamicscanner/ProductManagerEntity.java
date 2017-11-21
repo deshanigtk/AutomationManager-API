@@ -1,4 +1,4 @@
-package org.wso2.security.tools.automation.manager.entity.scanner.dynamic;/*
+package org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner;/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,13 +16,7 @@ package org.wso2.security.tools.automation.manager.entity.scanner.dynamic;/*
 * under the License.
 */
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("unused")

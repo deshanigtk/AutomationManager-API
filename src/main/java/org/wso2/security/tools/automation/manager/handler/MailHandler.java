@@ -49,7 +49,8 @@ public class MailHandler {
     }
 
 
-    public boolean sendMail(String to, String subject, String body, InputStream inputStream, String attachmentFileName) {
+    public boolean sendMail(String to, String subject, String body, InputStream inputStream, String
+            attachmentFileName) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);

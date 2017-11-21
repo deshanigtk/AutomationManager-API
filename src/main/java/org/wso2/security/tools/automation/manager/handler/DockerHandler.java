@@ -33,7 +33,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Handling class for Docker
@@ -43,8 +45,8 @@ import java.util.*;
 @SuppressWarnings("unused")
 public class DockerHandler {
 
-    private static DockerClient dockerClient;
     private final static Logger LOGGER = LoggerFactory.getLogger(DockerHandler.class);
+    private static DockerClient dockerClient;
 
     private static DockerClient getDockerClient() throws DockerCertificateException {
         if (dockerClient == null) {

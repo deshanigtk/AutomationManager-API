@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.entity.scanner.dynamic;
+package org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -55,78 +55,6 @@ public abstract class DynamicScannerEntity {
     protected String reportSentTime;
     protected String message;
 
-    public void setContainer(boolean container) {
-        isContainer = container;
-    }
-
-    public void setContainerId(String containerId) {
-        this.containerId = containerId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setCreatedTime(String createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public void setDockerIpAddress(String dockerIpAddress) {
-        this.dockerIpAddress = dockerIpAddress;
-    }
-
-    public void setContainerPort(int containerPort) {
-        this.containerPort = containerPort;
-    }
-
-    public void setHostPort(int hostPort) {
-        this.hostPort = hostPort;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setScanStatus(String scanStatus) {
-        this.scanStatus = scanStatus;
-    }
-
-    public void setScanProgress(int scanProgress) {
-        this.scanProgress = scanProgress;
-    }
-
-    public void setScanProgressTime(String scanProgressTime) {
-        this.scanProgressTime = scanProgressTime;
-    }
-
-    public void setReportReady(boolean reportReady) {
-        this.reportReady = reportReady;
-    }
-
-    public void setReportReadyTime(String reportReadyTime) {
-        this.reportReadyTime = reportReadyTime;
-    }
-
-    public void setReportSent(boolean reportSent) {
-        this.reportSent = reportSent;
-    }
-
-    public void setReportSentTime(String reportSentTime) {
-        this.reportSentTime = reportSentTime;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public int getId() {
         return id;
     }
@@ -135,71 +63,143 @@ public abstract class DynamicScannerEntity {
         return isContainer;
     }
 
+    public void setContainer(boolean container) {
+        isContainer = container;
+    }
+
     public String getContainerId() {
         return containerId;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
     }
 
     public String getUserId() {
         return userId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getType() {
         return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getCreatedTime() {
         return createdTime;
     }
 
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getIpAddress() {
         return ipAddress;
     }
 
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
     public String getDockerIpAddress() {
         return dockerIpAddress;
+    }
+
+    public void setDockerIpAddress(String dockerIpAddress) {
+        this.dockerIpAddress = dockerIpAddress;
     }
 
     public int getContainerPort() {
         return containerPort;
     }
 
+    public void setContainerPort(int containerPort) {
+        this.containerPort = containerPort;
+    }
+
     public int getHostPort() {
         return hostPort;
+    }
+
+    public void setHostPort(int hostPort) {
+        this.hostPort = hostPort;
     }
 
     public String getScanStatus() {
         return scanStatus;
     }
 
+    public void setScanStatus(String scanStatus) {
+        this.scanStatus = scanStatus;
+    }
+
     public int getScanProgress() {
         return scanProgress;
+    }
+
+    public void setScanProgress(int scanProgress) {
+        this.scanProgress = scanProgress;
     }
 
     public String getScanProgressTime() {
         return scanProgressTime;
     }
 
+    public void setScanProgressTime(String scanProgressTime) {
+        this.scanProgressTime = scanProgressTime;
+    }
+
     public boolean isReportReady() {
         return reportReady;
+    }
+
+    public void setReportReady(boolean reportReady) {
+        this.reportReady = reportReady;
     }
 
     public String getReportReadyTime() {
         return reportReadyTime;
     }
 
+    public void setReportReadyTime(String reportReadyTime) {
+        this.reportReadyTime = reportReadyTime;
+    }
+
     public boolean isReportSent() {
         return reportSent;
+    }
+
+    public void setReportSent(boolean reportSent) {
+        this.reportSent = reportSent;
     }
 
     public String getReportSentTime() {
         return reportSentTime;
     }
 
+    public void setReportSentTime(String reportSentTime) {
+        this.reportSentTime = reportSentTime;
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

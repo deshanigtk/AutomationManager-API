@@ -16,19 +16,28 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.repository;
+package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 
-import org.springframework.data.repository.CrudRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.DynamicScannerEntity;
 
 /**
- * Dynamic scanner repository
+ * Dynamic scanner interface to be
  *
  * @author Deshani Geethika
  */
-public interface DynamicScannerRepository extends CrudRepository<DynamicScannerEntity, Integer> {
+public interface DynamicScanner {
 
-    DynamicScannerEntity findOneByContainerId(String containerId);
+    Logger LOGGER = LoggerFactory.getLogger(DynamicScanner.class);
 
-    Iterable<DynamicScannerEntity> findByUserId(String userId);
+    int calculateDynamicScannerPort(int id);
+
+    void init(String userId, String ipAddress, boolean isFileUpload, String fileUploadLocation, String urlListFileName,
+              String wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort);
+
+    DynamicScannerEntity startContainer();
+
+    void startScan(DynamicScannerEntity dynamicScannerEntity, ProductManagerEntity productManagerEntity);
 }

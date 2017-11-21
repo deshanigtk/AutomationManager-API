@@ -24,16 +24,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamic.DynamicScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.DynamicScannerEntity;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerRuntimeException;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.FileHandler;
 import org.wso2.security.tools.automation.manager.handler.MailHandler;
 import org.wso2.security.tools.automation.manager.repository.DynamicScannerRepository;
-import org.wso2.security.tools.automation.manager.scanner.dynamic.DynamicScanner;
-import org.wso2.security.tools.automation.manager.scanner.dynamic.DynamicScannerFactory;
-import org.wso2.security.tools.automation.manager.scanner.dynamic.MainScanner;
-import org.wso2.security.tools.automation.manager.scanner.dynamic.ProductManager;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScanner;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScannerFactory;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.MainScanner;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.ProductManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -81,11 +81,14 @@ public class DynamicScannerService {
         return dynamicScannerRepository.save(dynamicScanner);
     }
 
-    public void startScan(String scanType, String userId, String testName, String ipAddress, String productName, String wumLevel,
-                          boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile, String wso2ServerHost, int wso2ServerPort) {
+    public void startScan(String scanType, String userId, String testName, String ipAddress, String productName,
+                          String wumLevel,
+                          boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile, String
+                                  wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) {
         String urlListFileName;
         String zipFileName = null;
-        String uploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
+        String uploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
+                SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
         File tempDirectory = new File(ScannerProperties.getTempFolderPath());
         File uploadDirectory = new File(uploadLocation);
         DynamicScannerFactory dynamicScannerFactory = new DynamicScannerFactory();
@@ -121,7 +124,8 @@ public class DynamicScannerService {
                             wumLevel, isFileUpload, uploadLocation, urlListFileName, zipFileName,
                             wso2ServerHost, wso2ServerPort);
                     DynamicScanner dynamicScanner = dynamicScannerFactory.getDynamicScanner(scanType);
-                    dynamicScanner.init(userId, ipAddress, isFileUpload, uploadLocation, urlListFileName, wso2ServerHost, wso2ServerPort, ipAddress);
+                    dynamicScanner.init(userId, ipAddress, isFileUpload, uploadLocation, urlListFileName,
+                            wso2ServerHost, wso2ServerPort, scannerHost, scannerPort);
                     MainScanner mainScanner = new MainScanner(productManager, dynamicScanner);
                     new Thread(mainScanner).start();
                 }
@@ -167,11 +171,13 @@ public class DynamicScannerService {
             if (mailHandler.sendMail(dynamicScannerEntity.getUserId(), subject, "This is auto generated message",
                     new FileInputStream(new File(reportFilePath)), "ZapReport.html")) {
                 dynamicScannerEntity.setReportSent(true);
-                dynamicScannerEntity.setReportSentTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
+                dynamicScannerEntity.setReportSentTime(new SimpleDateFormat(ScannerProperties.getDatePattern())
+                        .format(new Date()));
                 kill(containerId);
             }
         } catch (Exception e) {
-            throw new AutomationManagerRuntimeException("Error occurred while getting dynamic scanner report and mail");
+            throw new AutomationManagerRuntimeException("Error occurred while getting dynamicscanner scanner report " +
+                    "and mail");
         }
     }
 }

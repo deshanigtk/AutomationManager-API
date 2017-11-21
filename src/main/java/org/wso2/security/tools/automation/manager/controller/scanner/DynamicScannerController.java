@@ -27,7 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.service.DynamicScannerService;
 
 /**
- * The class {@code DynamicScannerController} is the web controller which defines the routines for initiating dynamic scans.
+ * The class {@code DynamicScannerController} is the web controller which defines the routines for initiating dynamicscanner
+ * scans.
  *
  * @author Deshani Geethika
  */
@@ -47,21 +48,25 @@ public class DynamicScannerController {
      * The general contract of the method is to call {@code startScan} method in {@code DynamicScannerService} class.
      * Then the service level method will validate the request and execute the scanning process
      *
-     * @param scanType       Indicates the dynamic scan type. Eg: ZAP, Qualis
+     * @param scanType       Indicates the dynamicscanner scan type. Eg: ZAP, Qualis
      * @param userId         Unique identifier of a logged in user. Here email address is taken from authenticated user
      * @param testName       User defined name for the test
      * @param ipAddress      Ip address to spawn the containers
      * @param productName    Name of the product to be scanned
      * @param wumLevel       WUM level of the product. Default value will be 0
-     * @param isFileUpload   Indicates whether the product is uploaded. False means the product is already in up and running status
-     * @param zipFile        ZIP file of the product to be scanned. This is not required if {@code isFileUpload} parameter is false
+     * @param isFileUpload   Indicates whether the product is uploaded. False means the product is already in up and
+     *                       running status
+     * @param zipFile        ZIP file of the product to be scanned. This is not required if {@code isFileUpload}
+     *                       parameter is false
      * @param urlListFile    URLs of the product to be scanned is sent as a file
      * @param wso2ServerHost Host address if the product is already in up and running state
      * @param wso2ServerPort Port of a product which is in up and running state
+     * @param scannerHost    Host address if the scanner is hosted somewhere else
+     * @param scannerPort    Port of the remote scanner
      */
     @PostMapping(value = "startScan")
     @ApiOperation(value = "Start ProductManager container, upload the product zip file or else give IP address and " +
-            "port of already running server and start a dynamic scan")
+            "port of already running server and start a dynamicscanner scan")
     public @ResponseBody
     void startScan(@RequestParam String scanType, @RequestParam String userId,
                    @RequestParam String testName,
@@ -72,10 +77,12 @@ public class DynamicScannerController {
                    @RequestParam(required = false) MultipartFile zipFile,
                    @RequestParam MultipartFile urlListFile,
                    @RequestParam(required = false) String wso2ServerHost,
-                   @RequestParam(required = false, defaultValue = "-1") int wso2ServerPort) {
+                   @RequestParam(required = false, defaultValue = "-1") int wso2ServerPort,
+                   @RequestParam(required = false) String scannerHost,
+                   @RequestParam(required = false, defaultValue = "-1") int scannerPort) {
 
         dynamicScannerService.startScan(scanType, userId, testName, ipAddress, productName, wumLevel, isFileUpload,
-                zipFile, urlListFile, wso2ServerHost, wso2ServerPort);
+                zipFile, urlListFile, wso2ServerHost, wso2ServerPort, scannerHost, scannerPort);
     }
 
     /**

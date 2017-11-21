@@ -77,7 +77,8 @@ public class HttpRequestHandler {
         }
     }
 
-    public static HttpResponse sendMultipartRequest(URI request, Map<String, File> files, Map<String, String> textBody) {
+    public static HttpResponse sendMultipartRequest(URI request, Map<String, File> files, Map<String, String>
+            textBody) {
         HttpResponse response = null;
         try {
             HttpPost uploadFile = new HttpPost(request);

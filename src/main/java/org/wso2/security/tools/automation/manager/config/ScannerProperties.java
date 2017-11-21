@@ -68,7 +68,8 @@ public class ScannerProperties {
     static {
         properties = new Properties();
         try {
-            properties.load(new FileInputStream(new File(ScannerProperties.class.getClassLoader().getResource("scanner.properties").getFile())));
+            properties.load(new FileInputStream(new File(ScannerProperties.class.getClassLoader().getResource
+                    ("scanner.properties").getFile())));
             findsecbugsScannerDockerImage = properties.getProperty("scanner.findsecbugs.docker.image");
             dependencyCheckDockerImage = properties.getProperty("scanner.dependency-check.docker.image");
             productManagerDockerImage = properties.getProperty("product.manager.docker.image");

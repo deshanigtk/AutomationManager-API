@@ -21,19 +21,25 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.wso2.security.tools.automation.manager.service.ProductManagerService;
 
 /**
- * The main contract of the {@code ProductManagerNotificationController} class is to provide an API to be called by ProductManager Docker containers.
- * When a {@code ProductManager} Docker container is initialized to run a task, it will run asynchronously. Therefore in order to track whether a task is completed or not,
+ * The main contract of the {@code ProductManagerNotificationController} class is to provide an API to be called by
+ * ProductManager Docker containers.
+ * When a {@code ProductManager} Docker container is initialized to run a task, it will run asynchronously. Therefore
+ * in order to track whether a task is completed or not,
  * Docker container is configured to send back notifications to APIs defined here.
  *
  * @author Deshani Geethika
  */
 @Controller
 @RequestMapping("productManager/notify")
-@Api(value = "productManagerNotifications", description = "Product Manager Docker container will use this API to notify the status of the container such as file uploaded, file extracted and server started")
+@Api(value = "productManagerNotifications", description = "Product Manager Docker container will use this API to " +
+        "notify the status of the container such as file uploaded, file extracted and server started")
 public class ProductManagerNotificationController {
     private final ProductManagerService productManagerService;
 

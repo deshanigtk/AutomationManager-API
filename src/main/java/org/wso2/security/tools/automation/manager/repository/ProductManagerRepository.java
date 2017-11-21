@@ -17,7 +17,7 @@ package org.wso2.security.tools.automation.manager.repository;/*
 */
 
 import org.springframework.data.repository.CrudRepository;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamic.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
 
 public interface ProductManagerRepository extends CrudRepository<ProductManagerEntity, Integer> {
     ProductManagerEntity findOneByContainerId(String containerId);

@@ -38,8 +38,8 @@ import org.wso2.security.tools.automation.manager.handler.FileHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.handler.MailHandler;
 import org.wso2.security.tools.automation.manager.repository.StaticScannerRepository;
-import org.wso2.security.tools.automation.manager.scanner.statics.StaticScanner;
-import org.wso2.security.tools.automation.manager.scanner.statics.StaticScannerFactory;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticScannerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,16 +89,20 @@ public class StaticScannerService {
         return staticScannerRepository.save(staticScanner);
     }
 
-    public void startScan(String scanType, String userId, String testName, String ipAddress, String productName, String wumLevel, boolean isFileUpload, MultipartFile zipFile, String gitUrl, String gitUsername,
+    public void startScan(String scanType, String userId, String testName, String ipAddress, String productName,
+                          String wumLevel, boolean isFileUpload, MultipartFile zipFile, String gitUrl, String
+                                  gitUsername,
                           String gitPassword) {
         String zipFileName = null;
-        String uploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+        String uploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
+                SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
 
         if (isFileUpload) {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
                 throw new AutomationManagerRuntimeException("Please upload product zip file");
             } else {
-                if (new File(ScannerProperties.getTempFolderPath()).exists() || new File(ScannerProperties.getTempFolderPath()).mkdir()) {
+                if (new File(ScannerProperties.getTempFolderPath()).exists() || new File(ScannerProperties
+                        .getTempFolderPath()).mkdir()) {
                     if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
                         zipFileName = zipFile.getOriginalFilename();
                         if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
@@ -118,7 +122,8 @@ public class StaticScannerService {
         }
         StaticScannerFactory staticScannerFactory = new StaticScannerFactory();
         StaticScanner staticScanner = staticScannerFactory.getStaticScanner(scanType);
-        staticScanner.init(userId, testName, ipAddress, productName, wumLevel, isFileUpload, uploadLocation, zipFileName, gitUrl, gitUsername, gitPassword);
+        staticScanner.init(userId, testName, ipAddress, productName, wumLevel, isFileUpload, uploadLocation,
+                zipFileName, gitUrl, gitUsername, gitPassword);
         new Thread(staticScanner).start();
     }
 
@@ -138,7 +143,8 @@ public class StaticScannerService {
                         if (mailHandler.sendMail(staticScanner.getUserId(), subject, "This is auto generated message",
                                 response.getEntity().getContent(), "Reports.zip")) {
                             staticScanner.setReportSent(true);
-                            staticScanner.setReportSentTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
+                            staticScanner.setReportSentTime(new SimpleDateFormat(ScannerProperties.getDatePattern())
+                                    .format(new Date()));
                             kill(containerId);
                         }
                     }
@@ -155,7 +161,8 @@ public class StaticScannerService {
         boolean status = false;
         try {
             URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                    .setPort(staticScanner.getHostPort()).setScheme("http").setPath(ScannerProperties.getStaticScannerIsReady())
+                    .setPort(staticScanner.getHostPort()).setScheme("http").setPath(ScannerProperties
+                            .getStaticScannerIsReady())
                     .build();
 
             HttpClient httpClient = HttpClientBuilder.create().build();

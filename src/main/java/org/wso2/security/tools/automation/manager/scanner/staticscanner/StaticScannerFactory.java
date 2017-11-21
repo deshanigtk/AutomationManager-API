@@ -16,22 +16,23 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager;
+package org.wso2.security.tools.automation.manager.scanner.staticscanner;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.dc.DependencyCheckScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.fsb.FindSecBugsScanner;
 
-@SpringBootApplication
-public class Application extends SpringBootServletInitializer {
+public class StaticScannerFactory {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
+    public StaticScanner getStaticScanner(String type) {
+        if (type == null) {
+            return null;
+        }
+        if (type.equalsIgnoreCase("fsb")) {
+            return new FindSecBugsScanner();
+        }
+        if (type.equalsIgnoreCase("dc")) {
+            return new DependencyCheckScanner();
+        }
+        return null;
     }
 }

@@ -1,20 +1,22 @@
-package org.wso2.security.tools.automation.manager.scanner.dynamic;/*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-*  WSO2 Inc. licenses this file to you under the Apache License,
-*  Version 2.0 (the "License"); you may not use this file except
-*  in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*    http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied.  See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+/*
+ * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -23,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.security.tools.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamic.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.service.ProductManagerService;
@@ -36,26 +38,28 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Product manager
+ *
+ * @author Deshani Geethika
+ */
+@SuppressWarnings("WeakerAccess")
 public class ProductManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicScanner.class);
     private int id;
     private String userId;
     private String testName;
     private String ipAddress;
     private String productName;
     private String wumLevel;
-
     private String fileUploadLocation;
     private boolean isFileUpload;
     private File zipFile;
     private File urlListFile;
-
     private String wso2ServerHost;
     private int wso2ServerPort;
-
     private boolean isInitialized = false;
     private ProductManagerService productManagerService;
-
-    Logger LOGGER = LoggerFactory.getLogger(DynamicScanner.class);
 
     public ProductManager(String userId, String testName, String ipAddress, String productName, String wumLevel,
                           boolean isFileUpload, String fileUploadLocation, String urlListFileName, String zipFileName,
@@ -112,7 +116,8 @@ public class ProductManager {
 
             if (DockerHandler.startContainer(containerId)) {
                 productManagerEntity.setStatus(ScannerProperties.getStatusRunning());
-                productManagerEntity.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings().ipAddress());
+                productManagerEntity.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings()
+                        .ipAddress());
                 productManagerService.save(productManagerEntity);
                 return productManagerEntity;
             }
@@ -128,7 +133,8 @@ public class ProductManager {
                         .setPort(productManagerEntity.getHostPort()).setScheme("http")
                         .setPath(ScannerProperties.getProductManagerStartServer())
                         .addParameter("automationManagerHost", ScannerProperties.getAutomationManagerHost())
-                        .addParameter("automationManagerPort", String.valueOf(ScannerProperties.getAutomationManagerPort()))
+                        .addParameter("automationManagerPort", String.valueOf(ScannerProperties
+                                .getAutomationManagerPort()))
                         .addParameter("myContainerId", productManagerEntity.getContainerId())
                         .build();
 
@@ -148,10 +154,22 @@ public class ProductManager {
         return false;
     }
 
+    public boolean isFileUpload() {
+        return isFileUpload;
+    }
+
     private int calculateWso2ServerPort(int id) {
         if (20000 + id > 40000) {
             id = 1;
         }
         return (20000 + id) % 40000;
+    }
+
+    public String getWso2ServerHost() {
+        return wso2ServerHost;
+    }
+
+    public int getWso2ServerPort() {
+        return wso2ServerPort;
     }
 }
