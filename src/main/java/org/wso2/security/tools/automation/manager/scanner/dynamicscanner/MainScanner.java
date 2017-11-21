@@ -19,8 +19,8 @@
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.DynamicScannerEntity;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.handler.ServerHandler;
 
 /**

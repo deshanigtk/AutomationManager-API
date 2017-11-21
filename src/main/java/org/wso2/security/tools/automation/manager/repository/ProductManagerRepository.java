@@ -1,4 +1,4 @@
-package org.wso2.security.tools.automation.manager.repository;/*
+/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -15,12 +15,33 @@ package org.wso2.security.tools.automation.manager.repository;/*
 * specific language governing permissions and limitations
 * under the License.
 */
+package org.wso2.security.tools.automation.manager.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.ProductManagerEntity;
 
+/**
+ * The interface {@code ProductManagerRepository} extends from {@link CrudRepository} defines methods to perform
+ * database operations related to {@code ProductManagerRepository}. Since extends from {@link CrudRepository}, basic
+ * CRUD
+ * operation methods are not required to be defined. Custom methods are only defined
+ *
+ * @author Deshani Geethika
+ */
 public interface ProductManagerRepository extends CrudRepository<ProductManagerEntity, Integer> {
+    /**
+     * Find a container by containerId
+     *
+     * @param containerId Container Id
+     * @return a {@code ProductManagerEntity} object
+     */
     ProductManagerEntity findOneByContainerId(String containerId);
 
+    /**
+     * Find a list of product managers by user id
+     *
+     * @param userId User id
+     * @return List of {@code ProductManagerEntity}
+     */
     Iterable<ProductManagerEntity> findByUserId(String userId);
 }

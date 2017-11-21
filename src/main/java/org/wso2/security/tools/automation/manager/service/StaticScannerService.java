@@ -31,7 +31,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.scanner.staticscanner.StaticScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerRuntimeException;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.FileHandler;
@@ -89,13 +89,13 @@ public class StaticScannerService {
         return staticScannerRepository.save(staticScanner);
     }
 
-    public void startScan(String scanType, String userId, String testName, String ipAddress, String productName,
+    public void startScan(String scanType, String userId, String testName, String productName,
                           String wumLevel, boolean isFileUpload, MultipartFile zipFile, String gitUrl, String
-                                  gitUsername,
-                          String gitPassword) {
+                                  gitUsername, String gitPassword) {
         String zipFileName = null;
         String uploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
-                SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date());
+                SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
+        String ipAddress = ScannerProperties.getIpAddress();
 
         if (isFileUpload) {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {

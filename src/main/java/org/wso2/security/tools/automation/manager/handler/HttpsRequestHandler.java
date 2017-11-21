@@ -1,4 +1,3 @@
-package org.wso2.security.tools.automation.manager.handler;
 /*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -16,6 +15,7 @@ package org.wso2.security.tools.automation.manager.handler;
 * specific language governing permissions and limitations
 * under the License.
 */
+package org.wso2.security.tools.automation.manager.handler;
 
 import org.apache.http.impl.execchain.RequestAbortedException;
 
@@ -28,7 +28,11 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -45,13 +49,12 @@ public class HttpsRequestHandler {
     private static final String protocol = "TLSv1.2";
     private static final String trustStorePath = "org/wso2/security/tools/automation/manager/truststore.jks";
     private static final String trustStorePassword = "wso2carbon";
-
-    private static KeyStore trustStore;
-    private static HttpsURLConnection httpsURLConnection;
     private static SSLSocketFactory sslSocketFactory;
-
     private static boolean isInitialized = false;
 
+    /**
+     * Set host name verification for wso2 server
+     */
     static {
         HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> {
             // ip address of the service URL(like.23.28.244.244)
@@ -61,40 +64,48 @@ public class HttpsRequestHandler {
         });
     }
 
+    /**
+     * Initialise {@link SSLSocketFactory}
+     * <p>Creates a {@link KeyStore} instance and load key store file into it. Then the created {@link KeyStore}
+     * instance is passed to {@link TrustManagerFactory} and the trust managers from {@link TrustManagerFactory}
+     * instance are passed into {@link SSLContext} instance</p>
+     */
     private static void init() {
+        KeyStore trustStore;
         try {
             trustStore = KeyStore.getInstance(trustStoreType);
-            System.out.println(trustStore);
             InputStream inputStream = HttpsRequestHandler.class.getClassLoader().getResourceAsStream(trustStorePath);
             assert inputStream != null;
             trustStore.load(inputStream, trustStorePassword.toCharArray());
-
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(trustManagerType);
             trustManagerFactory.init(trustStore);
-
             SSLContext sslContext = SSLContext.getInstance(protocol);
-
             sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
             sslSocketFactory = sslContext.getSocketFactory();
-            System.out.println(sslSocketFactory);
-            System.out.println(sslContext);
-
             isInitialized = true;
-
-        } catch (Exception e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException |
+                KeyManagementException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Sends a HTTPS request
+     *
+     * @param link           URL of the server
+     * @param requestHeaders Map of request headers
+     * @param requestParams  Map of request parameters
+     * @param method         Method type (GET or POST)
+     * @return HTTP URL connection instance
+     * @throws RequestAbortedException      Signals that the request has been aborted
+     * @throws UnsupportedEncodingException The Character Encoding is not supported
+     */
     public static HttpsURLConnection sendRequest(String link, Map<String, String> requestHeaders, Map<String, Object>
-            requestParams,
-                                                 String method) throws RequestAbortedException,
-            UnsupportedEncodingException {
-
+            requestParams, String method) throws RequestAbortedException, UnsupportedEncodingException {
+        HttpsURLConnection httpsURLConnection;
         if (!isInitialized) {
             init();
         }
-
         StringBuilder postData = new StringBuilder();
         if (requestParams != null) {
             for (Map.Entry<String, Object> param : requestParams.entrySet()) {
@@ -108,27 +119,28 @@ public class HttpsRequestHandler {
         }
         try {
             URL url = new URL(link + "?" + postData.toString());
-
             httpsURLConnection = (HttpsURLConnection) url.openConnection();
             httpsURLConnection.setSSLSocketFactory(sslSocketFactory);
             httpsURLConnection.setRequestMethod(method);
             httpsURLConnection.setInstanceFollowRedirects(false);
-
             if (requestHeaders != null) {
                 for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
                     httpsURLConnection.setRequestProperty(entry.getKey(), entry.getValue());
                 }
             }
-
-
-            System.out.println(httpsURLConnection);
             return httpsURLConnection;
-
         } catch (IOException e) {
             throw new RequestAbortedException("Https request aborted");
         }
     }
 
+    /**
+     * Reads a response and returns it as a {@code String}
+     *
+     * @param httpsURLConnection {@link HttpsURLConnection} instance
+     * @return response read as a string
+     * @throws IOException If an I/O exception is occurred
+     */
     public static String printResponse(HttpsURLConnection httpsURLConnection) throws IOException {
         StringBuilder builder = new StringBuilder();
         builder.append(httpsURLConnection.getResponseCode())
@@ -141,35 +153,33 @@ public class HttpsRequestHandler {
             if (entry.getKey() == null) {
                 continue;
             }
-            builder.append(entry.getKey())
-                    .append(": ");
-
+            builder.append(entry.getKey()).append(": ");
             List<String> headerValues = entry.getValue();
-
             Iterator<String> it = headerValues.iterator();
             if (it.hasNext()) {
                 builder.append(it.next());
-
                 while (it.hasNext()) {
-                    builder.append(", ")
-                            .append(it.next());
+                    builder.append(", ").append(it.next());
                 }
             }
             builder.append("\n");
         }
-
         return builder.toString();
     }
 
-    public static List<String> getResponseValue(String key, HttpsURLConnection httpsURLConnection) {
+    /**
+     * Extract a value from response header
+     *
+     * @param key                Key of the required value
+     * @param httpsURLConnection HTTPS URL Connection
+     * @return a list of values for a given key
+     */
+    public static List<String> extractValueFromResponseHeader(String key, HttpsURLConnection httpsURLConnection) {
         Map<String, List<String>> headerFields = httpsURLConnection.getHeaderFields();
         for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
             if (entry.getKey() == null) {
                 continue;
             }
-
             if (entry.getKey().equals(key)) {
                 return entry.getValue();
             }

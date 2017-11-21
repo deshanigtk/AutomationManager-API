@@ -51,7 +51,6 @@ public class StaticScannerController {
      * @param scanType     Indicates the dynamic scan type. Eg: ZAP, Qualis
      * @param userId       Unique identifier of a logged in user. Here email address is taken from authenticated user
      * @param testName     User defined name for the test
-     * @param ipAddress    Ip address to spawn the containers
      * @param productName  Name of the product to be scanned
      * @param wumLevel     WUM level of the product. Default value will be 0
      * @param isFileUpload Indicates whether the product is uploaded. False means the product is already in up and
@@ -70,7 +69,6 @@ public class StaticScannerController {
     void startScan(@RequestParam String scanType,
                    @RequestParam String userId,
                    @RequestParam String testName,
-                   @RequestParam String ipAddress,
                    @RequestParam String productName,
                    @RequestParam String wumLevel,
                    @RequestParam boolean isFileUpload,
@@ -78,7 +76,7 @@ public class StaticScannerController {
                    @RequestParam(required = false) String gitUrl,
                    @RequestParam(required = false) String gitUsername,
                    @RequestParam(required = false) String gitPassword) {
-        staticScannerService.startScan(scanType, userId, testName, ipAddress, productName, wumLevel, isFileUpload,
+        staticScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload,
                 zipFile, gitUrl, gitUsername, gitPassword);
     }
 

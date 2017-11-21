@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.DynamicScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerRuntimeException;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.FileHandler;
@@ -81,12 +81,12 @@ public class DynamicScannerService {
         return dynamicScannerRepository.save(dynamicScanner);
     }
 
-    public void startScan(String scanType, String userId, String testName, String ipAddress, String productName,
-                          String wumLevel,
-                          boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile, String
-                                  wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) {
+    public void startScan(String scanType, String userId, String testName, String productName,
+                          String wumLevel, boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile,
+                          String wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) {
         String urlListFileName;
         String zipFileName = null;
+        String ipAddress = ScannerProperties.getIpAddress();
         String uploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
                 SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
         File tempDirectory = new File(ScannerProperties.getTempFolderPath());

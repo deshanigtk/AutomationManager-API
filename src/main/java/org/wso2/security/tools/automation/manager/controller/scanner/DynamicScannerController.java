@@ -51,7 +51,6 @@ public class DynamicScannerController {
      * @param scanType       Indicates the dynamicscanner scan type. Eg: ZAP, Qualis
      * @param userId         Unique identifier of a logged in user. Here email address is taken from authenticated user
      * @param testName       User defined name for the test
-     * @param ipAddress      Ip address to spawn the containers
      * @param productName    Name of the product to be scanned
      * @param wumLevel       WUM level of the product. Default value will be 0
      * @param isFileUpload   Indicates whether the product is uploaded. False means the product is already in up and
@@ -70,7 +69,6 @@ public class DynamicScannerController {
     public @ResponseBody
     void startScan(@RequestParam String scanType, @RequestParam String userId,
                    @RequestParam String testName,
-                   @RequestParam String ipAddress,
                    @RequestParam String productName,
                    @RequestParam(defaultValue = "0") String wumLevel,
                    @RequestParam boolean isFileUpload,
@@ -81,7 +79,7 @@ public class DynamicScannerController {
                    @RequestParam(required = false) String scannerHost,
                    @RequestParam(required = false, defaultValue = "-1") int scannerPort) {
 
-        dynamicScannerService.startScan(scanType, userId, testName, ipAddress, productName, wumLevel, isFileUpload,
+        dynamicScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload,
                 zipFile, urlListFile, wso2ServerHost, wso2ServerPort, scannerHost, scannerPort);
     }
 

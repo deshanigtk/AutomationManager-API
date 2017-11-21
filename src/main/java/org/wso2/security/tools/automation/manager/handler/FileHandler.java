@@ -28,15 +28,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Handling class for files
+ * The class {@code FileHandler} is to handle file uploading.
+ * Since a container starts in a separate thread, Tomcat removes uploaded file which is in Tomcat temp directory.
+ * Therefore, the file cannot be sent to the container. So that, instead of using Tomcat temp directory, a custom
+ * location is used to upload a file
  *
  * @author Deshani Geethika
  */
 @SuppressWarnings("unused")
 public class FileHandler {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(FileHandler.class);
 
+    /**
+     * Upload a file to a given location
+     *
+     * @param file           File to be uploaded
+     * @param fileUploadPath File upload path
+     * @return Boolean to indicate the operation succeeded
+     */
     public static boolean uploadFile(MultipartFile file, String fileUploadPath) {
         try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fileUploadPath)))) {
             byte[] bytes = file.getBytes();
@@ -48,6 +57,12 @@ public class FileHandler {
         return false;
     }
 
+    /**
+     * Delete a file in a given location
+     *
+     * @param filePath File path
+     * @return Boolean to indicate the file is deleted
+     */
     public static boolean deleteUploadedFile(String filePath) {
         File file = new File(filePath);
         if (file.exists()) {

@@ -18,17 +18,39 @@
 
 package org.wso2.security.tools.automation.manager.exception;
 
+/**
+ * The class {@code AutomationManagerRuntimeException} extends {@link RuntimeException}, wraps exceptions of the
+ * application to {@code AutomationManagerRuntimeException} type
+ *
+ * @author Deshani Geethika
+ */
+@SuppressWarnings("unused")
 public class AutomationManagerRuntimeException extends RuntimeException {
-
+    /**
+     * Constructs a new runtime exception with {@code null} as its
+     * detail message.
+     */
     public AutomationManagerRuntimeException() {
         super();
     }
 
+    /**
+     * Constructs a new runtime exception with the specified detail message.
+     *
+     * @param message Message for the exception
+     */
     public AutomationManagerRuntimeException(String message) {
         super(message);
     }
 
+    /**
+     * Constructs a new runtime exception with the specified detail message and
+     * cause.
+     */
     public AutomationManagerRuntimeException(String message, Throwable e) {
         super(message, e);
     }
 }
+
+
+

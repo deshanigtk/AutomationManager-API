@@ -1,4 +1,4 @@
-package org.wso2.security.tools.automation.manager.handler;/*
+/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -15,17 +15,30 @@ package org.wso2.security.tools.automation.manager.handler;/*
 * specific language governing permissions and limitations
 * under the License.
 */
+package org.wso2.security.tools.automation.manager.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wso2.security.tools.automation.manager.exception.AutomationManagerRuntimeException;
 
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Utility methods for handling server
+ */
 public class ServerHandler {
-
     private final static Logger LOGGER = LoggerFactory.getLogger(ServerHandler.class);
 
+    /**
+     * Periodically checks for a host availability. If {@link IOException} is occurred, {@link Thread} sleeps for
+     * few seconds and again check for host availability. This loop is run for given number of times
+     *
+     * @param host  Host to be checked
+     * @param port  Port to be checked
+     * @param times Number of times to check
+     * @return Boolean to indicate host is available
+     */
     public static boolean hostAvailabilityCheck(String host, int port, int times) {
         int i = 0;
         while (i < times) {
@@ -34,12 +47,11 @@ public class ServerHandler {
                 LOGGER.info(host + ":" + port + " is available");
                 return true;
             } catch (IOException e) {
-                LOGGER.error(e.toString());
                 try {
                     Thread.sleep(5000);
                     i++;
                 } catch (InterruptedException e1) {
-                    e1.printStackTrace();
+                    throw new AutomationManagerRuntimeException("Interrupt error occurred", e);
                 }
             }
         }

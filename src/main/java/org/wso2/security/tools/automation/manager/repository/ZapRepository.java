@@ -19,16 +19,31 @@
 package org.wso2.security.tools.automation.manager.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ZapEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.ZapEntity;
 
 /**
- * Zap repository
+ * The interface {@code ZapRepository} extends from {@link CrudRepository} defines methods to perform
+ * database operations related to {@code ZapRepository}. Since extends from {@link CrudRepository}, basic CRUD
+ * operation methods are not required to be defined. Custom methods are only defined
  *
  * @author Deshani Geethika
  */
 public interface ZapRepository extends CrudRepository<ZapEntity, Integer> {
-
+    /**
+     * Find a container by containerId
+     *
+     * @param containerId Container Id
+     * @return a {@code ZapEntity} object
+     */
     ZapEntity findOneByContainerId(String containerId);
 
+    /**
+     * Find a list of dynamic scanners by user id
+     *
+     * @param userId User id
+     * @return List of {@code ZapEntity}
+     */
     Iterable<ZapEntity> findByUserId(String userId);
 }
+
+

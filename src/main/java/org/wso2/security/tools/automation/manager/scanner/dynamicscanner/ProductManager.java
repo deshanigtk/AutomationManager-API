@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.security.tools.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.service.ProductManagerService;

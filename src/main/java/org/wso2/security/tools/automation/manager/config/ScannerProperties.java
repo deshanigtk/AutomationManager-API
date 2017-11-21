@@ -36,7 +36,6 @@ public class ScannerProperties {
     private static String dependencyCheckDockerImage;
     private static String productManagerDockerImage;
     private static String zapDockerImage;
-    //
     private static String staticScannerIsReady;
     private static String staticScannerStartScan;
     private static String staticScannerGetReport;
@@ -44,6 +43,7 @@ public class ScannerProperties {
     private static String productManagerIsReady;
     private static String productManagerStartServer;
     private static int productManagerProductPort;
+    private static String ipAddress;
     private static String automationManagerHost;
     private static String automationManagerPort;
     private static String tempFolderPath;
@@ -79,6 +79,7 @@ public class ScannerProperties {
             productManagerIsReady = properties.getProperty("product.manager.is-ready");
             productManagerStartServer = properties.getProperty("product.manager.start-server");
             productManagerProductPort = Integer.parseInt(properties.getProperty("product.manager.product-port"));
+            ipAddress = properties.getProperty("ip-address");
             automationManagerHost = properties.getProperty("automation.manager.host");
             automationManagerPort = properties.getProperty("automation.manager.port");
             tempFolderPath = properties.getProperty("temp.dir");
@@ -140,6 +141,10 @@ public class ScannerProperties {
 
     public static int getProductManagerProductPort() {
         return productManagerProductPort;
+    }
+
+    public static String getIpAddress() {
+        return ipAddress;
     }
 
     public static String getAutomationManagerHost() {

@@ -20,11 +20,10 @@ package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.DynamicScannerEntity;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
 
 /**
- * Dynamic scanner interface to be
+ * Dynamic scanner interface
  *
  * @author Deshani Geethika
  */

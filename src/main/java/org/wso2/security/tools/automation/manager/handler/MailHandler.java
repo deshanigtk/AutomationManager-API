@@ -40,7 +40,6 @@ import java.io.InputStream;
 @Component
 public class MailHandler {
     private final JavaMailSender mailSender;
-
     private Logger LOGGER = LoggerFactory.getLogger(MailHandler.class);
 
     @Autowired
@@ -48,22 +47,28 @@ public class MailHandler {
         this.mailSender = mailSender;
     }
 
-
+    /**
+     * Send an email
+     *
+     * @param to                 To whom the email is sent
+     * @param subject            Email subject
+     * @param body               Email body
+     * @param inputStream        Input stream of an attachment
+     * @param attachmentFileName Attachment file name
+     * @return
+     */
     public boolean sendMail(String to, String subject, String body, InputStream inputStream, String
             attachmentFileName) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setTo(to);
             mimeMessageHelper.setText(body);
-
             mimeMessageHelper.addAttachment(attachmentFileName,
                     new ByteArrayResource(IOUtils.toByteArray(inputStream)));
             mailSender.send(mimeMessageHelper.getMimeMessage());
             return true;
-
         } catch (MessagingException | IOException e) {
             LOGGER.error("Error occurred while sending the email", e);
         }

@@ -25,8 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.security.tools.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.DynamicScannerEntity;
-import org.wso2.security.tools.automation.manager.entity.scanner.dynamicscanner.ZapEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.ZapEntity;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpsRequestHandler;
@@ -111,7 +111,6 @@ public class ZapScanner implements DynamicScanner {
     @Override
     public DynamicScannerEntity startScanner() {
         int port = calculateDynamicScannerPort(id);
-
         List<String> command = Arrays.asList("zap.sh", "-daemon", "-config", "api.disablekey=true", "-config",
                 "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true", "-port", String.valueOf(port),
                 "-host", "0.0.0.0");
@@ -142,7 +141,6 @@ public class ZapScanner implements DynamicScanner {
     @Override
     public void startScan(String productHostRelativeToScanner, String productHostRelativeToThis, int productPort) {
         try {
-
 
             Map<String, Object> loginCredentials = new HashMap<>();
 
@@ -182,7 +180,7 @@ public class ZapScanner implements DynamicScanner {
             HttpsURLConnection httpsURLConnection = HttpsRequestHandler.sendRequest(loginUri.toString(), props,
                     loginCredentials, POST);
             List<String> setCookieResponseList = HttpsRequestHandler
-                    .getResponseValue("Set-Cookie", httpsURLConnection);
+                    .extractValueFromResponseHeader("Set-Cookie", httpsURLConnection);
 
             assert setCookieResponseList != null;
             String setCookieResponse = setCookieResponseList.get(0);
@@ -215,7 +213,7 @@ public class ZapScanner implements DynamicScanner {
             LOGGER.info("Creating empty session " + HttpRequestHandler.printResponse(createEmptySessionResponse));
 
             httpsURLConnection = HttpsRequestHandler.sendRequest(loginUri.toString(), props, loginCredentials, POST);
-            setCookieResponseList = HttpsRequestHandler.getResponseValue("Set-Cookie", httpsURLConnection);
+            setCookieResponseList = HttpsRequestHandler.extractValueFromResponseHeader("Set-Cookie", httpsURLConnection);
 
             assert setCookieResponseList != null;
             setCookieResponse = setCookieResponseList.get(0);
