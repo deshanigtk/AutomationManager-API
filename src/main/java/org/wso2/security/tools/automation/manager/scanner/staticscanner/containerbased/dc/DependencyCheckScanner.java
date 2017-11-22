@@ -16,13 +16,13 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.scanner.staticscanner.dc;
+package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.dc;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.wso2.security.tools.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.staticscanner.DependencyCheckEntity;
+import org.wso2.security.tools.automation.manager.entity.staticscanner.containerbased.dependencycheck.DependencyCheckEntity;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;

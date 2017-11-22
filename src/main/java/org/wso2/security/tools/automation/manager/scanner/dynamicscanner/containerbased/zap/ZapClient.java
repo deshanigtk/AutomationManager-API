@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.zap;
+package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased.zap;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -24,6 +24,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
@@ -31,15 +32,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Methods to run API calls to ZAP
+ * The class {@code ZapClient} is a client to communicate with ZAP API
  *
  * @author Deshani Geethika
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ZapClient {
 
-    private static final String SAVE_SESSION_PATH = "/JSON/core/action/newSession/";
-    private static final String REMOVE_SESSION_PATH = "/JSON/httpSessions/action/removeSession/";
+    private static final String SAVE_SESSION = "/JSON/core/action/newSession/";
+    private static final String REMOVE_SESSION = "/JSON/httpSessions/action/removeSession/";
     private static final String CREATE_EMPTY_SESSION = "/JSON/httpSessions/action/createEmptySession/";
     private static final String SET_SESSION_TOKEN_VALUE = "/JSON/httpSessions/action/setSessionTokenValue/";
     private static final String EXCLUDE_FROM_SCAN = "/JSON/spider/action/excludeFromScan/";
@@ -58,8 +59,15 @@ public class ZapClient {
     private final String host;
     private final int port;
     private final String scheme;
-    private final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * Initialize the ZAP client
+     *
+     * @param host   ZAP API host
+     * @param port   ZAP API port
+     * @param scheme Scheme (eg: HTTP, HTTPS)
+     */
     public ZapClient(String host, int port, String scheme) {
         httpClient = HttpClientBuilder.create().build();
         this.host = host;
@@ -68,11 +76,22 @@ public class ZapClient {
         LOGGER.info("ZapClient is initialized");
     }
 
+    /**
+     * Save a session
+     *
+     * @param name      Session name
+     * @param overwrite Overwrite value
+     * @param post      Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse saveSession(String name, boolean overwrite, Boolean post)
             throws IOException, URISyntaxException {
 
         URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
-                .setPath(SAVE_SESSION_PATH)
+                .setPath(SAVE_SESSION)
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("name", name)
                 .addParameter("overwrite", overwrite ? "true" : "false")
@@ -82,11 +101,22 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Remove a session
+     *
+     * @param site    Site that session belongs to
+     * @param session Session name
+     * @param post    Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse removeSession(String site, String session, boolean post)
             throws IOException, URISyntaxException {
 
         URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
-                .setPath(REMOVE_SESSION_PATH)
+                .setPath(REMOVE_SESSION)
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("site", site)
                 .addParameter("session", session)
@@ -96,6 +126,17 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Create new empty session
+     *
+     * @param site    Site that a session needs to be created
+     * @param session Session name
+     * @param post    Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse createEmptySession(String site, String session, boolean post)
             throws IOException, URISyntaxException {
 
@@ -110,6 +151,19 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Set session token value
+     *
+     * @param site         Site that a session token needs to be added
+     * @param session      Session name
+     * @param sessionToken Name of the session token
+     * @param tokenValue   Value of the session token
+     * @param post         Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse setSessionTokenValue(String site, String session, String sessionToken, String tokenValue,
                                              boolean post) throws IOException, URISyntaxException {
 
@@ -126,6 +180,17 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Exclude a URL from spider. This method is used to exclude logout URL from spider. If a logout URL is hit, the
+     * session will stop
+     *
+     * @param regex Regular expression of URL
+     * @param post  Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse excludeFromSpider(String regex, boolean post)
             throws IOException, URISyntaxException {
 
@@ -139,6 +204,16 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Create a new context
+     *
+     * @param contextName Context name
+     * @param post        Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse createNewContext(String contextName, boolean post)
             throws IOException, URISyntaxException {
 
@@ -151,6 +226,17 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Include URLs in a context
+     *
+     * @param contextName Context name
+     * @param regex       Regular expression of URL
+     * @param post        Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse includeInContext(String contextName, String regex, boolean post)
             throws IOException, URISyntaxException {
 
@@ -165,6 +251,20 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Run spider
+     *
+     * @param url         URL to start spider scan
+     * @param maxChildren Maximum number of children
+     * @param recurse     Recurse
+     * @param contextName Context name
+     * @param subtreeOnly Indicate to scan sub tree only
+     * @param post        Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse spider(String url, String maxChildren, String recurse, String contextName, String subtreeOnly,
                                boolean post) throws IOException, URISyntaxException {
 
@@ -181,6 +281,16 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Gets spider status
+     *
+     * @param scanId Scan id of the spider scan
+     * @param post   Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse spiderStatus(String scanId, boolean post) throws IOException, URISyntaxException {
 
         URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(SPIDER_STATUS)
@@ -192,6 +302,19 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Run AJAX spider as a percentage
+     *
+     * @param url         URL to start AJAX spider
+     * @param inScope     Indicates whether in scope
+     * @param contextName Context name
+     * @param subtreeOnly Indicates to scan sub tree only
+     * @param post        Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse ajaxSpider(String url, String inScope, String contextName, String subtreeOnly, boolean post)
             throws IOException, URISyntaxException {
 
@@ -208,6 +331,15 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Get AJAX spider status (eg: running, stopped)
+     *
+     * @param post Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse ajaxSpiderStatus(boolean post) throws IOException, URISyntaxException {
 
         URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
@@ -219,6 +351,22 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Run active scan
+     *
+     * @param url            URL to start active scan
+     * @param recurse        Indicates whether to recurse
+     * @param inScopeOnly    Indicate whether in scope only
+     * @param scanPolicyName If there is any scan policy
+     * @param method         Method type
+     * @param postData       Post data
+     * @param contextId      Context Id
+     * @param post           Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse activeScan(String url, String recurse, String inScopeOnly, String scanPolicyName, String method,
                                    String postData, String contextId, boolean post)
             throws IOException, URISyntaxException {
@@ -238,6 +386,16 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Check active scan status
+     *
+     * @param scanId Scan id
+     * @param post   Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse activeScanStatus(String scanId, boolean post) throws IOException, URISyntaxException {
 
         URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme)
@@ -250,6 +408,15 @@ public class ZapClient {
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
+    /**
+     * Generate HTML report
+     *
+     * @param post Boolean value to indicate request method (GET or POST)
+     * @return HTTP response after executing the HTTP command
+     * @throws IOException        If cannot communicate with server
+     * @throws URISyntaxException Checked exception thrown to indicate that a string could not be parsed as a
+     *                            URI reference
+     */
     public HttpResponse generateHtmlReport(boolean post) throws IOException, URISyntaxException {
 
         URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(HTML_REPORT)

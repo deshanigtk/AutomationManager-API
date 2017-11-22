@@ -18,8 +18,6 @@
 
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
 
 /**
@@ -28,17 +26,8 @@ import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicS
  * @author Deshani Geethika
  */
 public interface DynamicScanner {
-
-    Logger LOGGER = LoggerFactory.getLogger(DynamicScanner.class);
-
-    int calculateDynamicScannerPort(int id);
-
-    void init(String userId, String ipAddress, boolean isFileUpload, String fileUploadLocation, String urlListFileName,
-              String wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort);
-
     DynamicScannerEntity startScanner();
 
     void startScan(String productHostRelativeToScanner, String productHostRelativeToThis, int productPort);
 
-    boolean isContainer();
 }

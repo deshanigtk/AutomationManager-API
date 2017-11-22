@@ -25,15 +25,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
-import org.wso2.security.tools.automation.manager.exception.AutomationManagerRuntimeException;
+import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.FileHandler;
 import org.wso2.security.tools.automation.manager.handler.MailHandler;
 import org.wso2.security.tools.automation.manager.repository.DynamicScannerRepository;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScanner;
-import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScannerFactory;
-import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.MainScanner;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScannerExecutor;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.ProductManager;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.factory.DynamicScannerFactoryProducer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,7 +48,6 @@ import java.util.Date;
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 @Service
 public class DynamicScannerService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(DynamicScannerService.class);
 
     private static final String STATUS_REMOVED = "removed";
@@ -81,65 +80,74 @@ public class DynamicScannerService {
         return dynamicScannerRepository.save(dynamicScanner);
     }
 
-    public void startScan(String scanType, String userId, String testName, String productName,
-                          String wumLevel, boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile,
-                          String wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) {
-        String urlListFileName;
-        String zipFileName = null;
-        String ipAddress = ScannerProperties.getIpAddress();
-        String uploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
+    public void startScan(String scanType, String userId, String testName, String productName, String wumLevel,
+                          boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile, String
+                                  wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) {
+        String fileUploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
                 SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
-        File tempDirectory = new File(ScannerProperties.getTempFolderPath());
-        File uploadDirectory = new File(uploadLocation);
-        DynamicScannerFactory dynamicScannerFactory = new DynamicScannerFactory();
+        try {
+            uploadFilesToTempDirectory(fileUploadLocation, isFileUpload, zipFile, urlListFile);
+        } catch (AutomationManagerException e) {
+            e.printStackTrace();
+        }
 
+//TODO:seperate a method
+        DynamicScannerFactoryProducer.getAbstractDynamicScannerFactory();
+
+        ProductManager productManager = new ProductManager(userId, testName, ipAddress, productName,
+                wumLevel, isFileUpload, fileUploadLocation, zipFileName,
+                wso2ServerHost, wso2ServerPort);
+        DynamicScanner dynamicScanner = dynamicScannerFactory.getDynamicScanner(scanType);
+        dynamicScanner.init(userId, ipAddress, fileUploadLocation, urlListFileName, scannerHost, scannerPort);
+        DynamicScannerExecutor dynamicScannerExecutor = new DynamicScannerExecutor(productManager,
+                dynamicScanner);
+        new Thread(dynamicScannerExecutor).start();
+    }
+
+    private void uploadFilesToTempDirectory(String fileUploadLocation, boolean isFileUpload, MultipartFile zipFile,
+                                            MultipartFile urlListFile) throws AutomationManagerException {
+        File tempDirectory = new File(ScannerProperties.getTempFolderPath());
+        File uploadDirectory = new File(fileUploadLocation);
         if (isFileUpload) {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
-                throw new AutomationManagerRuntimeException("Please upload a zip file");
-            } else {
-                if (tempDirectory.exists() || tempDirectory.mkdir()) {
-                    if (uploadDirectory.exists() || uploadDirectory.mkdir()) {
-                        zipFileName = zipFile.getOriginalFilename();
-                        if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
-                            throw new AutomationManagerRuntimeException("Cannot upload zip file");
-                        }
-                    } else {
-                        throw new AutomationManagerRuntimeException("Error occurred while creating upload location");
-                    }
-                } else {
-                    throw new AutomationManagerRuntimeException("Error occurred while creating temp folder");
-                }
-            }
-        } else {
-            if (wso2ServerHost == null || wso2ServerPort == -1) {
-                throw new AutomationManagerRuntimeException("Please enter valid details of running WSO2 server");
+                throw new AutomationManagerException("Please upload a zip file");
             }
         }
         if (tempDirectory.exists() || tempDirectory.mkdir()) {
             if (uploadDirectory.exists() || uploadDirectory.mkdir()) {
-                urlListFileName = urlListFile.getOriginalFilename();
-                if (FileHandler.uploadFile(urlListFile, uploadLocation + File.separator + urlListFileName)) {
-
-                    ProductManager productManager = new ProductManager(userId, testName, ipAddress, productName,
-                            wumLevel, isFileUpload, uploadLocation, zipFileName,
-                            wso2ServerHost, wso2ServerPort);
-                    DynamicScanner dynamicScanner = dynamicScannerFactory.getDynamicScanner(scanType);
-                    dynamicScanner.init(userId, ipAddress, isFileUpload, uploadLocation, urlListFileName,
-                            wso2ServerHost, wso2ServerPort, scannerHost, scannerPort);
-                    MainScanner mainScanner = new MainScanner(productManager, dynamicScanner);
-                    new Thread(mainScanner).start();
+                String zipFileName = zipFile.getOriginalFilename();
+                String urlListFileName = urlListFile.getOriginalFilename();
+                if (isFileUpload && !FileHandler.uploadFile(zipFile, fileUploadLocation + File.separator +
+                        zipFileName)) {
+                    throw new AutomationManagerException("Cannot upload zip file");
+                }
+                if (!FileHandler.uploadFile(zipFile, fileUploadLocation + File.separator + urlListFileName)) {
+                    throw new AutomationManagerException("Cannot upload URL list file");
                 }
             } else {
-                throw new AutomationManagerRuntimeException("Cannot upload files to temp location");
+                throw new AutomationManagerException("File upload location is not available");
             }
+        } else {
+            throw new AutomationManagerException("Temp directory is not available");
         }
+    }
+
+    private void executeScan() {
+        ProductManager productManager = new ProductManager(userId, testName, ipAddress, productName,
+                wumLevel, isFileUpload, fileUploadLocation, zipFileName,
+                wso2ServerHost, wso2ServerPort);
+        DynamicScanner dynamicScanner = dynamicScannerFactory.getDynamicScanner(scanType);
+        dynamicScanner.init(userId, ipAddress, fileUploadLocation, urlListFileName, scannerHost, scannerPort);
+        DynamicScannerExecutor dynamicScannerExecutor = new DynamicScannerExecutor(productManager,
+                dynamicScanner);
+        new Thread(dynamicScannerExecutor).start();
     }
 
     public void kill(String containerId) {
         DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
         DockerHandler.killContainer(containerId);
         DockerHandler.removeContainer(containerId);
-        dynamicScanner.setStatus(STATUS_REMOVED);
+        dynamicScanner.setStatus(ScannerProperties.);
         save(dynamicScanner);
     }
 
@@ -177,8 +185,8 @@ public class DynamicScannerService {
                 kill(containerId);
             }
         } catch (Exception e) {
-            throw new AutomationManagerRuntimeException("Error occurred while getting dynamicscanner scanner report " +
-                    "and mail");
+            throw new AutomationManagerException("Error occurred while getting dynamicscanner scanner " +
+                    "report and mail");
         }
     }
 }

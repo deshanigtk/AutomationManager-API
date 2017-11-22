@@ -43,20 +43,6 @@ public abstract class StaticScannerEntity {
     private String wumLevel;
     private String createdTime;
     private String status;
-    private String ipAddress;
-    private int containerPort;
-    private int hostPort;
-    private boolean isProductAvailable;
-    private boolean fileExtracted;
-    private String fileExtractedTime;
-    private boolean productCloned;
-    private String productClonedTime;
-    private String scanStatus;
-    private String scanStatusTime;
-    private boolean reportReady;
-    private String reportReadyTime;
-    private boolean reportSent;
-    private String reportSentTime;
     private String message;
 
     public int getId() {
@@ -131,123 +117,11 @@ public abstract class StaticScannerEntity {
         this.status = status;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public int getContainerPort() {
-        return containerPort;
-    }
-
-    public void setContainerPort(int containerPort) {
-        this.containerPort = containerPort;
-    }
-
-    public int getHostPort() {
-        return hostPort;
-    }
-
-    public void setHostPort(int hostPort) {
-        this.hostPort = hostPort;
-    }
-
-    public boolean isProductAvailable() {
-        return isProductAvailable;
-    }
-
-    public void setProductAvailable(boolean productAvailable) {
-        this.isProductAvailable = productAvailable;
-    }
-
-    public boolean isFileExtracted() {
-        return fileExtracted;
-    }
-
-    public void setFileExtracted(boolean fileExtracted) {
-        this.fileExtracted = fileExtracted;
-    }
-
-    public String getFileExtractedTime() {
-        return fileExtractedTime;
-    }
-
-    public void setFileExtractedTime(String fileExtractedTime) {
-        this.fileExtractedTime = fileExtractedTime;
-    }
-
-    public boolean isProductCloned() {
-        return productCloned;
-    }
-
-    public void setProductCloned(boolean productCloned) {
-        this.productCloned = productCloned;
-    }
-
-    public String getProductClonedTime() {
-        return productClonedTime;
-    }
-
-    public void setProductClonedTime(String productClonedTime) {
-        this.productClonedTime = productClonedTime;
-    }
-
-    public String getScanStatus() {
-        return scanStatus;
-    }
-
-    public void setScanStatus(String scanStatus) {
-        this.scanStatus = scanStatus;
-    }
-
-    public String getScanStatusTime() {
-        return scanStatusTime;
-    }
-
-    public void setScanStatusTime(String scanStatusTime) {
-        this.scanStatusTime = scanStatusTime;
-    }
-
     public String getMessage() {
         return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public boolean isReportReady() {
-        return reportReady;
-    }
-
-    public void setReportReady(boolean reportReady) {
-        this.reportReady = reportReady;
-    }
-
-    public String getReportReadyTime() {
-        return reportReadyTime;
-    }
-
-    public void setReportReadyTime(String reportReadyTime) {
-        this.reportReadyTime = reportReadyTime;
-    }
-
-    public boolean isReportSent() {
-        return reportSent;
-    }
-
-    public void setReportSent(boolean reportSent) {
-        this.reportSent = reportSent;
-    }
-
-    public String getReportSentTime() {
-        return reportSentTime;
-    }
-
-    public void setReportSentTime(String reportSentTime) {
-        this.reportSentTime = reportSentTime;
     }
 }

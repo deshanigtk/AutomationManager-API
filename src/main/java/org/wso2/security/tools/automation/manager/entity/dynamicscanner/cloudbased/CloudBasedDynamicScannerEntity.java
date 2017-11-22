@@ -15,16 +15,23 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.entity.staticscanner;
+package org.wso2.security.tools.automation.manager.entity.dynamicscanner.cloudbased;
+
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 /**
- * The class {@code DependencyCheckEntity} extends {@code StaticScannerEntity}
+ * The abstract class {@code CloudBasedDynamicScannerEntity} extends {@code DynamicScannerEntity} is an entity to
+ * store cloud based dynamic scanners
  *
  * @author Deshani Geethika
  */
 @SuppressWarnings("unused")
 @Entity
-public class DependencyCheckEntity extends StaticScannerEntity {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class CloudBasedDynamicScannerEntity extends DynamicScannerEntity {
+
 }

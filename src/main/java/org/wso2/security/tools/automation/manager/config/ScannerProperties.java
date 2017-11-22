@@ -61,6 +61,7 @@ public class ScannerProperties {
     private static String statusRunning;
     private static String statusCompleted;
     private static String statusFailed;
+    private static String statusRemoved;
 
     private static String datePattern;
 
@@ -96,13 +97,14 @@ public class ScannerProperties {
             statusRunning = properties.getProperty("status.running");
             statusCompleted = properties.getProperty("status.completed");
             statusFailed = properties.getProperty("status.failed");
+            statusRemoved=properties.getProperty("status.removed");
             datePattern = properties.getProperty("date.pattern");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+//TODO:add method comments
     public static String getFindsecbugsScannerDockerImage() {
         return findsecbugsScannerDockerImage;
     }

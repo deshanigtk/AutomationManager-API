@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.wso2.security.tools.automation.manager.entity.dynamicscanner.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.repository.ProductManagerRepository;
 

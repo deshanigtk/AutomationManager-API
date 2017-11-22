@@ -15,16 +15,37 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.entity.staticscanner;
+package org.wso2.security.tools.automation.manager.entity.productmanager.cloudbased;
+
+import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 
 import javax.persistence.Entity;
 
 /**
- * The class {@code FindSecBugsEntity} extends {@code StaticScannerEntity}
+ * The class {@code CloudBasedProductManagerEntity} extends {@code ProductManagerEntity} is an entity to
+ * store cloud based product managers
  *
  * @author Deshani Geethika
  */
 @SuppressWarnings("unused")
 @Entity
-public class FindSecBugsEntity extends StaticScannerEntity {
+public class CloudBasedProductManagerEntity extends ProductManagerEntity {
+    private String host;
+    private int port;
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
 }

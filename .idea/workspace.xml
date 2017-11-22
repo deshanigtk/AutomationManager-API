@@ -2,179 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3efa034f-68ed-42e2-84e5-f3987bea95f5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/automation_manager_war.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/automation_manager_war_exploded.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_11.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_11.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_classmate_1_3_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_8_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_8_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_8_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_guava_2_8_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_jaxrs_jackson_jaxrs_base_2_8_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_jaxrs_jackson_jaxrs_json_provider_2_8_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_module_jackson_module_jaxb_annotations_2_8_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jnr_jffi_1_2_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jnr_jffi_native_1_2_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jnr_jnr_constants_0_8_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jnr_jnr_enxio_0_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jnr_jnr_ffi_2_0_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jnr_jnr_posix_3_0_12.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jnr_jnr_unixsocket_0_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jnr_jnr_x86asm_1_0_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_auto_service_auto_service_1_0_rc1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_18_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_hannesdorfmann_annotationprocessing101_factorypattern_annotation_1_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jayway_jsonpath_json_path_2_2_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_spotify_docker_client_8_8_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_javapoet_1_1_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_mail_javax_mail_1_5_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vaadin_external_google_android_json_0_0_20131108_vaadin1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_5.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_springfox_springfox_core_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_springfox_springfox_schema_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_springfox_springfox_spi_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_springfox_springfox_spring_web_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_springfox_springfox_swagger2_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_springfox_springfox_swagger_common_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_springfox_springfox_swagger_ui_2_7_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_swagger_swagger_annotations_1_5_13.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_swagger_swagger_models_1_5_13.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_annotation_javax_annotation_api_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_mail_1_4_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_jstl_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_transaction_javax_transaction_api_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_1_1_0_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_ws_rs_javax_ws_rs_api_2_0_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_43.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_bytebuddy_byte_buddy_1_6_14.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_minidev_accessors_smart_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_minidev_json_smart_2_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_compress_1_9.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_core_8_5_16.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_el_8_5_16.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_websocket_8_5_16.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_tomcat_jdbc_8_5_16.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_tomcat_juli_8_5_16.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjweaver_1_8_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_assertj_assertj_core_2_6_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_bouncycastle_bcpkix_jdk15on_1_52.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_bouncycastle_bcprov_jdk15on_1_52.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_hk2_external_aopalliance_repackaged_2_5_0_b32.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_hk2_external_javax_inject_2_5_0_b32.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_hk2_hk2_api_2_5_0_b32.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_hk2_hk2_locator_2_5_0_b32.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_hk2_hk2_utils_2_5_0_b32.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_hk2_osgi_resource_locator_1_0_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_jersey_bundles_repackaged_jersey_guava_2_25_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_jersey_connectors_jersey_apache_connector_2_22_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_jersey_core_jersey_client_2_25_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_jersey_core_jersey_common_2_25_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_jersey_ext_jersey_entity_filtering_2_25_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_jersey_media_jersey_media_json_jackson_2_25_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_library_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_common_hibernate_commons_annotations_5_0_1_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_core_5_0_12_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_entitymanager_5_0_12_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_validator_5_3_5_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_javax_persistence_hibernate_jpa_2_1_api_1_0_0_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_javassist_javassist_3_21_0_GA.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_jandex_2_0_0_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_3_1_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json_json_20131018.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mapstruct_mapstruct_1_1_0_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mockito_mockito_core_1_10_19.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_5_0_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_analysis_5_0_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_commons_5_0_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_tree_5_0_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_util_5_0_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_reflections_reflections_0_9_11.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_skyscreamer_jsonassert_1_4_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_aop_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_data_jpa_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_jdbc_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_logging_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_mail_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_test_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_tomcat_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_web_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_test_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_test_autoconfigure_1_5_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_commons_1_13_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_jpa_1_11_6_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_plugin_spring_plugin_core_1_2_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_plugin_spring_plugin_metadata_1_2_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_retry_spring_retry_1_2_1_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aspects_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_support_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_orm_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_test_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_4_3_10_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_17.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/automation-manager.iml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/UserEntity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/staticscanner/testEntity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/UserRepository.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/dynamicscanner/DynamicScannerEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/DynamicScannerEntity.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/dynamicscanner/ProductManagerEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/ProductManagerEntity.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/dynamicscanner/ZapEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/ZapEntity.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/staticscanner/DependencyCheckEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/DependencyCheckEntity.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/staticscanner/FindSecBugsEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/FindSecBugsEntity.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/staticscanner/StaticScannerEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/StaticScannerEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/cloudbased/CloudBasedDynamicScannerEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/ContainerBasedDynamicScannerEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/productmanager/cloudbased/CloudBasedProductManagerEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/productmanager/containerbased/ContainerBasedProductManagerEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/cloudbased/CloudBasedStaticScannerEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/ContainerBasedStaticScannerEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/cloudbased/CloudBasedDynamicScanner.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/ContainerBasedDynamicScanner.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/AbstractDynamicScannerFactory.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/ContainerBasedDynamicScannerFactory.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/DynamicScannerFactoryProducer.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ZapRepository.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/ProductManagerEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/productmanager/ProductManagerEntity.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/ZapEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/zap/ZapEntity.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/DependencyCheckEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/dependencycheck/DependencyCheckEntity.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/FindSecBugsEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/findsecbugs/FindSecBugsEntity.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/exception/AutomationManagerRuntimeException.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/exception/AutomationManagerException.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScannerFactory.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/CloudBasedDynamicScannerFactory.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/MainScanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScannerExecutor.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapClient.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/zap/ZapClient.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapScanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/zap/ZapScanner.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/dc/DependencyCheckScanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/containerbased/dc/DependencyCheckScanner.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/fsb/FindSecBugsScanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/containerbased/fsb/FindSecBugsScanner.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/ScannerProperties.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/ScannerProperties.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/MainController.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/MainController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/DynamicScannerController.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/DynamicScannerController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/StaticScannerController.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/StaticScannerController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/exception/AutomationManagerRuntimeException.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/exception/AutomationManagerRuntimeException.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/DynamicScannerEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/DynamicScannerEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/StaticScannerEntity.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/StaticScannerEntity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/DockerHandler.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/DockerHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/FileHandler.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/FileHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/HttpRequestHandler.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/HttpRequestHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/HttpsRequestHandler.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/HttpsRequestHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/MailHandler.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/MailHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/ServerHandler.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/ServerHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/DynamicScannerRepository.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/DynamicScannerRepository.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ProductManagerRepository.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ProductManagerRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/StaticScannerRepository.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/StaticScannerRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ZapRepository.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ZapRepository.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScanner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/MainScanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/MainScanner.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/ProductManager.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/ProductManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapScanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapScanner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/StaticScanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/StaticScanner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/dc/DependencyCheckScanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/dc/DependencyCheckScanner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/fsb/FindSecBugsScanner.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/fsb/FindSecBugsScanner.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/StaticScannerFactory.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/StaticScannerFactory.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/DynamicScannerService.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/DynamicScannerService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/ProductManagerService.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/ProductManagerService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/StaticScannerService.java" afterPath="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/StaticScannerService.java" />
@@ -194,71 +58,73 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ZapClient.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapClient.java">
+      <file leaf-file-name="DynamicScannerExecutor.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScannerExecutor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="33" column="3" lean-forward="false" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="34" />
-              <folding />
+            <state relative-caret-position="615">
+              <caret line="66" column="48" lean-forward="false" selection-start-line="66" selection-start-column="48" selection-end-line="66" selection-end-column="48" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ZapScanner.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapScanner.java">
+      <file leaf-file-name="DynamicScannerFactoryProducer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/DynamicScannerFactoryProducer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3507">
-              <caret line="324" column="5" lean-forward="true" selection-start-line="324" selection-start-column="5" selection-end-line="324" selection-end-column="5" />
-              <folding />
+            <state relative-caret-position="360">
+              <caret line="20" column="61" lean-forward="true" selection-start-line="20" selection-start-column="61" selection-end-line="20" selection-end-column="61" />
+              <folding>
+                <element signature="e#0#1187#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DynamicScannerRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/DynamicScannerRepository.java">
+      <file leaf-file-name="ContainerBasedDynamicScannerFactory.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/ContainerBasedDynamicScannerFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="31" column="3" lean-forward="false" selection-start-line="31" selection-start-column="3" selection-end-line="44" selection-end-column="7" />
-              <folding />
+            <state relative-caret-position="378">
+              <caret line="39" column="5" lean-forward="true" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
+              <folding>
+                <element signature="e#1264#1265#0" expanded="true" />
+                <element signature="e#1291#1292#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DynamicScanner.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScanner.java">
+      <file leaf-file-name="AbstractDynamicScannerFactory.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/AbstractDynamicScannerFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="25" column="28" lean-forward="false" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
-              <folding />
+            <state relative-caret-position="432">
+              <caret line="24" column="75" lean-forward="false" selection-start-line="24" selection-start-column="75" selection-end-line="24" selection-end-column="75" />
+              <folding>
+                <element signature="e#0#1396#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StaticScannerRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/StaticScannerRepository.java">
+      <file leaf-file-name="DynamicScannerService.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/DynamicScannerService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="504">
-              <caret line="45" column="7" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="45" selection-end-column="7" />
-              <folding />
+              <caret line="44" column="2" lean-forward="true" selection-start-line="44" selection-start-column="2" selection-end-line="44" selection-end-column="2" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Application.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/Application.java">
+      <file leaf-file-name="CloudBasedDynamicScannerEntity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/cloudbased/CloudBasedDynamicScannerEntity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="252">
-              <caret line="35" column="5" lean-forward="false" selection-start-line="33" selection-start-column="87" selection-end-line="35" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StaticScanner.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/StaticScanner.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="24" column="17" lean-forward="false" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+              <caret line="34" column="22" lean-forward="false" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -274,23 +140,39 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ZapRepository.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ZapRepository.java">
+      <file leaf-file-name="ContainerBasedDynamicScannerEntity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/ContainerBasedDynamicScannerEntity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="35" column="32" lean-forward="true" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
-              <folding />
+            <state relative-caret-position="723">
+              <caret line="78" column="5" lean-forward="true" selection-start-line="78" selection-start-column="5" selection-end-line="78" selection-end-column="5" />
+              <folding>
+                <element signature="e#0#2418#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProductManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/ProductManager.java">
+      <file leaf-file-name="CloudBasedProductManagerEntity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/productmanager/cloudbased/CloudBasedProductManagerEntity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1368">
-              <caret line="110" column="35" lean-forward="true" selection-start-line="110" selection-start-column="35" selection-end-line="110" selection-end-column="35" />
+            <state relative-caret-position="734">
+              <caret line="47" column="30" lean-forward="true" selection-start-line="47" selection-start-column="30" selection-end-line="47" selection-end-column="30" />
               <folding>
-                <element signature="e#1656#1689#0" expanded="true" />
+                <element signature="e#0#1477#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ContainerBasedProductManagerEntity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/productmanager/containerbased/ContainerBasedProductManagerEntity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="47" column="0" lean-forward="true" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#3378#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -328,57 +210,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager/scanner/dynamic/MainScanner.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager/scanner/statics/dc/DependencyCheckScanner.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager/config/AppConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager/config/ApplicationContextUtils.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager/config/ScannerProperty.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager/config/ScannerProperties.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager/controller/notification/ProductManagerNotificationController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager/entity/scanner/dynamic/ZapEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager/controller/notification/StaticScannerNotificationController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager/controller/scanner/DynamicScannerController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/notification/StaticScannerNotificationController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/dynamic/DynamicScannerEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/dynamic/ProductManagerEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapClient.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/dc/DependencyCheckScanner.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/fsb/FindSecBugsScanner.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/Application.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/MainController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/AppConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/ApplicationContextUtils.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/notification/ProductManagerNotificationController.java" />
-        <option value="$PROJECT_DIR$/src/test/java/org/wso2/security/tools/automation/manager/StaticDependencyCheckScannerOLDThreadTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/ProductManagerService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/ProductManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/dynamicscanner/ProductManagerEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/dynamicscanner/ZapEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/dynamicscanner/DynamicScannerEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/MainScanner.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/staticscanner/testEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/staticscanner/StaticScannerEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/staticscanner/DependencyCheckEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/staticscanner/FindSecBugsEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/exception/AutomationManagerRuntimeException.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/DockerHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/scanner.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/ScannerProperties.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/DynamicScannerService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/DynamicScannerController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/StaticScannerController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/StaticScannerService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/FileHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/HttpRequestHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/HttpsRequestHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/MailHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/ServerHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScanner.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/DynamicScannerRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ProductManagerRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/StaticScannerRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ZapRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapClient.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/ZapEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScannerFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/MainScanner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/zap/ZapEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/dc/DependencyCheckEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/fsb/FindSecBugsEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/FileHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/CloudBasedDynamicScanner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/CloudBasedDynamicScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/ContainerBasedDynamicScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerBased/ContainerBasedDynamicScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/zap/ZapEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/AbstractDynamicScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/ContainerBasedDynamicScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/AbstractContainerBasedDynamicScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/cloudbased/AbstractCloudBasedDynamicScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/DynamicScannerController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/AbstractDynamicScannerFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/DynamicScannerFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/CloudBasedDynamicScanner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/cloudbased/CloudBasedDynamicScannerEntity.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapScanner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/CloudBasedDynamicScannerFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScannerExecutor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/DynamicScannerFactoryProducer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/exception/AutomationManagerRuntimeException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/exception/AutomationManagerException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/ScannerProperties.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/scanner.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/zap/ZapScanner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/ContainerBasedDynamicScanner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/cloudbased/CloudBasedDynamicScanner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScanner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/DynamicScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/productmanager/containerbased/ContainerBasedProductManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/productmanager/ProductManagerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/productmanager/containerbased/ContainerBasedProductManagerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/productmanager/cloudbased/CloudBasedProductManagerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/cloudbased/CloudBasedStaticScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/ContainerBasedStaticScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/StaticScannerEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/findsecbugs/FindSecBugsEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/dependencycheck/DependencyCheckEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/AbstractDynamicScannerFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/ContainerBasedDynamicScannerFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/DynamicScannerService.java" />
       </list>
     </option>
   </component>
@@ -407,10 +289,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="503" />
-    <option name="y" value="664" />
-    <option name="width" value="1303" />
-    <option name="height" value="642" />
+    <option name="x" value="281" />
+    <option name="y" value="127" />
+    <option name="width" value="1301" />
+    <option name="height" value="634" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -428,9 +310,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -529,7 +411,107 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="manager" type="462c0819:PsiDirectoryNode" />
               <item name="entity" type="462c0819:PsiDirectoryNode" />
+              <item name="dynamicscanner" type="462c0819:PsiDirectoryNode" />
+              <item name="cloudbased" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+              <item name="dynamicscanner" type="462c0819:PsiDirectoryNode" />
+              <item name="containerbased" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+              <item name="productmanager" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+              <item name="productmanager" type="462c0819:PsiDirectoryNode" />
+              <item name="cloudbased" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+              <item name="productmanager" type="462c0819:PsiDirectoryNode" />
+              <item name="containerbased" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
               <item name="staticscanner" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+              <item name="staticscanner" type="462c0819:PsiDirectoryNode" />
+              <item name="cloudbased" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+              <item name="staticscanner" type="462c0819:PsiDirectoryNode" />
+              <item name="containerbased" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+              <item name="staticscanner" type="462c0819:PsiDirectoryNode" />
+              <item name="containerbased" type="462c0819:PsiDirectoryNode" />
+              <item name="dependencycheck" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+              <item name="staticscanner" type="462c0819:PsiDirectoryNode" />
+              <item name="containerbased" type="462c0819:PsiDirectoryNode" />
+              <item name="findsecbugs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
@@ -586,7 +568,29 @@
               <item name="manager" type="462c0819:PsiDirectoryNode" />
               <item name="scanner" type="462c0819:PsiDirectoryNode" />
               <item name="dynamicscanner" type="462c0819:PsiDirectoryNode" />
-              <item name="zap" type="462c0819:PsiDirectoryNode" />
+              <item name="cloudbased" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="scanner" type="462c0819:PsiDirectoryNode" />
+              <item name="dynamicscanner" type="462c0819:PsiDirectoryNode" />
+              <item name="containerbased" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="scanner" type="462c0819:PsiDirectoryNode" />
+              <item name="dynamicscanner" type="462c0819:PsiDirectoryNode" />
+              <item name="factory" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
@@ -597,6 +601,17 @@
               <item name="manager" type="462c0819:PsiDirectoryNode" />
               <item name="scanner" type="462c0819:PsiDirectoryNode" />
               <item name="staticscanner" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyNewAutomationManager" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="scanner" type="462c0819:PsiDirectoryNode" />
+              <item name="staticscanner" type="462c0819:PsiDirectoryNode" />
+              <item name="containerbased" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MyNewAutomationManager" type="b2602c69:ProjectViewProjectNode" />
@@ -618,7 +633,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -639,15 +654,14 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/factory-sample" />
+      <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/staticScanner" />
+      <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/productUploader" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="org.wso2.security.automation.manager" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager" />
-      <recent name="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/factory-sample/src/main/java/org/wso2/security/automation/manager/factory" />
-      <recent name="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="org.wso2.security.automation.manager.handler" />
@@ -656,11 +670,12 @@
       <recent name="org.wso2.security.automation.manager.clients" />
       <recent name="org.wso2.security.automationmanager.handlers" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager" />
+      <recent name="$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/factory-sample" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/staticScanner" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/productUploader" />
+      <recent name="$PROJECT_DIR$/factory-sample/src/main/java/org/wso2/security/automation/manager/factory" />
+      <recent name="$PROJECT_DIR$/src/main/java/org/wso2/security/automation/manager" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -1032,7 +1047,8 @@
       <workItem from="1511195039872" duration="4389000" />
       <workItem from="1511233632691" duration="19384000" />
       <workItem from="1511275361426" duration="63000" />
-      <workItem from="1511275447256" duration="11304000" />
+      <workItem from="1511275447256" duration="11342000" />
+      <workItem from="1511321129169" duration="22496000" />
     </task>
     <task id="LOCAL-00001" summary="created structures">
       <created>1506059447067</created>
@@ -1237,7 +1253,14 @@
       <option name="project" value="LOCAL" />
       <updated>1511262688540</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="COmments completed upto repository">
+      <created>1511289020539</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1511289020539</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1273,7 +1296,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="732458000" />
+    <option name="totallyTimeSpent" value="754992000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1303,14 +1326,15 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3236559" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3236559" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.49806523" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21182796" sideWeight="0.49585405" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23825318" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.06236559" sideWeight="0.49585405" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24488668" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48387095" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1325,7 +1349,6 @@
       <window_info id="Flow Validation" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2498618" sideWeight="0.5065574" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Ultra Studio Toolbox" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48387095" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Jetty Server" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1336,7 +1359,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="web socket config" />
     <MESSAGE value="added notification controller for dynamic scanner" />
     <MESSAGE value="static scanner controller" />
     <MESSAGE value="change package structure" />
@@ -1361,7 +1383,8 @@
     <MESSAGE value="added comments" />
     <MESSAGE value="Reformatted code" />
     <MESSAGE value="comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="comments" />
+    <MESSAGE value="COmments completed upto repository" />
+    <option name="LAST_COMMIT_MESSAGE" value="COmments completed upto repository" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1374,287 +1397,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/dc/DependencyCheckScanner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="128" column="102" lean-forward="false" selection-start-line="128" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/org/wso2/security/tools/automation/manager/StaticDependencyCheckScannerOLDThreadTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="37" column="2" lean-forward="true" selection-start-line="37" selection-start-column="2" selection-end-line="37" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/ProductManagerService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="90" column="5" lean-forward="true" selection-start-line="90" selection-start-column="5" selection-end-line="90" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/AppConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="56" column="13" lean-forward="true" selection-start-line="56" selection-start-column="13" selection-end-line="56" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/ApplicationContextUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="39" column="61" lean-forward="false" selection-start-line="39" selection-start-column="61" selection-end-line="39" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/notification/StaticScannerNotificationController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="81" column="25" lean-forward="true" selection-start-line="81" selection-start-column="25" selection-end-line="81" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/javax/persistence/hibernate-jpa-2.1-api/1.0.0.Final/hibernate-jpa-2.1-api-1.0.0.Final.jar!/javax/persistence/InheritanceType.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/notification/ProductManagerNotificationController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-398">
-          <caret line="34" column="21" lean-forward="true" selection-start-line="34" selection-start-column="21" selection-end-line="34" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/DynamicScannerEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="82" column="5" lean-forward="false" selection-start-line="82" selection-start-column="5" selection-end-line="82" selection-end-column="5" />
-          <folding>
-            <element signature="e#2551#2552#0" expanded="true" />
-            <element signature="e#2589#2590#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/ProductManagerEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="39" column="12" lean-forward="false" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/ZapEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/FindSecBugsEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="30" column="0" lean-forward="true" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#987#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/scanner/staticscanner/testEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="20" column="7" lean-forward="false" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/UserEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="36" column="20" lean-forward="true" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/DependencyCheckEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="25" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/StaticScannerEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="29" column="27" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/spotify/docker-client/8.8.1/docker-client-8.8.1-sources.jar!/com/spotify/docker/client/exceptions/DockerCertificateException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/exception/AutomationManagerRuntimeException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="40" column="7" lean-forward="true" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/lang/Runnable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="55" column="17" lean-forward="false" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/spotify/docker-client/8.8.1/docker-client-8.8.1-sources.jar!/com/spotify/docker/client/DockerClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6581">
-          <caret line="1949" column="2" lean-forward="true" selection-start-line="1949" selection-start-column="2" selection-end-line="1951" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/scanner.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="10" lean-forward="false" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/ScannerProperties.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="146" column="8" lean-forward="false" selection-start-line="146" selection-start-column="8" selection-end-line="146" selection-end-column="25" />
-          <folding>
-            <element signature="e#6301#6302#0" expanded="true" />
-            <element signature="e#6333#6334#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/DynamicScannerService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="537">
-          <caret line="88" column="60" lean-forward="false" selection-start-line="88" selection-start-column="60" selection-end-line="88" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/DynamicScannerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="52" column="59" lean-forward="false" selection-start-line="52" selection-start-column="59" selection-end-line="52" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/StaticScannerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="61" column="31" lean-forward="false" selection-start-line="61" selection-start-column="31" selection-end-line="61" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/MainController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="670">
-          <caret line="73" column="22" lean-forward="false" selection-start-line="73" selection-start-column="22" selection-end-line="73" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/DockerHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4158">
-          <caret line="291" column="55" lean-forward="false" selection-start-line="291" selection-start-column="55" selection-end-line="291" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/FileHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="43" column="6" lean-forward="true" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/HttpRequestHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2232">
-          <caret line="157" column="61" lean-forward="false" selection-start-line="157" selection-start-column="61" selection-end-line="157" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.5.3/httpclient-4.5.3-sources.jar!/org/apache/http/impl/execchain/RequestAbortedException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/io/UnsupportedEncodingException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="27" column="3" lean-forward="true" selection-start-line="27" selection-start-column="3" selection-end-line="27" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/io/IOException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="73">
-          <caret line="29" column="30" lean-forward="true" selection-start-line="29" selection-start-column="30" selection-end-line="30" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/StaticScannerService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37">
-          <caret line="97" column="60" lean-forward="false" selection-start-line="97" selection-start-column="60" selection-end-line="97" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/HttpsRequestHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1239">
-          <caret line="174" column="47" lean-forward="false" selection-start-line="174" selection-start-column="47" selection-end-line="174" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#7710#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/MailHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="666">
           <caret line="67" column="63" lean-forward="true" selection-start-line="67" selection-start-column="63" selection-end-line="67" selection-end-column="63" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1663,7 +1409,7 @@
         <state relative-caret-position="195">
           <caret line="39" column="52" lean-forward="false" selection-start-line="39" selection-start-column="52" selection-end-line="39" selection-end-column="52" />
           <folding>
-            <element signature="e#0#2194#0" expanded="true" />
+            <element signature="e#0#2180#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1672,37 +1418,53 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
           <caret line="10" column="17" lean-forward="false" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/UserRepository.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/Application.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="35" column="5" lean-forward="false" selection-start-line="33" selection-start-column="87" selection-end-line="35" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/UserRepository.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/StaticScannerRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="28" column="17" lean-forward="false" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="17" />
+        <state relative-caret-position="504">
+          <caret line="45" column="7" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="45" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScannerFactory.java">
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/net/URISyntaxException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="27" column="13" lean-forward="false" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+        <state relative-caret-position="91">
+          <caret line="29" column="3" lean-forward="false" selection-start-line="29" selection-start-column="3" selection-end-line="30" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/MainScanner.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/ProductManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="30" column="41" lean-forward="false" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+        <state relative-caret-position="1368">
+          <caret line="110" column="35" lean-forward="false" selection-start-line="110" selection-start-column="35" selection-end-line="110" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/containerbased/dc/DependencyCheckScanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="40" column="13" lean-forward="false" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ProductManagerRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="591">
+        <state relative-caret-position="638">
           <caret line="43" column="50" lean-forward="false" selection-start-line="43" selection-start-column="50" selection-end-line="43" selection-end-column="50" />
           <folding>
             <element signature="e#0#1786#0" expanded="true" />
@@ -1712,25 +1474,308 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/DynamicScannerRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="31" column="3" lean-forward="false" selection-start-line="31" selection-start-column="3" selection-end-line="44" selection-end-column="7" />
+        <state relative-caret-position="234">
+          <caret line="30" column="17" lean-forward="false" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/Application.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ZapRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="35" column="5" lean-forward="false" selection-start-line="33" selection-start-column="87" selection-end-line="35" selection-end-column="5" />
+        <state relative-caret-position="234">
+          <caret line="30" column="17" lean-forward="false" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/handler/FileHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="684">
+          <caret line="62" column="29" lean-forward="false" selection-start-line="62" selection-start-column="29" selection-end-line="62" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/ApplicationContextUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="34" column="13" lean-forward="false" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/AppConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="57" column="13" lean-forward="false" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/MainController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="53" column="36" lean-forward="false" selection-start-line="53" selection-start-column="36" selection-end-line="53" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/DynamicScannerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="60" column="47" lean-forward="false" selection-start-line="60" selection-start-column="47" selection-end-line="60" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/ProductManagerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1098">
+          <caret line="90" column="1" lean-forward="true" selection-start-line="90" selection-start-column="1" selection-end-line="90" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/containerbased/fsb/FindSecBugsScanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="40" column="13" lean-forward="false" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/zap/ZapClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="792">
+          <caret line="71" column="42" lean-forward="true" selection-start-line="71" selection-start-column="42" selection-end-line="71" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/exception/AutomationManagerException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="42" column="8" lean-forward="true" selection-start-line="42" selection-start-column="8" selection-end-line="42" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/scanner.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="26" column="22" lean-forward="false" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/zap/ZapScanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="92" column="45" lean-forward="false" selection-start-line="92" selection-start-column="45" selection-end-line="92" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/ContainerBasedDynamicScanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="554">
+          <caret line="32" column="5" lean-forward="true" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#1720#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/CloudBasedDynamicScannerFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/config/ScannerProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="88" column="21" lean-forward="false" selection-start-line="88" selection-start-column="21" selection-end-line="88" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/notification/ProductManagerNotificationController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="58" column="24" lean-forward="true" selection-start-line="58" selection-start-column="24" selection-end-line="58" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/notification/StaticScannerNotificationController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="43" column="13" lean-forward="false" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/controller/scanner/StaticScannerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="78" column="31" lean-forward="false" selection-start-line="78" selection-start-column="31" selection-end-line="78" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/StaticScannerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-239">
+          <caret line="94" column="4" lean-forward="false" selection-start-line="94" selection-start-column="4" selection-end-line="94" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/cloudbased/CloudBasedDynamicScanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="738">
+          <caret line="41" column="7" lean-forward="true" selection-start-line="41" selection-start-column="7" selection-end-line="41" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#1790#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/staticscanner/StaticScanner.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="24" column="17" lean-forward="false" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+        <state relative-caret-position="432">
+          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/zap/ZapEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="32" column="7" lean-forward="true" selection-start-line="32" selection-start-column="7" selection-end-line="32" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/productmanager/ProductManagerEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="47" column="33" lean-forward="true" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
+          <folding>
+            <element signature="e#3137#3138#0" expanded="true" />
+            <element signature="e#3172#3173#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/StaticScannerEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1112">
+          <caret line="125" column="5" lean-forward="false" selection-start-line="125" selection-start-column="5" selection-end-line="125" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/ContainerBasedStaticScannerEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1346">
+          <caret line="128" column="5" lean-forward="false" selection-start-line="128" selection-start-column="5" selection-end-line="128" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#4357#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/findsecbugs/FindSecBugsEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="24" column="87" lean-forward="false" selection-start-line="24" selection-start-column="87" selection-end-line="24" selection-end-column="87" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/dependencycheck/DependencyCheckEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="24" column="91" lean-forward="false" selection-start-line="24" selection-start-column="91" selection-end-line="24" selection-end-column="91" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/staticscanner/cloudbased/CloudBasedStaticScannerEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="56" lean-forward="true" selection-start-line="12" selection-start-column="56" selection-end-line="12" selection-end-column="56" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/DynamicScannerEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="882">
+          <caret line="78" column="5" lean-forward="true" selection-start-line="78" selection-start-column="5" selection-end-line="78" selection-end-column="5" />
+          <folding>
+            <element signature="e#2075#2076#0" expanded="true" />
+            <element signature="e#2105#2106#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/cloudbased/CloudBasedDynamicScannerEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="34" column="22" lean-forward="false" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/ContainerBasedDynamicScannerEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="723">
+          <caret line="78" column="5" lean-forward="true" selection-start-line="78" selection-start-column="5" selection-end-line="78" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#2418#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/productmanager/cloudbased/CloudBasedProductManagerEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="734">
+          <caret line="47" column="30" lean-forward="true" selection-start-line="47" selection-start-column="30" selection-end-line="47" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#1477#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/entity/productmanager/containerbased/ContainerBasedProductManagerEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="47" column="0" lean-forward="true" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#3378#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1742,53 +1787,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/ProductManager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScannerExecutor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1368">
-          <caret line="110" column="35" lean-forward="true" selection-start-line="110" selection-start-column="35" selection-end-line="110" selection-end-column="35" />
+        <state relative-caret-position="615">
+          <caret line="66" column="48" lean-forward="false" selection-start-line="66" selection-start-column="48" selection-end-line="66" selection-end-column="48" />
           <folding>
-            <element signature="e#1656#1689#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/StaticScannerRepository.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/AbstractDynamicScannerFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="75" lean-forward="false" selection-start-line="24" selection-start-column="75" selection-end-line="24" selection-end-column="75" />
+          <folding>
+            <element signature="e#0#1396#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/ContainerBasedDynamicScannerFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="39" column="5" lean-forward="true" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
+          <folding>
+            <element signature="e#1264#1265#0" expanded="true" />
+            <element signature="e#1291#1292#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/DynamicScannerFactoryProducer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="20" column="61" lean-forward="true" selection-start-line="20" selection-start-column="61" selection-end-line="20" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#1187#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/service/DynamicScannerService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
-          <caret line="45" column="7" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="45" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/repository/ZapRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="35" column="32" lean-forward="true" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="33" column="3" lean-forward="false" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScanner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="25" column="28" lean-forward="false" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/wso2/security/tools/automation/manager/scanner/dynamicscanner/zap/ZapScanner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3507">
-          <caret line="324" column="5" lean-forward="true" selection-start-line="324" selection-start-column="5" selection-end-line="324" selection-end-column="5" />
-          <folding />
+          <caret line="44" column="2" lean-forward="true" selection-start-line="44" selection-start-column="2" selection-end-line="44" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

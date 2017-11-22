@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.entity.dynamicscanner;
+package org.wso2.security.tools.automation.manager.entity.productmanager;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,12 +29,11 @@ import javax.validation.constraints.NotNull;
  */
 @SuppressWarnings("unused")
 @Entity
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "testName"}))
-public class ProductManagerEntity {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class ProductManagerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private boolean isContainer;
     @Column(unique = true)
     private String containerId;
     @NotNull
@@ -45,31 +44,13 @@ public class ProductManagerEntity {
     private String wumLevel;
     private String createdTime;
     private String status;
-    private String ipAddress;
-    private String dockerIpAddress;
-    private int containerPort;
-    private int hostPort;
 
-    private boolean fileUploaded;
-    private String fileUploadedTime;
-    private boolean fileExtracted;
-    private String fileExtractedTime;
-    private boolean serverStarted;
-    private String serverStartedTime;
     private boolean scanFinished;
     private String scanFinishedTime;
     private String message;
 
     public int getId() {
         return id;
-    }
-
-    public boolean isContainer() {
-        return isContainer;
-    }
-
-    public void setContainer(boolean container) {
-        isContainer = container;
     }
 
     public String getContainerId() {
@@ -134,86 +115,6 @@ public class ProductManagerEntity {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public String getDockerIpAddress() {
-        return dockerIpAddress;
-    }
-
-    public void setDockerIpAddress(String dockerIpAddress) {
-        this.dockerIpAddress = dockerIpAddress;
-    }
-
-    public int getContainerPort() {
-        return containerPort;
-    }
-
-    public void setContainerPort(int containerPort) {
-        this.containerPort = containerPort;
-    }
-
-    public int getHostPort() {
-        return hostPort;
-    }
-
-    public void setHostPort(int hostPort) {
-        this.hostPort = hostPort;
-    }
-
-    public boolean isFileUploaded() {
-        return fileUploaded;
-    }
-
-    public void setFileUploaded(boolean fileUploaded) {
-        this.fileUploaded = fileUploaded;
-    }
-
-    public String getFileUploadedTime() {
-        return fileUploadedTime;
-    }
-
-    public void setFileUploadedTime(String fileUploadedTime) {
-        this.fileUploadedTime = fileUploadedTime;
-    }
-
-    public boolean isFileExtracted() {
-        return fileExtracted;
-    }
-
-    public void setFileExtracted(boolean fileExtracted) {
-        this.fileExtracted = fileExtracted;
-    }
-
-    public String getFileExtractedTime() {
-        return fileExtractedTime;
-    }
-
-    public void setFileExtractedTime(String fileExtractedTime) {
-        this.fileExtractedTime = fileExtractedTime;
-    }
-
-    public boolean isServerStarted() {
-        return serverStarted;
-    }
-
-    public void setServerStarted(boolean serverStarted) {
-        this.serverStarted = serverStarted;
-    }
-
-    public String getServerStartedTime() {
-        return serverStartedTime;
-    }
-
-    public void setServerStartedTime(String serverStartedTime) {
-        this.serverStartedTime = serverStartedTime;
     }
 
     public boolean isScanFinished() {

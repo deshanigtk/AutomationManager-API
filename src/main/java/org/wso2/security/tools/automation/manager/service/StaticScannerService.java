@@ -32,7 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
-import org.wso2.security.tools.automation.manager.exception.AutomationManagerRuntimeException;
+import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.FileHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
@@ -99,25 +99,25 @@ public class StaticScannerService {
 
         if (isFileUpload) {
             if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
-                throw new AutomationManagerRuntimeException("Please upload product zip file");
+                throw new AutomationManagerException("Please upload product zip file");
             } else {
                 if (new File(ScannerProperties.getTempFolderPath()).exists() || new File(ScannerProperties
                         .getTempFolderPath()).mkdir()) {
                     if (new File(uploadLocation).exists() || new File(uploadLocation).mkdir()) {
                         zipFileName = zipFile.getOriginalFilename();
                         if (!FileHandler.uploadFile(zipFile, uploadLocation + File.separator + zipFileName)) {
-                            throw new AutomationManagerRuntimeException("Cannot upload zip file");
+                            throw new AutomationManagerException("Cannot upload zip file");
                         }
                     } else {
-                        throw new AutomationManagerRuntimeException("Error occurred while creating upload location");
+                        throw new AutomationManagerException("Error occurred while creating upload location");
                     }
                 } else {
-                    throw new AutomationManagerRuntimeException("Error occurred while creating temp folder");
+                    throw new AutomationManagerException("Error occurred while creating temp folder");
                 }
             }
         } else {
             if (gitUrl == null) {
-                throw new AutomationManagerRuntimeException("Please enter URL to clone");
+                throw new AutomationManagerException("Please enter URL to clone");
             }
         }
         StaticScannerFactory staticScannerFactory = new StaticScannerFactory();
@@ -151,7 +151,7 @@ public class StaticScannerService {
                 }
             }
         } catch (Exception e) {
-            throw new AutomationManagerRuntimeException("Error occurred while getting static scanner report and mail");
+            throw new AutomationManagerException("Error occurred while getting static scanner report and mail");
         }
     }
 
@@ -171,7 +171,7 @@ public class StaticScannerService {
             return Boolean.parseBoolean(HttpRequestHandler.printResponse(httpClient.execute(httpGet)));
 
         } catch (URISyntaxException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while getting static scanner status");
+            throw new AutomationManagerException("Error occurred while getting static scanner status");
         }
     }
 

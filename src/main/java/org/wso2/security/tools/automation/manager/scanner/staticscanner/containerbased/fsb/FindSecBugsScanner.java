@@ -16,13 +16,13 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.scanner.staticscanner.fsb;
+package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.fsb;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.wso2.security.tools.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.staticscanner.FindSecBugsEntity;
+import org.wso2.security.tools.automation.manager.entity.staticscanner.containerbased.findsecbugs.FindSecBugsEntity;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;

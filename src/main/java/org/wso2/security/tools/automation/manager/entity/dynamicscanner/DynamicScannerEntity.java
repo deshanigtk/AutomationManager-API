@@ -33,22 +33,14 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DynamicScannerEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
-    protected boolean isContainer;
-    @Column(unique = true)
-    protected String containerId;
     @NotNull
     protected String userId;
     protected String type;
     protected String createdTime;
     protected String status;
-    protected String ipAddress;
-    protected String dockerIpAddress;
-    protected int containerPort;
-    protected int hostPort;
     protected String scanStatus;
     protected int scanProgress = -1;
     protected String scanProgressTime;
@@ -57,14 +49,6 @@ public abstract class DynamicScannerEntity {
     protected boolean reportSent;
     protected String reportSentTime;
     protected String message;
-
-    public String getContainerId() {
-        return containerId;
-    }
-
-    public void setContainerId(String containerId) {
-        this.containerId = containerId;
-    }
 
     public String getUserId() {
         return userId;
@@ -84,14 +68,6 @@ public abstract class DynamicScannerEntity {
 
     public int getId() {
         return id;
-    }
-
-    public boolean isContainer() {
-        return isContainer;
-    }
-
-    public void setContainer(boolean container) {
-        isContainer = container;
     }
 
     public String getType() {
@@ -116,38 +92,6 @@ public abstract class DynamicScannerEntity {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public String getDockerIpAddress() {
-        return dockerIpAddress;
-    }
-
-    public void setDockerIpAddress(String dockerIpAddress) {
-        this.dockerIpAddress = dockerIpAddress;
-    }
-
-    public int getContainerPort() {
-        return containerPort;
-    }
-
-    public void setContainerPort(int containerPort) {
-        this.containerPort = containerPort;
-    }
-
-    public int getHostPort() {
-        return hostPort;
-    }
-
-    public void setHostPort(int hostPort) {
-        this.hostPort = hostPort;
     }
 
     public String getScanStatus() {

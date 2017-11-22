@@ -25,7 +25,7 @@ import com.spotify.docker.client.LogStream;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.*;
-import org.wso2.security.tools.automation.manager.exception.AutomationManagerRuntimeException;
+import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -71,7 +71,7 @@ public class DockerHandler {
                 getDockerClient().pull(imageName);
                 return checkIfImageIsAvailable(imageName);
             } catch (DockerException | InterruptedException | DockerCertificateException e) {
-                throw new AutomationManagerRuntimeException("Error occurred while pulling the image", e);
+                throw new AutomationManagerException("Error occurred while pulling the image", e);
             }
         }
         return false;
@@ -99,7 +99,7 @@ public class DockerHandler {
             }
             return false;
         } catch (InterruptedException | DockerCertificateException | DockerException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while checking image availability", e);
+            throw new AutomationManagerException("Error occurred while checking image availability", e);
         }
     }
 
@@ -134,7 +134,7 @@ public class DockerHandler {
         try {
             return getDockerClient().createContainer(containerConfig).id();
         } catch (DockerException | InterruptedException | DockerCertificateException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while creating the container", e);
+            throw new AutomationManagerException("Error occurred while creating the container", e);
         }
     }
 
@@ -149,7 +149,7 @@ public class DockerHandler {
             getDockerClient().startContainer(containerId);
             return "running".equals(inspectContainer(containerId).state().status());
         } catch (DockerException | InterruptedException | DockerCertificateException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while starting the container", e);
+            throw new AutomationManagerException("Error occurred while starting the container", e);
         }
     }
 
@@ -163,7 +163,7 @@ public class DockerHandler {
         try {
             return getDockerClient().inspectContainer(containerId);
         } catch (DockerException | InterruptedException | DockerCertificateException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while inspecting the container", e);
+            throw new AutomationManagerException("Error occurred while inspecting the container", e);
         }
     }
 
@@ -176,7 +176,7 @@ public class DockerHandler {
         try {
             getDockerClient().killContainer(containerId);
         } catch (DockerException | InterruptedException | DockerCertificateException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while killing the container", e);
+            throw new AutomationManagerException("Error occurred while killing the container", e);
         }
     }
 
@@ -189,7 +189,7 @@ public class DockerHandler {
         try {
             getDockerClient().removeContainer(containerId);
         } catch (DockerException | InterruptedException | DockerCertificateException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while removing the container", e);
+            throw new AutomationManagerException("Error occurred while removing the container", e);
         }
     }
 
@@ -202,7 +202,7 @@ public class DockerHandler {
         try {
             getDockerClient().restartContainer(containerId);
         } catch (DockerCertificateException | DockerException | InterruptedException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while restarting the container", e);
+            throw new AutomationManagerException("Error occurred while restarting the container", e);
         }
     }
 
@@ -219,7 +219,7 @@ public class DockerHandler {
             logs = stream.readFully();
             return logs;
         } catch (InterruptedException | DockerCertificateException | DockerException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while getting container logs", e);
+            throw new AutomationManagerException("Error occurred while getting container logs", e);
         }
     }
 
@@ -232,7 +232,7 @@ public class DockerHandler {
         try {
             return getDockerClient().listContainers();
         } catch (DockerException | InterruptedException | DockerCertificateException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while getting running containers list", e);
+            throw new AutomationManagerException("Error occurred while getting running containers list", e);
         }
     }
 
@@ -245,7 +245,7 @@ public class DockerHandler {
         try {
             return getDockerClient().listContainers(DockerClient.ListContainersParam.allContainers());
         } catch (InterruptedException | DockerCertificateException | DockerException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while getting containers list", e);
+            throw new AutomationManagerException("Error occurred while getting containers list", e);
         }
     }
 
@@ -256,7 +256,7 @@ public class DockerHandler {
         try {
             getDockerClient().close();
         } catch (DockerCertificateException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while closing Docker client", e);
+            throw new AutomationManagerException("Error occurred while closing Docker client", e);
         }
     }
 
@@ -280,7 +280,7 @@ public class DockerHandler {
                 outputStream.write(bytes, 0, read);
             }
         } catch (IOException | InterruptedException | DockerCertificateException | DockerException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while copying files from the container", e);
+            throw new AutomationManagerException("Error occurred while copying files from the container", e);
         }
     }
 
@@ -295,7 +295,7 @@ public class DockerHandler {
         try {
             getDockerClient().copyToContainer(inputStream, containerId, path);
         } catch (DockerException | InterruptedException | IOException | DockerCertificateException e) {
-            throw new AutomationManagerRuntimeException("Error occurred while copying files to the container", e);
+            throw new AutomationManagerException("Error occurred while copying files to the container", e);
         }
     }
 }

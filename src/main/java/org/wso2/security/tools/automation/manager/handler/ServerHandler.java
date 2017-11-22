@@ -19,7 +19,7 @@ package org.wso2.security.tools.automation.manager.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.security.tools.automation.manager.exception.AutomationManagerRuntimeException;
+import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -51,7 +51,7 @@ public class ServerHandler {
                     Thread.sleep(5000);
                     i++;
                 } catch (InterruptedException e1) {
-                    throw new AutomationManagerRuntimeException("Interrupt error occurred", e);
+                    throw new AutomationManagerException("Interrupt error occurred", e);
                 }
             }
         }

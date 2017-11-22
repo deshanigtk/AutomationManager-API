@@ -18,6 +18,7 @@
 
 package org.wso2.security.tools.automation.manager.handler;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +47,7 @@ public class FileHandler {
      * @param fileUploadPath File upload path
      * @return Boolean to indicate the operation succeeded
      */
+    //TODO:check for a util method
     public static boolean uploadFile(MultipartFile file, String fileUploadPath) {
         try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fileUploadPath)))) {
             byte[] bytes = file.getBytes();

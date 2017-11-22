@@ -18,8 +18,8 @@
 
 package org.wso2.security.tools.automation.manager.scanner.staticscanner;
 
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.dc.DependencyCheckScanner;
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.fsb.FindSecBugsScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.dc.DependencyCheckScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.fsb.FindSecBugsScanner;
 
 public class StaticScannerFactory {
 
@@ -27,10 +27,10 @@ public class StaticScannerFactory {
         if (type == null) {
             return null;
         }
-        if (type.equalsIgnoreCase("fsb")) {
+        if (type.equalsIgnoreCase("findsecbugs")) {
             return new FindSecBugsScanner();
         }
-        if (type.equalsIgnoreCase("dc")) {
+        if (type.equalsIgnoreCase("dependencycheck")) {
             return new DependencyCheckScanner();
         }
         return null;

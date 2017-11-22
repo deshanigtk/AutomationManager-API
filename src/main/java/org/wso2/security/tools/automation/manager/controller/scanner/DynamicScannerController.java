@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.service.DynamicScannerService;
 
 /**
- * The class {@code DynamicScannerController} is the web controller which defines the routines for initiating dynamicscanner
+ * The class {@code DynamicScannerController} is the web controller which defines the routines for initiating dynamic
  * scans.
  *
  * @author Deshani Geethika
@@ -48,7 +48,7 @@ public class DynamicScannerController {
      * The general contract of the method is to call {@code startScan} method in {@code DynamicScannerService} class.
      * Then the service level method will validate the request and execute the scanning process
      *
-     * @param scanType       Indicates the dynamicscanner scan type. Eg: ZAP, Qualis
+     * @param scanType       Indicates the dynamic scan type. Eg: ZAP, Qualis
      * @param userId         Unique identifier of a logged in user. Here email address is taken from authenticated user
      * @param testName       User defined name for the test
      * @param productName    Name of the product to be scanned
@@ -78,9 +78,8 @@ public class DynamicScannerController {
                    @RequestParam(required = false, defaultValue = "-1") int wso2ServerPort,
                    @RequestParam(required = false) String scannerHost,
                    @RequestParam(required = false, defaultValue = "-1") int scannerPort) {
-
-        dynamicScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload,
-                zipFile, urlListFile, wso2ServerHost, wso2ServerPort, scannerHost, scannerPort);
+        dynamicScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload, zipFile,
+                urlListFile, wso2ServerHost, wso2ServerPort, scannerHost, scannerPort);
     }
 
     /**

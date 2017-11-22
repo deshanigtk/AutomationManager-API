@@ -16,24 +16,20 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
+package org.wso2.security.tools.automation.manager.entity.dynamicscanner.containerbased.zap;
 
-import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.zap.ZapScanner;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.containerbased.ContainerBasedDynamicScannerEntity;
+
+
+
+import javax.persistence.Entity;
 
 /**
- * Factory class to create instances of {@link DynamicScanner} implementations
+ * The {@code ZapEntity} class is inherited from {@link ContainerBasedDynamicScannerEntity}
  *
  * @author Deshani Geethika
  */
-public class DynamicScannerFactory {
-
-    public DynamicScanner getDynamicScanner(String dynamicScannerType) {
-        if (dynamicScannerType == null) {
-            return null;
-        }
-        if (dynamicScannerType.equalsIgnoreCase("Zap")) {
-            return new ZapScanner();
-        }
-        return null;
-    }
+@SuppressWarnings("unused")
+@Entity
+public class ZapEntity extends ContainerBasedDynamicScannerEntity {
 }

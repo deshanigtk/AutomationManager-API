@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.zap;
+package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased.zap;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
@@ -26,11 +26,11 @@ import org.slf4j.LoggerFactory;
 import org.wso2.security.tools.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
-import org.wso2.security.tools.automation.manager.entity.dynamicscanner.ZapEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.containerbased.zap.ZapEntity;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpsRequestHandler;
-import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScanner;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased.ContainerBasedDynamicScanner;
 import org.wso2.security.tools.automation.manager.service.DynamicScannerService;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -44,73 +44,53 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Main ZAP scanning methods
+ * The class {@code ZapScanner} implements the interface {@code DynamicScanner}. The main contract of this class is
+ * to start a ZAP scanner (ZAP scanner is a docker container), and automate the ZAP scanning process by calling
+ * {@link ZapClient} methods
  *
  * @author Deshani Geethika
  */
-public class ZapScanner implements DynamicScanner {
+public class ZapScanner implements ContainerBasedDynamicScanner {
     private static final String HTTP_SCHEME = "http";
     private static final String HTTPS_SCHEME = "https";
     private static final String POST = "POST";
     private static final String CONTEXT_NAME = "context";
     private static final String SESSION_NAME_1 = "session_1";
     private static final String SESSION_NAME_2 = "session_2";
-
     private final static Logger LOGGER = LoggerFactory.getLogger(ZapScanner.class);
-
     private String contextId;
     private URI productUriRelativeToZap;
-    private int id;
     private String ipAddress;
     private String fileUploadLocation;
-    private boolean isFileUpload;
     private File urlListFile;
-
-    private String wso2ServerHost;
-    private int wso2ServerPort;
-
     private DynamicScannerService dynamicScannerService;
     private ZapEntity zap;
 
     public ZapScanner() {
         dynamicScannerService = ApplicationContextUtils.getApplicationContext().getBean(DynamicScannerService.class);
+        zap = new ZapEntity();
     }
 
+    /**
+     * Overrides the {@code init} method to initialize instance variables, initialize {@link ZapEntity} and store
+     * {@link ZapEntity} object in database
+     * {@inheritDoc}
+     */
     @Override
-    public void init(String userId, String ipAddress, boolean isFileUpload, String fileUploadLocation, String
-            urlListFileName, String wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) {
-
+    public void init(String userId, String ipAddress, String fileUploadLocation, String
+            urlListFileName, String scannerHost, int scannerPort) {
         this.ipAddress = ipAddress;
-        this.isFileUpload = isFileUpload;
         this.fileUploadLocation = fileUploadLocation;
         this.urlListFile = new File(fileUploadLocation + File.separator + urlListFileName);
-        this.wso2ServerHost = wso2ServerHost;
-        this.wso2ServerPort = wso2ServerPort;
 
-        zap = new ZapEntity();
         zap.setUserId(userId);
         zap.setStatus(ScannerProperties.getStatusInitiated());
-        zap.setContainer(true);
         dynamicScannerService.save(zap);
-        id = zap.getId();
-    }
-
-    @Override
-    public int calculateDynamicScannerPort(int id) {
-        if (5000 + id > 20000) {
-            id = 1;
-        }
-        return (5000 + id) % 20000;
-    }
-
-    @Override
-    public boolean isContainer() {
-        return zap.isContainer();
     }
 
     @Override
     public DynamicScannerEntity startScanner() {
-        int port = calculateDynamicScannerPort(id);
+        int port = ContainerBasedDynamicScanner.calculateDynamicScannerPort(zap.getId());
         List<String> command = Arrays.asList("zap.sh", "-daemon", "-config", "api.disablekey=true", "-config",
                 "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true", "-port", String.valueOf(port),
                 "-host", "0.0.0.0");
@@ -141,16 +121,13 @@ public class ZapScanner implements DynamicScanner {
     @Override
     public void startScan(String productHostRelativeToScanner, String productHostRelativeToThis, int productPort) {
         try {
-
             Map<String, Object> loginCredentials = new HashMap<>();
-
             loginCredentials.put(ScannerProperties.getWso2ProductKeyUsername(), ScannerProperties
                     .getWso2ProductValueUsername());
             loginCredentials.put(ScannerProperties.getWso2ProductKeyPassword(), ScannerProperties
                     .getWso2ProductValuePassword());
 
             ZapClient zapClient = new ZapClient(zap.getDockerIpAddress(), zap.getHostPort(), HTTP_SCHEME);
-
             productUriRelativeToZap = new URIBuilder().setHost(productHostRelativeToScanner).setPort(productPort)
                     .setScheme(HTTPS_SCHEME).build();
 
@@ -213,13 +190,13 @@ public class ZapScanner implements DynamicScanner {
             LOGGER.info("Creating empty session " + HttpRequestHandler.printResponse(createEmptySessionResponse));
 
             httpsURLConnection = HttpsRequestHandler.sendRequest(loginUri.toString(), props, loginCredentials, POST);
-            setCookieResponseList = HttpsRequestHandler.extractValueFromResponseHeader("Set-Cookie", httpsURLConnection);
+            setCookieResponseList = HttpsRequestHandler.extractValueFromResponseHeader("Set-Cookie",
+                    httpsURLConnection);
 
             assert setCookieResponseList != null;
             setCookieResponse = setCookieResponseList.get(0);
-            jSessionId = setCookieResponse.substring(setCookieResponse.indexOf("=") + 1, setCookieResponse.indexOf
-                    (";" +
-                            ""));
+            jSessionId = setCookieResponse.substring(setCookieResponse.indexOf("=") + 1, setCookieResponse.indexOf(";" +
+                    ""));
 
             setSessionTokenResponse = zapClient.setSessionTokenValue(site, SESSION_NAME_2,
                     "JSESSIONID", jSessionId, false);

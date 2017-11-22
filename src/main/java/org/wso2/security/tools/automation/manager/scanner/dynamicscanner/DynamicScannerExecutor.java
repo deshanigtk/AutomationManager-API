@@ -20,7 +20,7 @@ package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
-import org.wso2.security.tools.automation.manager.entity.dynamicscanner.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.handler.ServerHandler;
 
 /**
@@ -28,11 +28,11 @@ import org.wso2.security.tools.automation.manager.handler.ServerHandler;
  *
  * @author Deshani Geethika
  */
-public class MainScanner implements Runnable {
+public class DynamicScannerExecutor implements Runnable {
     private ProductManager productManager;
     private DynamicScanner dynamicScanner;
 
-    public MainScanner(ProductManager productManager, DynamicScanner dynamicScanner) {
+    public DynamicScannerExecutor(ProductManager productManager, DynamicScanner dynamicScanner) {
         this.productManager = productManager;
         this.dynamicScanner = dynamicScanner;
     }
