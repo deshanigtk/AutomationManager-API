@@ -16,10 +16,11 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.scanner.staticscanner;
+package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory;
 
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.dc.DependencyCheckScanner;
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.fsb.FindSecBugsScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.dependencycheck.DependencyCheckScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.findsecbugs.FindSecBugsScanner;
 
 public class StaticScannerFactory {
 

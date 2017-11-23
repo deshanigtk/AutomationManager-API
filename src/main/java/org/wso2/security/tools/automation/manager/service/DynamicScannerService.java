@@ -32,8 +32,16 @@ import org.wso2.security.tools.automation.manager.handler.MailHandler;
 import org.wso2.security.tools.automation.manager.repository.DynamicScannerRepository;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScanner;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScannerExecutor;
-import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.ProductManager;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.cloudbased.CloudBasedDynamicScanner;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.cloudbased.CloudBasedDynamicScannerEnum;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased.ContainerBasedDynamicScanner;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased
+        .ContainerBasedDynamicScannerEnum;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.factory.AbstractDynamicScannerFactory;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.factory.DynamicScannerFactoryProducer;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.productmanager.CloudBasedProductManager;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.productmanager.ContainerBasedProductManager;
+import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.productmanager.ProductManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,26 +90,39 @@ public class DynamicScannerService {
 
     public void startScan(String scanType, String userId, String testName, String productName, String wumLevel,
                           boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile, String
-                                  wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) {
+                                  wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) throws
+            AutomationManagerException {
+
         String fileUploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
                 SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
-        try {
-            uploadFilesToTempDirectory(fileUploadLocation, isFileUpload, zipFile, urlListFile);
-        } catch (AutomationManagerException e) {
-            e.printStackTrace();
+        String urlListFileName = urlListFile.getOriginalFilename();
+        DynamicScanner dynamicScanner = null;
+        ProductManager productManager = null;
+
+        uploadFilesToTempDirectory(fileUploadLocation, isFileUpload, zipFile, urlListFile);
+        if (isCloudBasedDynamicScanner(scanType)) {
+            dynamicScanner = createAndInitCloudBasedDynamicScanner(scanType, userId, fileUploadLocation,
+                    urlListFileName, scannerHost, scannerPort);
+        } else if (isContainerBasedDynamicScanner(scanType)) {
+            dynamicScanner = createAndInitContainerBasedDynamicScanner(scanType, userId, fileUploadLocation,
+                    urlListFileName);
         }
 
-//TODO:seperate a method
-        DynamicScannerFactoryProducer.getAbstractDynamicScannerFactory();
-
-        ProductManager productManager = new ProductManager(userId, testName, ipAddress, productName,
-                wumLevel, isFileUpload, fileUploadLocation, zipFileName,
-                wso2ServerHost, wso2ServerPort);
-        DynamicScanner dynamicScanner = dynamicScannerFactory.getDynamicScanner(scanType);
-        dynamicScanner.init(userId, ipAddress, fileUploadLocation, urlListFileName, scannerHost, scannerPort);
-        DynamicScannerExecutor dynamicScannerExecutor = new DynamicScannerExecutor(productManager,
-                dynamicScanner);
-        new Thread(dynamicScannerExecutor).start();
+        if (dynamicScanner == null) {
+            throw new AutomationManagerException("Error occurred while creating dynamic scanner");
+        }
+        if (isFileUpload && zipFile != null) {
+            productManager = createAndInitContainerBasedProductManager(userId, testName, productName, wumLevel,
+                    fileUploadLocation, zipFile.getOriginalFilename(), dynamicScanner.getId());
+        } else if (!isFileUpload) {
+            productManager = createAndInitCloudBasedProductManager(userId, testName, productName, wumLevel,
+                    wso2ServerHost, wso2ServerPort, dynamicScanner.getId());
+        }
+        if (productManager == null) {
+            throw new AutomationManagerException("Error occurred while creating product manager");
+        }
+        DynamicScannerExecutor executor = new DynamicScannerExecutor(productManager, dynamicScanner);
+        new Thread(executor).start();
     }
 
     private void uploadFilesToTempDirectory(String fileUploadLocation, boolean isFileUpload, MultipartFile zipFile,
@@ -132,22 +153,95 @@ public class DynamicScannerService {
         }
     }
 
-    private void executeScan() {
-        ProductManager productManager = new ProductManager(userId, testName, ipAddress, productName,
-                wumLevel, isFileUpload, fileUploadLocation, zipFileName,
-                wso2ServerHost, wso2ServerPort);
-        DynamicScanner dynamicScanner = dynamicScannerFactory.getDynamicScanner(scanType);
-        dynamicScanner.init(userId, ipAddress, fileUploadLocation, urlListFileName, scannerHost, scannerPort);
-        DynamicScannerExecutor dynamicScannerExecutor = new DynamicScannerExecutor(productManager,
-                dynamicScanner);
-        new Thread(dynamicScannerExecutor).start();
+    /**
+     * Check if a given scan type is a cloud based one.
+     *
+     * @param scanType Scan type
+     * @return Boolean to indicate the scanner is a cloud based
+     */
+    private boolean isCloudBasedDynamicScanner(String scanType) {
+        for (CloudBasedDynamicScannerEnum e : CloudBasedDynamicScannerEnum.values()) {
+            if (e.name().equalsIgnoreCase(scanType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isContainerBasedDynamicScanner(String scanType) {
+        for (ContainerBasedDynamicScannerEnum e : ContainerBasedDynamicScannerEnum.values()) {
+            if (e.name().equalsIgnoreCase(scanType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private CloudBasedDynamicScanner createAndInitCloudBasedDynamicScanner(String scanType, String userId, String
+            fileUploadLocation, String urlListFileName, String scannerHost, int scannerPort) throws
+            AutomationManagerException {
+        String factoryType = "cloud";
+        AbstractDynamicScannerFactory dynamicScannerFactory = DynamicScannerFactoryProducer.getDynamicScannerFactory
+                (factoryType);
+        if (dynamicScannerFactory == null) {
+            throw new AutomationManagerException("Cannot create dynamic scanner factory");
+        }
+        CloudBasedDynamicScanner dynamicScanner = dynamicScannerFactory.getCloudBasedDynamicScanner(scanType);
+        if (dynamicScanner == null) {
+            throw new AutomationManagerException("Dynamic scanner cannot be created");
+        }
+        dynamicScanner.init(userId, fileUploadLocation, urlListFileName, scannerHost, scannerPort);
+        return dynamicScanner;
+    }
+
+    private ContainerBasedDynamicScanner createAndInitContainerBasedDynamicScanner(String scanType, String userId,
+                                                                                   String fileUploadLocation, String
+                                                                                           urlListFileName) throws
+            AutomationManagerException {
+        String factoryType = "container";
+        AbstractDynamicScannerFactory dynamicScannerFactory = DynamicScannerFactoryProducer.getDynamicScannerFactory
+                (factoryType);
+        if (dynamicScannerFactory == null) {
+            throw new AutomationManagerException("Cannot create dynamic scanner factory");
+        }
+        ContainerBasedDynamicScanner dynamicScanner = dynamicScannerFactory.getContainerBasedDynamicScanner(scanType);
+        if (dynamicScanner == null) {
+            throw new AutomationManagerException("Dynamic scanner cannot be created");
+        }
+        dynamicScanner.init(userId, ScannerProperties.getIpAddress(), fileUploadLocation, urlListFileName);
+        return dynamicScanner;
+    }
+
+    private ContainerBasedProductManager createAndInitContainerBasedProductManager(String userId, String testName,
+                                                                                   String productName, String wumLevel,
+                                                                                   String fileUploadLocation, String
+                                                                                           zipFileName, int
+                                                                                           dynamicScannerId) {
+        ContainerBasedProductManager productManager = new ContainerBasedProductManager();
+        productManager.init(userId, testName, ScannerProperties.getIpAddress(), productName, wumLevel,
+                fileUploadLocation,
+                zipFileName, dynamicScannerId);
+        return productManager;
+    }
+
+    private CloudBasedProductManager createAndInitCloudBasedProductManager(String userId, String testName,
+                                                                           String productName, String wumLevel,
+                                                                           String
+                                                                                   wso2serverHost,
+                                                                           int wso2ServerPort, int
+                                                                                   dynamicScannerId) {
+        CloudBasedProductManager productManager = new CloudBasedProductManager();
+        productManager.init(userId, testName, ScannerProperties.getIpAddress(), productName, wumLevel, wso2serverHost,
+                wso2ServerPort,
+                dynamicScannerId);
+        return productManager;
     }
 
     public void kill(String containerId) {
         DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
         DockerHandler.killContainer(containerId);
         DockerHandler.removeContainer(containerId);
-        dynamicScanner.setStatus(ScannerProperties.);
+        dynamicScanner.setStatus(ScannerProperties.getStatusRemoved());
         save(dynamicScanner);
     }
 
@@ -159,7 +253,8 @@ public class DynamicScannerService {
         save(dynamicScanner);
     }
 
-    public void updateReportReady(String containerId, boolean status, String reportFilePath) {
+    public void updateReportReady(String containerId, boolean status, String reportFilePath) throws
+            AutomationManagerException {
         DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
         dynamicScanner.setReportReady(status);
         dynamicScanner.setReportReadyTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
@@ -173,7 +268,7 @@ public class DynamicScannerService {
         save(dynamicScanner);
     }
 
-    private void getReportAndMail(String containerId, String reportFilePath) {
+    private void getReportAndMail(String containerId, String reportFilePath) throws AutomationManagerException {
         try {
             DynamicScannerEntity dynamicScannerEntity = findOneByContainerId(containerId);
             String subject = "Dynamic Scan Report: ";
@@ -185,7 +280,7 @@ public class DynamicScannerService {
                 kill(containerId);
             }
         } catch (Exception e) {
-            throw new AutomationManagerException("Error occurred while getting dynamicscanner scanner " +
+            throw new AutomationManagerException("Error occurred while getting dynamic scanner " +
                     "report and mail");
         }
     }

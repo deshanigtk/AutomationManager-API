@@ -1,4 +1,4 @@
-/*
+package org.wso2.security.tools.automation.manager.scanner.staticscanner.cloudbased;/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -15,16 +15,8 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.factory;
 
-public class DynamicScannerFactoryProducer {
-    public static AbstractDynamicScannerFactory getDynamicScannerFactory(String factoryType) {
-        if ("cloud".equalsIgnoreCase(factoryType)) {
-            return new CloudBasedDynamicScannerFactory();
-        }
-        if ("container".equalsIgnoreCase(factoryType)) {
-            return new ContainerBasedDynamicScannerFactory();
-        }
-        return null;
-    }
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticScanner;
+
+public interface CloudBasedStaticScanner extends StaticScanner {
 }

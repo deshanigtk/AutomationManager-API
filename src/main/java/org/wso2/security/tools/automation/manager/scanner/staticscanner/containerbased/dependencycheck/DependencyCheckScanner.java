@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.dc;
+package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.dependencycheck;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;

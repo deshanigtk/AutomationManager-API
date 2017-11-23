@@ -25,7 +25,7 @@ import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.contain
  * {@link CloudBasedDynamicScanner} and {@link ContainerBasedDynamicScanner}
  */
 public abstract class AbstractDynamicScannerFactory {
-    abstract CloudBasedDynamicScanner getCloudBasedDynamicScannerFactory(String type);
+    public abstract CloudBasedDynamicScanner getCloudBasedDynamicScanner(String type);
 
-    abstract ContainerBasedDynamicScanner getContainerBasedDynamicScannerFactory(String type);
+    public abstract ContainerBasedDynamicScanner getContainerBasedDynamicScanner(String type);
 }

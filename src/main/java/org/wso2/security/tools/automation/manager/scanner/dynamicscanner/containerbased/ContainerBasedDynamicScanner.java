@@ -39,6 +39,4 @@ public interface ContainerBasedDynamicScanner extends DynamicScanner {
      * @param urlListFileName    URL list file name (URL list which needs to be scanned are defined in this file)
      */
     void init(String userId, String ipAddress, String fileUploadLocation, String urlListFileName);
-
-    void startContainer();
 }

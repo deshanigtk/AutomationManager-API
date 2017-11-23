@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.fsb;
+package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.findsecbugs;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;

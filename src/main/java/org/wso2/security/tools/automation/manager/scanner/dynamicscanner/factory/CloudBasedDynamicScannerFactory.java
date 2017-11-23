@@ -30,12 +30,12 @@ import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.Dynamic
 public class CloudBasedDynamicScannerFactory extends AbstractDynamicScannerFactory {
 
     @Override
-    CloudBasedDynamicScanner getCloudBasedDynamicScanner(String type) {
+    public CloudBasedDynamicScanner getCloudBasedDynamicScanner(String type) {
         return null;
     }
 
     @Override
-    ContainerBasedDynamicScanner getContainerBasedDynamicScanner(String type) {
+    public ContainerBasedDynamicScanner getContainerBasedDynamicScanner(String type) {
         return null;
     }
 }

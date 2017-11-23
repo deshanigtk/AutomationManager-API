@@ -39,7 +39,7 @@ import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.handler.MailHandler;
 import org.wso2.security.tools.automation.manager.repository.StaticScannerRepository;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticScanner;
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticScannerFactory;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.factory.StaticScannerFactory;
 
 import java.io.File;
 import java.io.IOException;

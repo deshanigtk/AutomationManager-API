@@ -38,7 +38,7 @@ public abstract class ProductManagerEntity {
     private String containerId;
     @NotNull
     private String userId;
-    private String relatedDynamicScannerId;
+    private int relatedDynamicScannerId;
     private String testName;
     private String productName;
     private String wumLevel;
@@ -69,11 +69,11 @@ public abstract class ProductManagerEntity {
         this.userId = userId;
     }
 
-    public String getRelatedDynamicScannerId() {
+    public int getRelatedDynamicScannerId() {
         return relatedDynamicScannerId;
     }
 
-    public void setRelatedDynamicScannerId(String relatedDynamicScannerId) {
+    public void setRelatedDynamicScannerId(int relatedDynamicScannerId) {
         this.relatedDynamicScannerId = relatedDynamicScannerId;
     }
 

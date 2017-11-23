@@ -209,6 +209,10 @@ public class ScannerProperties {
         return statusFailed;
     }
 
+    public static String getStatusRemoved() {
+        return statusRemoved;
+    }
+
     public static String getDatePattern() {
         return datePattern;
     }

@@ -15,16 +15,10 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.factory;
+package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased;
 
-public class DynamicScannerFactoryProducer {
-    public static AbstractDynamicScannerFactory getDynamicScannerFactory(String factoryType) {
-        if ("cloud".equalsIgnoreCase(factoryType)) {
-            return new CloudBasedDynamicScannerFactory();
-        }
-        if ("container".equalsIgnoreCase(factoryType)) {
-            return new ContainerBasedDynamicScannerFactory();
-        }
-        return null;
-    }
+public enum ContainerBasedDynamicScannerEnum {
+    ZAP,
+    XXX
 }
+

@@ -77,8 +77,7 @@ public class ZapScanner implements ContainerBasedDynamicScanner {
      * {@inheritDoc}
      */
     @Override
-    public void init(String userId, String ipAddress, String fileUploadLocation, String
-            urlListFileName, String scannerHost, int scannerPort) {
+    public void init(String userId, String ipAddress, String fileUploadLocation, String urlListFileName) {
         this.ipAddress = ipAddress;
         this.fileUploadLocation = fileUploadLocation;
         this.urlListFile = new File(fileUploadLocation + File.separator + urlListFileName);
@@ -217,6 +216,11 @@ public class ZapScanner implements ContainerBasedDynamicScanner {
         }
     }
 
+    @Override
+    public int getId() {
+        return zap.getId();
+    }
+
     private void runSpider(ZapClient zapClient) {
         try {
             BufferedReader bufferedReader;
@@ -224,15 +228,10 @@ public class ZapScanner implements ContainerBasedDynamicScanner {
             bufferedReader = new BufferedReader(new FileReader(urlListFile));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                LOGGER.info("Reading URL list of wso2 product: " + productUriRelativeToZap.toString() + line);
-
                 HttpResponse spiderResponse = zapClient.spider(productUriRelativeToZap.toString() + line, "",
                         "", "", "", false);
-                LOGGER.info("Spider HTTP Response");
-
                 String scanId = extractJsonValue(spiderResponse, "scan");
                 spiderScanIds.add(scanId);
-                LOGGER.info("Adding ScanIds of Spider Scans to array: " + scanId);
             }
 
             for (String scanId : spiderScanIds) {
@@ -241,7 +240,6 @@ public class ZapScanner implements ContainerBasedDynamicScanner {
 
                 while (Integer.parseInt(extractJsonValue(spiderStatusResponse, "status")) < 100) {
                     spiderStatusResponse = zapClient.spiderStatus(scanId, false);
-                    LOGGER.info("Sending request to check spider status: " + spiderStatusResponse);
                     Thread.sleep(1000);
                 }
             }
@@ -257,11 +255,8 @@ public class ZapScanner implements ContainerBasedDynamicScanner {
             LOGGER.info("Starting Ajax spider: " + ajaxSpiderResponse);
 
             HttpResponse ajaxSpiderStatusResponse = zapClient.ajaxSpiderStatus(false);
-            LOGGER.info("Ajax spider status: " + ajaxSpiderStatusResponse);
-
             while (!extractJsonValue(ajaxSpiderStatusResponse, "status").equals("stopped")) {
                 ajaxSpiderStatusResponse = zapClient.ajaxSpiderStatus(false);
-                LOGGER.info("Ajax spider status: " + ajaxSpiderStatusResponse);
                 Thread.sleep(3000);
             }
         } catch (InterruptedException | IOException | URISyntaxException e) {
@@ -275,10 +270,7 @@ public class ZapScanner implements ContainerBasedDynamicScanner {
             HttpResponse activeScanResponse = zapClient.activeScan(productUriRelativeToZap.toString(), "",
                     "", "", "", "", contextId, false);
             String activeScanId = extractJsonValue(activeScanResponse, "scan");
-
-            LOGGER.info("Scan Id of active scan: " + activeScanId);
             Thread.sleep(500);
-
             HttpResponse activeScanStatusResponse = zapClient.activeScanStatus(activeScanId, false);
             progress = Integer.parseInt(extractJsonValue(activeScanStatusResponse, "status"));
 
@@ -306,4 +298,5 @@ public class ZapScanner implements ContainerBasedDynamicScanner {
         JSONObject jsonObject = new JSONObject(jsonString);
         return jsonObject.getString(key);
     }
+
 }

@@ -16,19 +16,23 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
+package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.productmanager;
 
-import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 
 /**
- * Dynamic scanner interface
+ * Product manager
  *
  * @author Deshani Geethika
  */
-public interface DynamicScanner {
-    DynamicScannerEntity startScanner();
+@SuppressWarnings("WeakerAccess")
+public interface ProductManager {
 
-    void startScan(String productHostRelativeToScanner, String productHostRelativeToThis, int productPort);
+    ProductManagerEntity startProductManager();
 
-    int getId();
+    boolean startServer();
+
+    String getHost();
+
+    int getPort();
 }
