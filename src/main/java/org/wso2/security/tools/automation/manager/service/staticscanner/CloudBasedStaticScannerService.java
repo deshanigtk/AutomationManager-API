@@ -15,14 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory;
+package org.wso2.security.tools.automation.manager.service.staticscanner;
 
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.cloudbased.CloudBasedStaticScanner;
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.ContainerBasedStaticScanner;
-
-public abstract class AbstractStaticScannerFactory {
-
-    public abstract ContainerBasedStaticScanner getContainerBasedStaticScanner(String type);
-
-    public abstract CloudBasedStaticScanner getCloudBasedStaticScanner(String type);
+public class CloudBasedStaticScannerService {
 }

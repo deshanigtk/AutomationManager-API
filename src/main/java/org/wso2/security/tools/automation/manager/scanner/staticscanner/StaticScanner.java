@@ -22,21 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
 
-public interface StaticScanner extends Runnable {
+public interface StaticScanner{
     Logger LOGGER = LoggerFactory.getLogger(StaticScanner.class);
 
-    static int calculatePort(int id) {
-        if (40000 + id > 65535) {
-            id = 1;
-        }
-        return (40000 + id) % 65535;
-    }
-
-    void init(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean
-            isFileUpload, String uploadLocation, String zipFileName, String gitUrl,
-              String gitUserName, String gitPassword);
-
-    StaticScannerEntity startContainer();
+    StaticScannerEntity startScanner();
 
     void startScan();
 }

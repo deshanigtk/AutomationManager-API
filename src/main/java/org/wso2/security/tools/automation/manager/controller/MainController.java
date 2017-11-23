@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
 import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
-import org.wso2.security.tools.automation.manager.service.DynamicScannerService;
-import org.wso2.security.tools.automation.manager.service.ProductManagerService;
+import org.wso2.security.tools.automation.manager.service.dynamicscanner.DynamicScannerService;
+import org.wso2.security.tools.automation.manager.service.productmanager.ProductManagerService;
 import org.wso2.security.tools.automation.manager.service.StaticScannerService;
 
 /**

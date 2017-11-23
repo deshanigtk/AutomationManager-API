@@ -31,7 +31,7 @@ import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpsRequestHandler;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased.ContainerBasedDynamicScanner;
-import org.wso2.security.tools.automation.manager.service.DynamicScannerService;
+import org.wso2.security.tools.automation.manager.service.dynamicscanner.DynamicScannerService;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;

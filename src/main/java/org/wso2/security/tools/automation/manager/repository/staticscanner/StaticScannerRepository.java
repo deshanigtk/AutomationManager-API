@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.repository;
+package org.wso2.security.tools.automation.manager.repository.staticscanner;
 
 import org.springframework.data.repository.CrudRepository;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
@@ -30,19 +30,12 @@ import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticSca
  * @author Deshani Geethika
  */
 public interface StaticScannerRepository extends CrudRepository<StaticScannerEntity, Integer> {
-    /**
-     * Find a container by containerId
-     *
-     * @param containerId Container Id
-     * @return a {@code DynamicScannerEntity} object
-     */
-    StaticScannerEntity findOneByContainerId(String containerId);
 
     /**
-     * Find a list of dynamic scanners by user id
+     * Find a list of static scanners by user id
      *
      * @param userId User id
-     * @return List of {@code DynamicScannerEntity}
+     * @return List of {@code StaticScannerEntity}
      */
     Iterable<StaticScannerEntity> findByUserId(String userId);
 }

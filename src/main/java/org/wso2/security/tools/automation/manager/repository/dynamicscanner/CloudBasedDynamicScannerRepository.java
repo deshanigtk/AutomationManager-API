@@ -15,14 +15,18 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory;
+package org.wso2.security.tools.automation.manager.repository.dynamicscanner;
 
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.cloudbased.CloudBasedStaticScanner;
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.ContainerBasedStaticScanner;
+import org.springframework.data.repository.CrudRepository;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.cloudbased.CloudBasedDynamicScannerEntity;
 
-public abstract class AbstractStaticScannerFactory {
+public interface CloudBasedDynamicScannerRepository extends CrudRepository<CloudBasedDynamicScannerEntity, Integer> {
 
-    public abstract ContainerBasedStaticScanner getContainerBasedStaticScanner(String type);
-
-    public abstract CloudBasedStaticScanner getCloudBasedStaticScanner(String type);
+    /**
+     * Find a list of cloud based dynamic scanners by user id
+     *
+     * @param userId User id
+     * @return List of {@code CloudBasedDynamicScannerEntity}
+     */
+    Iterable<CloudBasedDynamicScannerEntity> findByUserId(String userId);
 }

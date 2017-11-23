@@ -34,8 +34,6 @@ public abstract class StaticScannerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(unique = true)
-    private String containerId;
     private String userId;
     private String type;
     private String testName;
@@ -51,14 +49,6 @@ public abstract class StaticScannerEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getContainerId() {
-        return containerId;
-    }
-
-    public void setContainerId(String containerId) {
-        this.containerId = containerId;
     }
 
     public String getUserId() {

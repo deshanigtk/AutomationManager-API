@@ -30,7 +30,7 @@ import org.wso2.security.tools.automation.manager.entity.productmanager.containe
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.handler.ServerHandler;
-import org.wso2.security.tools.automation.manager.service.ProductManagerService;
+import org.wso2.security.tools.automation.manager.service.productmanager.ProductManagerService;
 
 import java.io.File;
 import java.net.URI;

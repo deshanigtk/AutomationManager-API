@@ -34,8 +34,6 @@ public abstract class ProductManagerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(unique = true)
-    private String containerId;
     @NotNull
     private String userId;
     private int relatedDynamicScannerId;
@@ -51,14 +49,6 @@ public abstract class ProductManagerEntity {
 
     public int getId() {
         return id;
-    }
-
-    public String getContainerId() {
-        return containerId;
-    }
-
-    public void setContainerId(String containerId) {
-        this.containerId = containerId;
     }
 
     public String getUserId() {

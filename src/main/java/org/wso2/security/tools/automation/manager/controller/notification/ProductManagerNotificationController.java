@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wso2.security.tools.automation.manager.service.ProductManagerService;
+import org.wso2.security.tools.automation.manager.service.productmanager.ProductManagerService;
 
 /**
  * The main contract of the {@code ProductManagerNotificationController} class is to provide an API to be called by

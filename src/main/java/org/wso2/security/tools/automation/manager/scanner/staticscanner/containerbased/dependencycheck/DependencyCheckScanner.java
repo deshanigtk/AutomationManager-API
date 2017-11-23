@@ -22,12 +22,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.wso2.security.tools.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.staticscanner.containerbased.dependencycheck.DependencyCheckEntity;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.staticscanner.containerbased.ContainerBasedStaticScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.staticscanner.containerbased.dependencycheck
+        .DependencyCheckEntity;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
-import org.wso2.security.tools.automation.manager.handler.ServerHandler;
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.ContainerBasedStaticScanner;
 import org.wso2.security.tools.automation.manager.service.StaticScannerService;
 
 import java.io.File;
@@ -38,7 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DependencyCheckScanner implements StaticScanner {
+public class DependencyCheckScanner implements ContainerBasedStaticScanner {
     private String userId;
     private String testName;
     private String ipAddress;
@@ -51,20 +52,11 @@ public class DependencyCheckScanner implements StaticScanner {
     private String gitPassword;
 
     private StaticScannerService staticScannerService;
-    private StaticScannerEntity staticScanner;
+    private ContainerBasedStaticScannerEntity staticScannerEntity;
 
     public DependencyCheckScanner() {
-        staticScanner = new DependencyCheckEntity();
+        staticScannerEntity = new DependencyCheckEntity();
         staticScannerService = ApplicationContextUtils.getApplicationContext().getBean(StaticScannerService.class);
-    }
-
-    @Override
-    public void run() {
-        if (startContainer() != null) {
-            if (ServerHandler.hostAvailabilityCheck(staticScanner.getIpAddress(), staticScanner.getHostPort(), 12)) {
-                startScan();
-            }
-        }
     }
 
     @Override
@@ -86,15 +78,15 @@ public class DependencyCheckScanner implements StaticScanner {
     }
 
     @Override
-    public StaticScannerEntity startContainer() {
-        staticScanner.setUserId(userId);
-        staticScanner.setTestName(testName);
-        staticScanner.setProductName(productName);
-        staticScanner.setWumLevel(wumLevel);
-        staticScanner.setStatus(ScannerProperties.getStatusInitiated());
-        staticScannerService.save(staticScanner);
+    public StaticScannerEntity startScanner() {
+        staticScannerEntity.setUserId(userId);
+        staticScannerEntity.setTestName(testName);
+        staticScannerEntity.setProductName(productName);
+        staticScannerEntity.setWumLevel(wumLevel);
+        staticScannerEntity.setStatus(ScannerProperties.getStatusInitiated());
+        staticScannerService.save(staticScannerEntity);
 
-        int port = StaticScanner.calculatePort(staticScanner.getId());
+        int port = ContainerBasedStaticScanner.calculatePort(staticScannerEntity.getId());
 
         String containerId = DockerHandler.createContainer(ScannerProperties.getDependencyCheckDockerImage(),
                 ipAddress, String.valueOf(port),
@@ -102,18 +94,19 @@ public class DependencyCheckScanner implements StaticScanner {
 
         if (containerId != null) {
             String createdTime = new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
-            staticScanner.setContainerId(containerId);
-            staticScanner.setIpAddress(ipAddress);
-            staticScanner.setContainerPort(port);
-            staticScanner.setHostPort(port);
-            staticScanner.setStatus(ScannerProperties.getStatusCreated());
-            staticScanner.setCreatedTime(createdTime);
+            staticScannerEntity.setContainerId(containerId);
+            staticScannerEntity.setIpAddress(ipAddress);
+            staticScannerEntity.setContainerPort(port);
+            staticScannerEntity.setHostPort(port);
+            staticScannerEntity.setStatus(ScannerProperties.getStatusCreated());
+            staticScannerEntity.setCreatedTime(createdTime);
 
-            staticScannerService.save(staticScanner);
+            staticScannerService.save(staticScannerEntity);
             if (DockerHandler.startContainer(containerId)) {
-                staticScanner.setStatus(ScannerProperties.getStatusRunning());
-                staticScanner.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings().ipAddress());
-                return staticScannerService.save(staticScanner);
+                staticScannerEntity.setStatus(ScannerProperties.getStatusRunning());
+                staticScannerEntity.setIpAddress(DockerHandler.inspectContainer(containerId).networkSettings()
+                        .ipAddress());
+                return staticScannerService.save(staticScannerEntity);
             }
         }
         return null;
@@ -122,12 +115,12 @@ public class DependencyCheckScanner implements StaticScanner {
     @Override
     public void startScan() {
         try {
-            URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                    .setPort(staticScanner.getHostPort()).setScheme("http").setPath(ScannerProperties
+            URI uri = (new URIBuilder()).setHost(staticScannerEntity.getIpAddress())
+                    .setPort(staticScannerEntity.getHostPort()).setScheme("http").setPath(ScannerProperties
                             .getStaticScannerStartScan())
                     .addParameter("automationManagerHost", ScannerProperties.getAutomationManagerHost())
                     .addParameter("automationManagerPort", String.valueOf(ScannerProperties.getAutomationManagerPort()))
-                    .addParameter("myContainerId", staticScanner.getContainerId())
+                    .addParameter("myContainerId", staticScannerEntity.getContainerId())
                     .addParameter("isFileUpload", String.valueOf(isFileUpload))
                     .addParameter("gitUrl", gitUrl)
                     .addParameter("gitUsername", gitUsername)

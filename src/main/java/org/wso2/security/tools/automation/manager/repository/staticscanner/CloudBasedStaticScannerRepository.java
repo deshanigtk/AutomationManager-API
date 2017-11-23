@@ -15,14 +15,17 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory;
+package org.wso2.security.tools.automation.manager.repository.staticscanner;
 
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.cloudbased.CloudBasedStaticScanner;
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.ContainerBasedStaticScanner;
+import org.springframework.data.repository.CrudRepository;
+import org.wso2.security.tools.automation.manager.entity.staticscanner.cloudbased.CloudBasedStaticScannerEntity;
 
-public abstract class AbstractStaticScannerFactory {
-
-    public abstract ContainerBasedStaticScanner getContainerBasedStaticScanner(String type);
-
-    public abstract CloudBasedStaticScanner getCloudBasedStaticScanner(String type);
+public interface CloudBasedStaticScannerRepository extends CrudRepository<CloudBasedStaticScannerEntity, Integer> {
+    /**
+     * Find a list of cloud based static scanners by user id
+     *
+     * @param userId User id
+     * @return List of {@code CloudBasedStaticScannerEntity}
+     */
+    Iterable<CloudBasedStaticScannerEntity> findByUserId(String userId);
 }

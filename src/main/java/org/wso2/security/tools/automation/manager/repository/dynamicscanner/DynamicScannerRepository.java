@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.repository;
+package org.wso2.security.tools.automation.manager.repository.dynamicscanner;
 
 import org.springframework.data.repository.CrudRepository;
 import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
@@ -29,14 +29,6 @@ import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicS
  * @author Deshani Geethika
  */
 public interface DynamicScannerRepository extends CrudRepository<DynamicScannerEntity, Integer> {
-    /**
-     * Find a container by containerId
-     *
-     * @param containerId Container Id
-     * @return a {@code DynamicScannerEntity} object
-     */
-    DynamicScannerEntity findOneByContainerId(String containerId);
-
     /**
      * Find a list of dynamic scanners by user id
      *

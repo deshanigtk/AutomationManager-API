@@ -17,5 +17,17 @@
 */
 package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory;
 
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.cloudbased.CloudBasedStaticScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.ContainerBasedStaticScanner;
+
 public class CloudBasedStaticScannerFactory extends AbstractStaticScannerFactory {
+    @Override
+    public ContainerBasedStaticScanner getContainerBasedStaticScanner(String type) {
+        return null;
+    }
+
+    @Override
+    public CloudBasedStaticScanner getCloudBasedStaticScanner(String type) {
+        return null;
+    }
 }

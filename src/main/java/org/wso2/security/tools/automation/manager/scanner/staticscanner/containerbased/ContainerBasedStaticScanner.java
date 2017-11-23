@@ -1,4 +1,4 @@
-package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased;/*
+/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -15,8 +15,20 @@ package org.wso2.security.tools.automation.manager.scanner.staticscanner.contain
 * specific language governing permissions and limitations
 * under the License.
 */
+package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased;
 
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticScanner;
 
-public interface ContainerBasedStaticScanner extends StaticScanner{
+public interface ContainerBasedStaticScanner extends StaticScanner {
+
+    static int calculatePort(int id) {
+        if (40000 + id > 65535) {
+            id = 1;
+        }
+        return (40000 + id) % 65535;
+    }
+
+    void init(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean
+            isFileUpload, String uploadLocation, String zipFileName, String gitUrl, String gitUsername, String
+            gitPassword);
 }

@@ -19,6 +19,7 @@ package org.wso2.security.tools.automation.manager.entity.productmanager.contain
 
 import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -30,17 +31,26 @@ import javax.persistence.Entity;
 @SuppressWarnings("unused")
 @Entity
 public class ContainerBasedProductManagerEntity extends ProductManagerEntity {
+    @Column(unique = true)
+    private String containerId;
     private String ipAddress;
     private String dockerIpAddress;
     private int containerPort;
     private int hostPort;
-
     private boolean fileUploaded;
     private String fileUploadedTime;
     private boolean fileExtracted;
     private String fileExtractedTime;
     private boolean serverStarted;
     private String serverStartedTime;
+
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
+    }
 
     public String getIpAddress() {
         return ipAddress;

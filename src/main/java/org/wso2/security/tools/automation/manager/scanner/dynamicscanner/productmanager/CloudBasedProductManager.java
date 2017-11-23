@@ -20,7 +20,7 @@ package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.produc
 import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.entity.productmanager.containerbased
         .ContainerBasedProductManagerEntity;
-import org.wso2.security.tools.automation.manager.service.ProductManagerService;
+import org.wso2.security.tools.automation.manager.service.productmanager.ProductManagerService;
 
 public class CloudBasedProductManager implements ProductManager {
     private String userId;

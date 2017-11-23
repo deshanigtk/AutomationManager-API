@@ -15,7 +15,17 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory;
+package org.wso2.security.tools.automation.manager.repository.productmanager;
 
-public class ContainerBasedStaticScanner extends AbstractStaticScannerFactory {
+import org.springframework.data.repository.CrudRepository;
+import org.wso2.security.tools.automation.manager.entity.productmanager.cloudbased.CloudBasedProductManagerEntity;
+
+public interface CloudBasedProductManagerRepository extends CrudRepository<CloudBasedProductManagerEntity, Integer> {
+    /**
+     * Find a list of cloud based product managers by user id
+     *
+     * @param userId User id
+     * @return List of {@code CloudBasedProductManagerEntity}
+     */
+    Iterable<CloudBasedProductManagerEntity> findByUserId(String userId);
 }

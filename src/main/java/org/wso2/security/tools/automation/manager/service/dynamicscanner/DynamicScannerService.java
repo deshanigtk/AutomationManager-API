@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.service;
+package org.wso2.security.tools.automation.manager.service.dynamicscanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
-import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.FileHandler;
-import org.wso2.security.tools.automation.manager.handler.MailHandler;
-import org.wso2.security.tools.automation.manager.repository.DynamicScannerRepository;
+import org.wso2.security.tools.automation.manager.repository.dynamicscanner.DynamicScannerRepository;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScanner;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScannerExecutor;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.cloudbased.CloudBasedDynamicScanner;
@@ -44,7 +42,6 @@ import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.product
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.productmanager.ProductManager;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -58,14 +55,11 @@ import java.util.Date;
 public class DynamicScannerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DynamicScannerService.class);
 
-    private static final String STATUS_REMOVED = "removed";
     private final DynamicScannerRepository dynamicScannerRepository;
-    private final MailHandler mailHandler;
 
     @Autowired
-    public DynamicScannerService(DynamicScannerRepository dynamicScannerRepository, MailHandler mailHandler) {
+    public DynamicScannerService(DynamicScannerRepository dynamicScannerRepository) {
         this.dynamicScannerRepository = dynamicScannerRepository;
-        this.mailHandler = mailHandler;
     }
 
     public Iterable<DynamicScannerEntity> findAll() {
@@ -74,10 +68,6 @@ public class DynamicScannerService {
 
     public DynamicScannerEntity findOne(int id) {
         return dynamicScannerRepository.findOne(id);
-    }
-
-    public DynamicScannerEntity findOneByContainerId(String containerId) {
-        return dynamicScannerRepository.findOneByContainerId(containerId);
     }
 
     public Iterable<DynamicScannerEntity> findByUserId(String userId) {
@@ -226,62 +216,12 @@ public class DynamicScannerService {
 
     private CloudBasedProductManager createAndInitCloudBasedProductManager(String userId, String testName,
                                                                            String productName, String wumLevel,
-                                                                           String
-                                                                                   wso2serverHost,
-                                                                           int wso2ServerPort, int
-                                                                                   dynamicScannerId) {
+                                                                           String wso2serverHost, int wso2ServerPort,
+                                                                           int dynamicScannerId) {
         CloudBasedProductManager productManager = new CloudBasedProductManager();
         productManager.init(userId, testName, ScannerProperties.getIpAddress(), productName, wumLevel, wso2serverHost,
-                wso2ServerPort,
-                dynamicScannerId);
+                wso2ServerPort, dynamicScannerId);
         return productManager;
     }
 
-    public void kill(String containerId) {
-        DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
-        DockerHandler.killContainer(containerId);
-        DockerHandler.removeContainer(containerId);
-        dynamicScanner.setStatus(ScannerProperties.getStatusRemoved());
-        save(dynamicScanner);
-    }
-
-    public void updateScanStatus(String containerId, String status, int progress) {
-        DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
-        dynamicScanner.setScanStatus(status);
-        dynamicScanner.setScanProgress(progress);
-        dynamicScanner.setScanProgressTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
-        save(dynamicScanner);
-    }
-
-    public void updateReportReady(String containerId, boolean status, String reportFilePath) throws
-            AutomationManagerException {
-        DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
-        dynamicScanner.setReportReady(status);
-        dynamicScanner.setReportReadyTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
-        save(dynamicScanner);
-        getReportAndMail(containerId, reportFilePath);
-    }
-
-    public void updateMessage(String containerId, String status) {
-        DynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
-        dynamicScanner.setMessage(status);
-        save(dynamicScanner);
-    }
-
-    private void getReportAndMail(String containerId, String reportFilePath) throws AutomationManagerException {
-        try {
-            DynamicScannerEntity dynamicScannerEntity = findOneByContainerId(containerId);
-            String subject = "Dynamic Scan Report: ";
-            if (mailHandler.sendMail(dynamicScannerEntity.getUserId(), subject, "This is auto generated message",
-                    new FileInputStream(new File(reportFilePath)), "ZapReport.html")) {
-                dynamicScannerEntity.setReportSent(true);
-                dynamicScannerEntity.setReportSentTime(new SimpleDateFormat(ScannerProperties.getDatePattern())
-                        .format(new Date()));
-                kill(containerId);
-            }
-        } catch (Exception e) {
-            throw new AutomationManagerException("Error occurred while getting dynamic scanner " +
-                    "report and mail");
-        }
-    }
 }

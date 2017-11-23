@@ -25,7 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
-import org.wso2.security.tools.automation.manager.service.DynamicScannerService;
+import org.wso2.security.tools.automation.manager.service.dynamicscanner.DynamicScannerService;
 
 /**
  * The class {@code DynamicScannerController} is the web controller which defines the routines for initiating dynamic

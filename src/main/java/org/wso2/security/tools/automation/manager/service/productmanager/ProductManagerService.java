@@ -16,18 +16,14 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.service;
+package org.wso2.security.tools.automation.manager.service.productmanager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
-import org.wso2.security.tools.automation.manager.handler.DockerHandler;
-import org.wso2.security.tools.automation.manager.repository.ProductManagerRepository;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.wso2.security.tools.automation.manager.repository.productmanager.ProductManagerRepository;
 
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 @Service
@@ -48,10 +44,6 @@ public class ProductManagerService {
         return productManagerRepository.findOne(id);
     }
 
-    public ProductManagerEntity findOneByContainerId(String containerId) {
-        return productManagerRepository.findOneByContainerId(containerId);
-    }
-
     public Iterable<ProductManagerEntity> findByUserId(String userId) {
         return productManagerRepository.findByUserId(userId);
     }
@@ -60,32 +52,4 @@ public class ProductManagerService {
         return productManagerRepository.save(dynamicScanner);
     }
 
-    public void updateFileUploaded(String containerId, boolean status) {
-        ProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
-        productManagerEntity.setFileUploaded(status);
-        productManagerEntity.setFileUploadedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
-        save(productManagerEntity);
-    }
-
-    public void updateFileExtracted(String containerId, boolean status) {
-        ProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
-        productManagerEntity.setFileExtracted(status);
-        productManagerEntity.setFileExtractedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
-        save(productManagerEntity);
-    }
-
-    public void updateServerStarted(String containerId, boolean status) {
-        ProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
-        productManagerEntity.setServerStarted(status);
-        productManagerEntity.setServerStartedTime(new SimpleDateFormat("yyyy-MM-dd:HH.mm.ss").format(new Date()));
-        save(productManagerEntity);
-    }
-
-    public void kill(String containerId) {
-        ProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
-        DockerHandler.killContainer(containerId);
-        DockerHandler.removeContainer(containerId);
-        productManagerEntity.setStatus("removed");
-        save(productManagerEntity);
-    }
 }

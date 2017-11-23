@@ -19,6 +19,7 @@ package org.wso2.security.tools.automation.manager.entity.staticscanner.containe
 
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -33,6 +34,8 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ContainerBasedStaticScannerEntity extends StaticScannerEntity {
+    @Column(unique = true)
+    private String containerId;
     private String ipAddress;
     private int containerPort;
     private int hostPort;
@@ -47,6 +50,14 @@ public class ContainerBasedStaticScannerEntity extends StaticScannerEntity {
     private String reportReadyTime;
     private boolean reportSent;
     private String reportSentTime;
+
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
+    }
 
     public String getIpAddress() {
         return ipAddress;

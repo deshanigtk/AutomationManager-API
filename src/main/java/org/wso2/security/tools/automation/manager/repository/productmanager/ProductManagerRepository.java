@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.repository;
+package org.wso2.security.tools.automation.manager.repository.productmanager;
 
 import org.springframework.data.repository.CrudRepository;
 import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
@@ -29,14 +29,6 @@ import org.wso2.security.tools.automation.manager.entity.productmanager.ProductM
  * @author Deshani Geethika
  */
 public interface ProductManagerRepository extends CrudRepository<ProductManagerEntity, Integer> {
-    /**
-     * Find a container by containerId
-     *
-     * @param containerId Container Id
-     * @return a {@code ProductManagerEntity} object
-     */
-    ProductManagerEntity findOneByContainerId(String containerId);
-
     /**
      * Find a list of product managers by user id
      *

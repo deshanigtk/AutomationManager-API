@@ -20,9 +20,20 @@ package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.cloudbased.CloudBasedStaticScanner;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.ContainerBasedStaticScanner;
 
-public abstract class AbstractStaticScannerFactory {
+public class ContainerBasedStaticScannerFactory extends AbstractStaticScannerFactory {
+    @Override
+    public ContainerBasedStaticScanner getContainerBasedStaticScanner(String type) {
+        if ("dc".equalsIgnoreCase(type)) {
 
-    public abstract ContainerBasedStaticScanner getContainerBasedStaticScanner(String type);
+        }
+        if ("fsb".equalsIgnoreCase(type)) {
 
-    public abstract CloudBasedStaticScanner getCloudBasedStaticScanner(String type);
+        }
+        return null;
+    }
+
+    @Override
+    public CloudBasedStaticScanner getCloudBasedStaticScanner(String type) {
+        return null;
+    }
 }
