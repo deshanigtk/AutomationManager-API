@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.security.tools.automation.manager.service;
+package org.wso2.security.tools.automation.manager.service.staticscanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +28,6 @@ import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticSca
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 import org.wso2.security.tools.automation.manager.handler.FileHandler;
 import org.wso2.security.tools.automation.manager.repository.staticscanner.StaticScannerRepository;
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticScanner;
-import org.wso2.security.tools.automation.manager.scanner.staticscanner.factory.StaticScannerFactoryProducer;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -100,11 +98,11 @@ public class StaticScannerService {
                 throw new AutomationManagerException("Please enter URL to clone");
             }
         }
-        StaticScannerFactoryProducer staticScannerFactoryProducer = new StaticScannerFactoryProducer();
-        StaticScanner staticScanner = staticScannerFactoryProducer.getStaticScanner(scanType);
-        staticScanner.init(userId, testName, ipAddress, productName, wumLevel, isFileUpload, uploadLocation,
-                zipFileName, gitUrl, gitUsername, gitPassword);
-        new Thread(staticScanner).start();
+//        StaticScannerFactoryProducer staticScannerFactoryProducer = new StaticScannerFactoryProducer();
+//        StaticScanner staticScanner = staticScannerFactoryProducer.getStaticScanner(scanType);
+//        staticScanner.init(userId, testName, ipAddress, productName, wumLevel, isFileUpload, uploadLocation,
+//                zipFileName, gitUrl, gitUsername, gitPassword);
+//        new Thread(staticScanner).start();
     }
 
 }

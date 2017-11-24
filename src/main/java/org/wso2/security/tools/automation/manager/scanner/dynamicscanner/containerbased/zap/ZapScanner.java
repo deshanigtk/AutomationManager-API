@@ -31,6 +31,7 @@ import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpsRequestHandler;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased.ContainerBasedDynamicScanner;
+import org.wso2.security.tools.automation.manager.service.dynamicscanner.ContainerBasedDynamicScannerService;
 import org.wso2.security.tools.automation.manager.service.dynamicscanner.DynamicScannerService;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -44,7 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * The class {@code ZapScanner} implements the interface {@code DynamicScanner}. The main contract of this class is
+ * The class {@code ZapScanner} implements the interface {@code ContainerBasedDynamicScanner}. The main contract of this class is
  * to start a ZAP scanner (ZAP scanner is a docker container), and automate the ZAP scanning process by calling
  * {@link ZapClient} methods
  *
@@ -63,11 +64,11 @@ public class ZapScanner implements ContainerBasedDynamicScanner {
     private String ipAddress;
     private String fileUploadLocation;
     private File urlListFile;
-    private DynamicScannerService dynamicScannerService;
+    private ContainerBasedDynamicScannerService dynamicScannerService;
     private ZapEntity zap;
 
     public ZapScanner() {
-        dynamicScannerService = ApplicationContextUtils.getApplicationContext().getBean(DynamicScannerService.class);
+        dynamicScannerService = ApplicationContextUtils.getApplicationContext().getBean(ContainerBasedDynamicScannerService.class);
         zap = new ZapEntity();
     }
 
@@ -139,7 +140,6 @@ public class ZapScanner implements ContainerBasedDynamicScanner {
 
             HttpResponse includeInContextResponse = zapClient.includeInContext(CONTEXT_NAME, "\\Q" +
                     productUriRelativeToZap.toString() + "\\E.*", false);
-            LOGGER.info("Include in context response: " + HttpRequestHandler.printResponse(includeInContextResponse));
 
             //Create an empty session
             HttpResponse createEmptySessionResponse = zapClient.createEmptySession(site, SESSION_NAME_1, false);
@@ -151,7 +151,6 @@ public class ZapScanner implements ContainerBasedDynamicScanner {
 
             URI loginUri = (new URIBuilder()).setHost(productHostRelativeToThis).setPort(productPort)
                     .setScheme("https").setPath(ScannerProperties.getWso2ProductManagementConsoleLoginUrl()).build();
-            LOGGER.info("URI to login to wso2server: " + loginUri.toString());
 
             HttpsURLConnection httpsURLConnection = HttpsRequestHandler.sendRequest(loginUri.toString(), props,
                     loginCredentials, POST);

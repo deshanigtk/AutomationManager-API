@@ -40,5 +40,5 @@ public interface CloudBasedDynamicScanner extends DynamicScanner {
     /**
      * Check if the scanner is available
      */
-    void checkIfcannerAvailable();
+    void checkIfScannerAvailable();
 }

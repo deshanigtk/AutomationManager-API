@@ -30,7 +30,7 @@ import org.wso2.security.tools.automation.manager.entity.productmanager.ProductM
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
 import org.wso2.security.tools.automation.manager.service.dynamicscanner.DynamicScannerService;
 import org.wso2.security.tools.automation.manager.service.productmanager.ProductManagerService;
-import org.wso2.security.tools.automation.manager.service.StaticScannerService;
+import org.wso2.security.tools.automation.manager.service.staticscanner.StaticScannerService;
 
 /**
  * The class {@code MainController} is the web controller which defines the routines for getting static scans,

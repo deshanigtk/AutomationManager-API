@@ -1,4 +1,5 @@
 /*
+//TODO:add year to date
  * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -24,9 +25,10 @@ import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.Dynamic
 
 /**
  * Factory class to create instances of {@link DynamicScanner} implementations
- *
+ * //TODO:remove author
  * @author Deshani Geethika
  */
+//TODO:abstract class
 public class CloudBasedDynamicScannerFactory extends AbstractDynamicScannerFactory {
 
     @Override

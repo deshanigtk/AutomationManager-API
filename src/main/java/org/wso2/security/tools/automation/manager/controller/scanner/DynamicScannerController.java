@@ -25,6 +25,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
+import org.wso2.security.tools.automation.manager.service.dynamicscanner.CloudBasedDynamicScannerService;
+import org.wso2.security.tools.automation.manager.service.dynamicscanner.ContainerBasedDynamicScannerService;
 import org.wso2.security.tools.automation.manager.service.dynamicscanner.DynamicScannerService;
 
 /**
@@ -39,10 +41,15 @@ import org.wso2.security.tools.automation.manager.service.dynamicscanner.Dynamic
 public class DynamicScannerController {
 
     private final DynamicScannerService dynamicScannerService;
+    private final ContainerBasedDynamicScannerService containerBasedDynamicScannerService;
+    private final CloudBasedDynamicScannerService cloudBasedDynamicScannerService;
 
     @Autowired
-    public DynamicScannerController(DynamicScannerService dynamicScannerService) {
+    public DynamicScannerController(DynamicScannerService dynamicScannerService, ContainerBasedDynamicScannerService
+            containerBasedDynamicScannerService, CloudBasedDynamicScannerService cloudBasedDynamicScannerService) {
         this.dynamicScannerService = dynamicScannerService;
+        this.containerBasedDynamicScannerService = containerBasedDynamicScannerService;
+        this.cloudBasedDynamicScannerService = cloudBasedDynamicScannerService;
     }
 
     /**
@@ -96,6 +103,6 @@ public class DynamicScannerController {
     @ApiOperation(value = "Stop a running container")
     public @ResponseBody
     void kill(@RequestParam String containerId) {
-        dynamicScannerService.kill(containerId);
+        containerBasedDynamicScannerService.kill(containerId);
     }
 }

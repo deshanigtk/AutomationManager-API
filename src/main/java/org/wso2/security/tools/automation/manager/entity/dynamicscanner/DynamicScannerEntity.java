@@ -18,6 +18,8 @@
 
 package org.wso2.security.tools.automation.manager.entity.dynamicscanner;
 
+import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -49,6 +51,10 @@ public abstract class DynamicScannerEntity {
     protected boolean reportSent;
     protected String reportSentTime;
     protected String message;
+
+
+    @OneToOne(mappedBy = "dynamicScannerEntity")
+    protected ProductManagerEntity productManagerEntity;
 
     public String getUserId() {
         return userId;

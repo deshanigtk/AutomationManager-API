@@ -58,9 +58,9 @@ public class HttpRequestHandler {
         try {
             return httpClient.execute(httpGetRequest);
         } catch (IOException e) {
-            throw new AutomationManagerException("Error occurred while sending the GET request to host: " +
-                    request.getHost() + "at port: " + request.getPort(), e);
-        }
+//            throw new AutomationManagerException("Error occurred while sending the GET request to host: " +
+//                    request.getHost() + "at port: " + request.getPort(), e);
+        }return null;
     }
 
     /**
@@ -83,8 +83,9 @@ public class HttpRequestHandler {
             }
             return httpClient.execute(httpPostRequest);
         } catch (IOException e) {
-            throw new AutomationManagerException("Error occurred while sending the POST request to host: " +
-                    request.getHost() + "at port: " + request.getPort(), e);
+//            throw new AutomationManagerException("Error occurred while sending the POST request to host: " +
+//                    request.getHost() + "at port: " + request.getPort(), e);
+            return null;
         }
     }
 
@@ -125,10 +126,10 @@ public class HttpRequestHandler {
             uploadFile.setEntity(multipart);
             return httpClient.execute(uploadFile);
         } catch (IOException e) {
-            throw new AutomationManagerException("Error occurred while sending the multipart request to host: " +
-                    request.getHost() + "at port: " + request.getPort(), e);
+//            throw new AutomationManagerException("Error occurred while sending the multipart request to host: " +
+//                    request.getHost() + "at port: " + request.getPort(), e);
 
-        }
+        }return null;
     }
 
     /**
@@ -146,8 +147,8 @@ public class HttpRequestHandler {
             }
             return result.toString();
         } catch (IOException e) {
-            throw new AutomationManagerException("Error occurred while reading the response to file", e);
-        }
+//            throw new AutomationManagerException("Error occurred while reading the response to file", e);
+        }return null;
     }
 
     /**
@@ -173,7 +174,7 @@ public class HttpRequestHandler {
 
             }
         } catch (IOException e) {
-            throw new AutomationManagerException("Error occurred while writing response to file", e);
+//            throw new AutomationManagerException("Error occurred while writing response to file", e);
         }
         return false;
     }

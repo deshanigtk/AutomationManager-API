@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wso2.security.tools.automation.manager.service.StaticScannerService;
+import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
+import org.wso2.security.tools.automation.manager.service.staticscanner.ContainerBasedStaticScannerService;
+import org.wso2.security.tools.automation.manager.service.staticscanner.StaticScannerService;
 
 /**
  * The main contract of the {@code StaticScannerNotificationController} class is to provide an API to be called by
@@ -44,10 +46,13 @@ import org.wso2.security.tools.automation.manager.service.StaticScannerService;
 public class StaticScannerNotificationController {
 
     private final StaticScannerService staticScannerService;
+    private final ContainerBasedStaticScannerService containerBasedStaticScannerService;
 
     @Autowired
-    public StaticScannerNotificationController(StaticScannerService staticScannerService) {
+    public StaticScannerNotificationController(StaticScannerService staticScannerService,
+                                               ContainerBasedStaticScannerService containerBasedStaticScannerService) {
         this.staticScannerService = staticScannerService;
+        this.containerBasedStaticScannerService = containerBasedStaticScannerService;
     }
 
     /**
@@ -60,7 +65,7 @@ public class StaticScannerNotificationController {
     @ApiOperation(value = "Update that a zip file is extracted to the container")
     public @ResponseBody
     void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status) {
-        staticScannerService.updateFileExtracted(containerId, status);
+        containerBasedStaticScannerService.updateFileExtracted(containerId, status);
     }
 
     /**
@@ -73,7 +78,7 @@ public class StaticScannerNotificationController {
     @ApiOperation(value = "Update that a product is cloned to the container")
     public @ResponseBody
     void updateProductCloned(@RequestParam String containerId, @RequestParam boolean status) {
-        staticScannerService.updateProductCloned(containerId, status);
+        containerBasedStaticScannerService.updateProductCloned(containerId, status);
     }
 
     /**
@@ -86,7 +91,7 @@ public class StaticScannerNotificationController {
     public @ResponseBody
     @ApiOperation(value = "Update the status of the scan")
     void updateScanStatus(@RequestParam String containerId, @RequestParam String status) {
-        staticScannerService.updateScanStatus(containerId, status);
+        containerBasedStaticScannerService.updateScanStatus(containerId, status);
     }
 
     /**
@@ -99,6 +104,10 @@ public class StaticScannerNotificationController {
     public @ResponseBody
     @ApiOperation(value = "Update that the scan report is ready")
     void updateReportReady(@RequestParam String containerId, @RequestParam boolean status) {
-        staticScannerService.updateReportReady(containerId, status);
+        try {
+            containerBasedStaticScannerService.updateReportReady(containerId, status);
+        } catch (AutomationManagerException e) {
+            e.printStackTrace();
+        }
     }
 }

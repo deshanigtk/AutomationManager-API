@@ -19,6 +19,7 @@ package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.factor
 
 public class DynamicScannerFactoryProducer {
     public static AbstractDynamicScannerFactory getDynamicScannerFactory(String factoryType) {
+        //TODO:pass as const
         if ("cloud".equalsIgnoreCase(factoryType)) {
             return new CloudBasedDynamicScannerFactory();
         }

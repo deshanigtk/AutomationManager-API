@@ -17,5 +17,8 @@
 */
 package org.wso2.security.tools.automation.manager.service.staticscanner;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class CloudBasedStaticScannerService {
 }

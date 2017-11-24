@@ -24,7 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.tools.automation.manager.service.StaticScannerService;
+import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
+import org.wso2.security.tools.automation.manager.service.staticscanner.CloudBasedStaticScannerService;
+import org.wso2.security.tools.automation.manager.service.staticscanner.ContainerBasedStaticScannerService;
+import org.wso2.security.tools.automation.manager.service.staticscanner.StaticScannerService;
 
 /**
  * The class {@code StaticScannerController} is the web controller which defines the routines for initiating static
@@ -38,10 +41,15 @@ import org.wso2.security.tools.automation.manager.service.StaticScannerService;
 public class StaticScannerController {
 
     private final StaticScannerService staticScannerService;
+    private final CloudBasedStaticScannerService cloudBasedStaticScannerService;
+    private final ContainerBasedStaticScannerService containerBasedStaticScannerService;
 
     @Autowired
-    public StaticScannerController(StaticScannerService staticScannerService) {
+    public StaticScannerController(StaticScannerService staticScannerService, CloudBasedStaticScannerService
+            cloudBasedStaticScannerService, ContainerBasedStaticScannerService containerBasedStaticScannerService) {
         this.staticScannerService = staticScannerService;
+        this.cloudBasedStaticScannerService = cloudBasedStaticScannerService;
+        this.containerBasedStaticScannerService = containerBasedStaticScannerService;
     }
 
     /**
@@ -76,8 +84,12 @@ public class StaticScannerController {
                    @RequestParam(required = false) String gitUrl,
                    @RequestParam(required = false) String gitUsername,
                    @RequestParam(required = false) String gitPassword) {
-        staticScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload,
-                zipFile, gitUrl, gitUsername, gitPassword);
+        try {
+            staticScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload,
+                    zipFile, gitUrl, gitUsername, gitPassword);
+        } catch (AutomationManagerException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -89,6 +101,6 @@ public class StaticScannerController {
     @ApiOperation(value = "Stop a running container")
     public @ResponseBody
     void kill(@RequestParam String containerId) {
-        staticScannerService.kill(containerId);
+        containerBasedStaticScannerService.kill(containerId);
     }
 }

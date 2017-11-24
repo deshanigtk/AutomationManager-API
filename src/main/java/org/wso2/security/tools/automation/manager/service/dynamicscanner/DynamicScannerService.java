@@ -111,10 +111,10 @@ public class DynamicScannerService {
         if (productManager == null) {
             throw new AutomationManagerException("Error occurred while creating product manager");
         }
-        DynamicScannerExecutor executor = new DynamicScannerExecutor(productManager, dynamicScanner);
-        new Thread(executor).start();
+        DynamicScannerExecutor dynamicScannerExecutor = new DynamicScannerExecutor(productManager, dynamicScanner);
+        new Thread(dynamicScannerExecutor).start();
     }
-
+//TODO:separate
     private void uploadFilesToTempDirectory(String fileUploadLocation, boolean isFileUpload, MultipartFile zipFile,
                                             MultipartFile urlListFile) throws AutomationManagerException {
         File tempDirectory = new File(ScannerProperties.getTempFolderPath());

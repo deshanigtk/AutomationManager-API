@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.wso2.security.tools.automation.manager.service.productmanager.ContainerBasedProductManagerService;
 import org.wso2.security.tools.automation.manager.service.productmanager.ProductManagerService;
 
 /**
@@ -42,10 +43,13 @@ import org.wso2.security.tools.automation.manager.service.productmanager.Product
         "notify the status of the container such as file uploaded, file extracted and server started")
 public class ProductManagerNotificationController {
     private final ProductManagerService productManagerService;
+    private final ContainerBasedProductManagerService containerBasedProductManagerService;
 
     @Autowired
-    public ProductManagerNotificationController(ProductManagerService productManagerService) {
+    public ProductManagerNotificationController(ProductManagerService productManagerService,
+                                                ContainerBasedProductManagerService containerBasedProductManagerService) {
         this.productManagerService = productManagerService;
+        this.containerBasedProductManagerService = containerBasedProductManagerService;
     }
 
     /**
@@ -58,7 +62,7 @@ public class ProductManagerNotificationController {
     @ApiOperation(value = "Update that a zip file is uploaded to the container")
     public @ResponseBody
     void updateFileUploaded(@RequestParam String containerId, @RequestParam boolean status) {
-        productManagerService.updateFileUploaded(containerId, status);
+        containerBasedProductManagerService.updateFileUploaded(containerId, status);
     }
 
     /**
@@ -71,7 +75,7 @@ public class ProductManagerNotificationController {
     @ApiOperation(value = "Update that a zip file is extracted to the container")
     public @ResponseBody
     void updateFileExtracted(@RequestParam String containerId, @RequestParam boolean status) {
-        productManagerService.updateFileExtracted(containerId, status);
+        containerBasedProductManagerService.updateFileExtracted(containerId, status);
     }
 
     /**
@@ -84,6 +88,6 @@ public class ProductManagerNotificationController {
     @ApiOperation(value = "Update that a server is started inside the container")
     public @ResponseBody
     void updateServerStarted(@RequestParam String containerId, @RequestParam boolean status) {
-        productManagerService.updateServerStarted(containerId, status);
+        containerBasedProductManagerService.updateServerStarted(containerId, status);
     }
 }

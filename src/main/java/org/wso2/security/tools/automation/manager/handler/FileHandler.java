@@ -47,7 +47,8 @@ public class FileHandler {
      * @param fileUploadPath File upload path
      * @return Boolean to indicate the operation succeeded
      */
-    //TODO:check for a util method
+    //TODO:check for a util
+    //TODO:throw exception
     public static boolean uploadFile(MultipartFile file, String fileUploadPath) {
         try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fileUploadPath)))) {
             byte[] bytes = file.getBytes();

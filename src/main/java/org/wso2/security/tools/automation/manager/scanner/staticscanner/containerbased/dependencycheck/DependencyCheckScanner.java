@@ -29,7 +29,7 @@ import org.wso2.security.tools.automation.manager.entity.staticscanner.container
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.ContainerBasedStaticScanner;
-import org.wso2.security.tools.automation.manager.service.StaticScannerService;
+import org.wso2.security.tools.automation.manager.service.staticscanner.StaticScannerService;
 
 import java.io.File;
 import java.net.URI;

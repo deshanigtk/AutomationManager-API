@@ -40,18 +40,21 @@ public class DynamicScannerExecutor implements Runnable {
 
     @Override
     public void run() {
+        //TODO:meaning and why these are needed
         String productHostRelativeToScanner;
-        String productHostRelativeToThis;
+        String productHostRelativeToAutomationManager;
         int productPort;
 
         DynamicScannerEntity dynamicScannerEntity = dynamicScanner.startScanner();
+        //TODO:change to call internal private mthds
         ProductManagerEntity productManagerEntity = productManager.startProductManager();
+        //TODO:add if
         ServerHandler.hostAvailabilityCheck(productManager.getHost(), productManager.getPort(), 12 * 5);
         if (productManager.startServer()) {
             productHostRelativeToScanner = productManager.getHost();
-            productHostRelativeToThis = productManager.getHost();
+            productHostRelativeToAutomationManager = productManager.getHost();
             productPort = ScannerProperties.getProductManagerProductPort();
-            dynamicScanner.startScan(productHostRelativeToScanner, productHostRelativeToThis, productPort);
+            dynamicScanner.startScan(productHostRelativeToScanner, productHostRelativeToAutomationManager, productPort);
         }
     }
 }

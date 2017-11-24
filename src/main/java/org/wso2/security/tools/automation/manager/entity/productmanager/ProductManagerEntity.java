@@ -17,6 +17,8 @@
 */
 package org.wso2.security.tools.automation.manager.entity.productmanager;
 
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -42,10 +44,13 @@ public abstract class ProductManagerEntity {
     private String wumLevel;
     private String createdTime;
     private String status;
-
     private boolean scanFinished;
     private String scanFinishedTime;
     private String message;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "relatedDynamicScannerId", insertable = false, updatable = false)
+    private DynamicScannerEntity dynamicScannerEntity;
 
     public int getId() {
         return id;

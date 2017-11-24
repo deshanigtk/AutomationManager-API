@@ -51,7 +51,6 @@ public class ServerHandler {
                     Thread.sleep(5000);
                     i++;
                 } catch (InterruptedException e1) {
-                    throw new AutomationManagerException("Interrupt error occurred", e);
                 }
             }
         }
