@@ -17,6 +17,8 @@
 */
 package org.wso2.security.tools.automation.manager.service.staticscanner;
 
+import com.spotify.docker.client.exceptions.DockerCertificateException;
+import com.spotify.docker.client.exceptions.DockerException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
@@ -31,7 +33,10 @@ import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.handler.MailHandler;
 import org.wso2.security.tools.automation.manager.repository.staticscanner.ContainerBasedStaticScannerRepository;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -44,7 +49,8 @@ public class ContainerBasedStaticScannerService {
     private final MailHandler mailHandler;
 
     @Autowired
-    public ContainerBasedStaticScannerService(ContainerBasedStaticScannerRepository staticScannerRepository, MailHandler mailHandler) {
+    public ContainerBasedStaticScannerService(ContainerBasedStaticScannerRepository staticScannerRepository,
+                                              MailHandler mailHandler) {
         this.staticScannerRepository = staticScannerRepository;
         this.mailHandler = mailHandler;
     }
@@ -68,11 +74,24 @@ public class ContainerBasedStaticScannerService {
     public ContainerBasedStaticScannerEntity save(ContainerBasedStaticScannerEntity staticScanner) {
         return staticScannerRepository.save(staticScanner);
     }
-    public void kill(String containerId) {
+
+    public void kill(String containerId) throws AutomationManagerException {
+        try {
+            ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
+            DockerHandler.killContainer(containerId);
+            DockerHandler.removeContainer(containerId);
+            staticScanner.setStatus(ScannerProperties.getStatusRemoved());
+            save(staticScanner);
+        } catch (InterruptedException | DockerCertificateException | DockerException e) {
+            throw new AutomationManagerException("Error occurred while removing product manager container", e);
+        }
+    }
+
+    public void updateFileUploaded(String containerId, boolean status) {
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
-        DockerHandler.killContainer(containerId);
-        DockerHandler.removeContainer(containerId);
-        staticScanner.setStatus(ScannerProperties.getStatusRemoved());
+        staticScanner.setFileUploaded(status);
+        staticScanner.setFileUploadedTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setProductAvailable(true);
         save(staticScanner);
     }
 
@@ -110,29 +129,26 @@ public class ContainerBasedStaticScannerService {
 
     public void getReportAndMail(String containerId) throws AutomationManagerException {
         try {
-            ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
-            if (staticScanner != null) {
-                URI uri = (new URIBuilder()).setHost(staticScanner.getIpAddress())
-                        .setPort(staticScanner.getHostPort()).setScheme("http")
-                        .setPath(ScannerProperties.getStaticScannerGetReport())
+            ContainerBasedStaticScannerEntity staticScannerEntity = findOneByContainerId(containerId);
+            if (staticScannerEntity != null) {
+                URI uri = (new URIBuilder()).setHost(staticScannerEntity.getIpAddress())
+                        .setPort(staticScannerEntity.getHostPort()).setScheme("http")
+                        .setPath(staticScannerEntity.getContextPath() + ScannerProperties.getStaticScannerGetReport())
                         .build();
                 HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
 
-                if (response != null) {
-                    if (response.getEntity() != null) {
-                        String subject = "Static Scan Report: " + staticScanner.getCreatedTime();
-                        if (mailHandler.sendMail(staticScanner.getUserId(), subject, "This is auto generated message",
-                                response.getEntity().getContent(), "Reports.zip")) {
-                            staticScanner.setReportSent(true);
-                            staticScanner.setReportSentTime(new SimpleDateFormat(ScannerProperties.getDatePattern())
-                                    .format(new Date()));
-                            kill(containerId);
-                        }
-                    }
+                if (response != null && response.getEntity() != null) {
+                    String subject = "Static Scan Report: " + staticScannerEntity.getCreatedTime();
+                    mailHandler.sendMail(staticScannerEntity.getUserId(), subject, "This is auto generated message",
+                            response.getEntity().getContent(), "Reports.zip");
+                    staticScannerEntity.setReportSent(true);
+                    staticScannerEntity.setReportSentTime(new SimpleDateFormat(ScannerProperties.getDatePattern())
+                            .format(new Date()));
+                    kill(containerId);
                 }
             }
-        } catch (Exception e) {
-            throw new AutomationManagerException("Error occurred while getting static scanner report and mail");
+        } catch (IOException | URISyntaxException | MessagingException e) {
+            throw new AutomationManagerException("Error occurred while getting static scanner report and mail", e);
         }
     }
 }

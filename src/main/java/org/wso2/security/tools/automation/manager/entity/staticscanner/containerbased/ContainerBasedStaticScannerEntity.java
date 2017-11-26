@@ -37,9 +37,13 @@ public class ContainerBasedStaticScannerEntity extends StaticScannerEntity {
     @Column(unique = true)
     private String containerId;
     private String ipAddress;
+    private String dockerIpAddress;
     private int containerPort;
     private int hostPort;
+    private String contextPath;
     private boolean isProductAvailable;
+    private boolean fileUploaded;
+    private String fileUploadedTime;
     private boolean fileExtracted;
     private String fileExtractedTime;
     private boolean productCloned;
@@ -67,6 +71,14 @@ public class ContainerBasedStaticScannerEntity extends StaticScannerEntity {
         this.ipAddress = ipAddress;
     }
 
+    public String getDockerIpAddress() {
+        return dockerIpAddress;
+    }
+
+    public void setDockerIpAddress(String dockerIpAddress) {
+        this.dockerIpAddress = dockerIpAddress;
+    }
+
     public int getContainerPort() {
         return containerPort;
     }
@@ -83,12 +95,36 @@ public class ContainerBasedStaticScannerEntity extends StaticScannerEntity {
         this.hostPort = hostPort;
     }
 
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    public void setContextPath(String contextPath) {
+        this.contextPath = contextPath;
+    }
+
     public boolean isProductAvailable() {
         return isProductAvailable;
     }
 
     public void setProductAvailable(boolean productAvailable) {
         this.isProductAvailable = productAvailable;
+    }
+
+    public boolean isFileUploaded() {
+        return fileUploaded;
+    }
+
+    public void setFileUploaded(boolean fileUploaded) {
+        this.fileUploaded = fileUploaded;
+    }
+
+    public String getFileUploadedTime() {
+        return fileUploadedTime;
+    }
+
+    public void setFileUploadedTime(String fileUploadedTime) {
+        this.fileUploadedTime = fileUploadedTime;
     }
 
     public boolean isFileExtracted() {

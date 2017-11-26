@@ -38,7 +38,7 @@ import org.wso2.security.tools.automation.manager.service.productmanager.Product
  * @author Deshani Geethika
  */
 @Controller
-@RequestMapping("productManager/notify")
+@RequestMapping("dynamicScanner/notify")
 @Api(value = "productManagerNotifications", description = "Product Manager Docker container will use this API to " +
         "notify the status of the container such as file uploaded, file extracted and server started")
 public class ProductManagerNotificationController {

@@ -17,6 +17,8 @@
 */
 package org.wso2.security.tools.automation.manager.service.productmanager;
 
+import com.spotify.docker.client.exceptions.DockerCertificateException;
+import com.spotify.docker.client.exceptions.DockerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.productmanager.containerbased
         .ContainerBasedProductManagerEntity;
+import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.repository.productmanager.ContainerBasedProductManagerRepository;
 
@@ -85,12 +88,17 @@ public class ContainerBasedProductManagerService {
         save(productManagerEntity);
     }
 
-    public void kill(String containerId) {
-        ContainerBasedProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
-        DockerHandler.killContainer(containerId);
-        DockerHandler.removeContainer(containerId);
-        productManagerEntity.setStatus(ScannerProperties.getStatusRemoved());
-        save(productManagerEntity);
+    public void kill(String containerId) throws AutomationManagerException {
+        try {
+            ContainerBasedProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
+            DockerHandler.killContainer(containerId);
+            DockerHandler.removeContainer(containerId);
+            productManagerEntity.setStatus(ScannerProperties.getStatusRemoved());
+            save(productManagerEntity);
+        } catch (InterruptedException | DockerCertificateException | DockerException e) {
+            throw new AutomationManagerException("Error occurred while removing product manager container");
+
+        }
     }
 
 }

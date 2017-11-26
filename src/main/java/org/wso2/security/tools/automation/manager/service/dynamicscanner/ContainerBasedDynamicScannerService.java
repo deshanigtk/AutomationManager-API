@@ -17,6 +17,8 @@
 */
 package org.wso2.security.tools.automation.manager.service.dynamicscanner;
 
+import com.spotify.docker.client.exceptions.DockerCertificateException;
+import com.spotify.docker.client.exceptions.DockerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
@@ -65,12 +67,16 @@ public class ContainerBasedDynamicScannerService {
         return dynamicScannerRepository.save(dynamicScanner);
     }
 
-    public void kill(String containerId) {
-        ContainerBasedDynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
-        DockerHandler.killContainer(containerId);
-        DockerHandler.removeContainer(containerId);
-        dynamicScanner.setStatus(ScannerProperties.getStatusRemoved());
-        save(dynamicScanner);
+    public void kill(String containerId) throws AutomationManagerException {
+        try {
+            ContainerBasedDynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
+            DockerHandler.killContainer(containerId);
+            DockerHandler.removeContainer(containerId);
+            dynamicScanner.setStatus(ScannerProperties.getStatusRemoved());
+            save(dynamicScanner);
+        } catch (InterruptedException | DockerCertificateException | DockerException e) {
+            throw new AutomationManagerException("Error occurred while removing dynamic scanner container");
+        }
     }
 
     public void updateScanStatus(String containerId, String status, int progress) {
@@ -100,16 +106,14 @@ public class ContainerBasedDynamicScannerService {
         try {
             ContainerBasedDynamicScannerEntity dynamicScannerEntity = findOneByContainerId(containerId);
             String subject = "Dynamic Scan Report: ";
-            if (mailHandler.sendMail(dynamicScannerEntity.getUserId(), subject, "This is auto generated message",
-                    new FileInputStream(new File(reportFilePath)), "ZapReport.html")) {
-                dynamicScannerEntity.setReportSent(true);
-                dynamicScannerEntity.setReportSentTime(new SimpleDateFormat(ScannerProperties.getDatePattern())
-                        .format(new Date()));
-                kill(containerId);
-            }
+            mailHandler.sendMail(dynamicScannerEntity.getUserId(), subject, "This is auto generated message",
+                    new FileInputStream(new File(reportFilePath)), "ZapReport.html");
+            dynamicScannerEntity.setReportSent(true);
+            dynamicScannerEntity.setReportSentTime(new SimpleDateFormat(ScannerProperties.getDatePattern())
+                    .format(new Date()));
+            kill(containerId);
         } catch (Exception e) {
-            throw new AutomationManagerException("Error occurred while getting dynamic scanner " +
-                    "report and mail");
+            throw new AutomationManagerException("Error occurred while getting dynamic scanner report and mail");
         }
     }
 }

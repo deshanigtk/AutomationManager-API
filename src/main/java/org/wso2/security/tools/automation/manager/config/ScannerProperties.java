@@ -39,6 +39,8 @@ public class ScannerProperties {
     private static String staticScannerIsReady;
     private static String staticScannerStartScan;
     private static String staticScannerGetReport;
+    private static String findSecBugsScannerContextPath;
+    private static String dependencyCheckScannerContextPath;
 
     private static String productManagerIsReady;
     private static String productManagerStartServer;
@@ -62,7 +64,6 @@ public class ScannerProperties {
     private static String statusCompleted;
     private static String statusFailed;
     private static String statusRemoved;
-
     private static String datePattern;
 
     static {
@@ -77,6 +78,8 @@ public class ScannerProperties {
             staticScannerIsReady = properties.getProperty("scanner.static.is-ready");
             staticScannerStartScan = properties.getProperty("scanner.static.start-scan");
             staticScannerGetReport = properties.getProperty("scanner.static.get-report");
+            dependencyCheckScannerContextPath = properties.getProperty("scanner.static.dependencycheck.context-path");
+            findSecBugsScannerContextPath = properties.getProperty("scanner.static.findsecbugs.context-path");
             productManagerIsReady = properties.getProperty("product.manager.is-ready");
             productManagerStartServer = properties.getProperty("product.manager.start-server");
             productManagerProductPort = Integer.parseInt(properties.getProperty("product.manager.product-port"));
@@ -97,14 +100,17 @@ public class ScannerProperties {
             statusRunning = properties.getProperty("status.running");
             statusCompleted = properties.getProperty("status.completed");
             statusFailed = properties.getProperty("status.failed");
-            statusRemoved=properties.getProperty("status.removed");
+            statusRemoved = properties.getProperty("status.removed");
             datePattern = properties.getProperty("date.pattern");
 
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+
         }
     }
-//TODO:add method comments
+
+    //TODO:add method comments
     public static String getFindsecbugsScannerDockerImage() {
         return findsecbugsScannerDockerImage;
     }
@@ -131,6 +137,14 @@ public class ScannerProperties {
 
     public static String getStaticScannerGetReport() {
         return staticScannerGetReport;
+    }
+
+    public static String getDependencyCheckScannerContextPath() {
+        return dependencyCheckScannerContextPath;
+    }
+
+    public static String getFindSecBugsScannerContextPath() {
+        return findSecBugsScannerContextPath;
     }
 
     public static String getProductManagerIsReady() {

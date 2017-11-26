@@ -19,6 +19,7 @@
 package org.wso2.security.tools.automation.manager.handler;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +35,6 @@ import java.io.IOException;
  * Therefore, the file cannot be sent to the container. So that, instead of using Tomcat temp directory, a custom
  * location is used to upload a file
  *
- * @author Deshani Geethika
  */
 @SuppressWarnings("unused")
 public class FileHandler {
@@ -45,19 +45,10 @@ public class FileHandler {
      *
      * @param file           File to be uploaded
      * @param fileUploadPath File upload path
-     * @return Boolean to indicate the operation succeeded
+     * @throws IOException in case of a problem or the connection was aborted
      */
-    //TODO:check for a util
-    //TODO:throw exception
-    public static boolean uploadFile(MultipartFile file, String fileUploadPath) {
-        try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fileUploadPath)))) {
-            byte[] bytes = file.getBytes();
-            stream.write(bytes);
-            return true;
-        } catch (IOException e) {
-            LOGGER.error("File is not uploaded" + e.toString());
-        }
-        return false;
+    public static void uploadFile(MultipartFile file, String fileUploadPath) throws IOException {
+        FileUtils.copyInputStreamToFile(file.getInputStream(), new File(fileUploadPath));
     }
 
     /**
@@ -67,17 +58,11 @@ public class FileHandler {
      * @return Boolean to indicate the file is deleted
      */
     public static boolean deleteUploadedFile(String filePath) {
-        File file = new File(filePath);
+        boolean fileDeleted = false;
+        File file = new File(FilenameUtils.getName(filePath));
         if (file.exists()) {
-            if (file.delete()) {
-                LOGGER.info("Successfully deleted file: " + filePath);
-                return true;
-            } else {
-                LOGGER.error("Cannot delete file");
-            }
-        } else {
-            LOGGER.error("File does not exist");
+            fileDeleted = file.delete();
         }
-        return false;
+        return fileDeleted;
     }
 }

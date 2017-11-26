@@ -19,5 +19,14 @@
 package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory;
 
 public class StaticScannerFactoryProducer {
-
+    public static AbstractStaticScannerFactory getStaticScannerFactory(String factoryType) {
+        //TODO:pass as const
+        if ("cloud".equalsIgnoreCase(factoryType)) {
+            return new CloudBasedStaticScannerFactory();
+        }
+        if ("container".equalsIgnoreCase(factoryType)) {
+            return new ContainerBasedStaticScannerFactory();
+        }
+        return null;
+    }
 }

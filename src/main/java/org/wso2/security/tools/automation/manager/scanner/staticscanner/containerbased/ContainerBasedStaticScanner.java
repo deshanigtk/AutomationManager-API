@@ -17,6 +17,7 @@
 */
 package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased;
 
+import org.wso2.security.tools.automation.manager.exception.StaticScannerException;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticScanner;
 
 public interface ContainerBasedStaticScanner extends StaticScanner {
@@ -30,5 +31,13 @@ public interface ContainerBasedStaticScanner extends StaticScanner {
 
     void init(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean
             isFileUpload, String uploadLocation, String zipFileName, String gitUrl, String gitUsername, String
-            gitPassword);
+                      gitPassword);
+
+    void saveMetaData();
+
+    void createContainer() throws StaticScannerException;
+
+    void startContainer() throws StaticScannerException;
+
+    boolean hostAvailabilityCheck() throws StaticScannerException;
 }

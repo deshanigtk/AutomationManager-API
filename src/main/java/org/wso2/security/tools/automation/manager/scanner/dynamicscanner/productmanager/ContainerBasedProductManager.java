@@ -17,6 +17,8 @@
 */
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.productmanager;
 
+import com.spotify.docker.client.exceptions.DockerCertificateException;
+import com.spotify.docker.client.exceptions.DockerException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.utils.URIBuilder;
@@ -24,15 +26,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.security.tools.automation.manager.config.ApplicationContextUtils;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.entity.productmanager.containerbased
         .ContainerBasedProductManagerEntity;
+import org.wso2.security.tools.automation.manager.exception.ProductManagerException;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
 import org.wso2.security.tools.automation.manager.handler.HttpRequestHandler;
 import org.wso2.security.tools.automation.manager.handler.ServerHandler;
 import org.wso2.security.tools.automation.manager.service.productmanager.ProductManagerService;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
@@ -41,26 +44,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ContainerBasedProductManager implements ProductManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContainerBasedProductManager.class);
     private String userId;
     private String testName;
     private String ipAddress;
     private String productName;
     private String wumLevel;
     private File zipFile;
-    private int relatedDynamicScannerId;
     private ProductManagerService productManagerService;
     private ContainerBasedProductManagerEntity productManagerEntity;
 
-    private static int calculateWso2ServerPort(int id) {
+    //TODO:add a comment
+    private static int calculateContainerPort(int id) {
         if (20000 + id > 40000) {
             id = 1;
         }
         return (20000 + id) % 40000;
     }
 
+    //TODO: add from a DTO
     public void init(String userId, String testName, String ipAddress, String productName, String wumLevel,
-                     String fileUploadLocation, String zipFileName, int relatedDynamicScannerId) {
+                     String fileUploadLocation, String zipFileName) {
 
         this.userId = userId;
         this.testName = testName;
@@ -70,15 +74,16 @@ public class ContainerBasedProductManager implements ProductManager {
         if (zipFileName != null) {
             this.zipFile = new File(fileUploadLocation + File.separator + zipFileName);
         }
-        this.relatedDynamicScannerId = relatedDynamicScannerId;
-        createAndSaveProductManager();
     }
 
-    private void createAndSaveProductManager() {
+    private void createAndSaveProductManager(int relatedDynamicScannerId) {
         productManagerService = ApplicationContextUtils.getApplicationContext().getBean(ProductManagerService.class);
         productManagerEntity = new ContainerBasedProductManagerEntity();
         productManagerEntity.setUserId(userId);
         productManagerEntity.setTestName(testName);
+        LOGGER.info("Before setting related ds id");
+        productManagerEntity.setRelatedDynamicScannerId(relatedDynamicScannerId);
+        LOGGER.info("After setting related ds id");
         productManagerEntity.setIpAddress(ipAddress);
         productManagerEntity.setProductName(productName);
         productManagerEntity.setWumLevel(wumLevel);
@@ -87,62 +92,69 @@ public class ContainerBasedProductManager implements ProductManager {
     }
 
     @Override
-    public ProductManagerEntity startProductManager() {
-        int port = calculateWso2ServerPort(productManagerEntity.getId());
-        String containerId = DockerHandler.createContainer(ScannerProperties.getProductManagerDockerImage(), ipAddress,
-                String.valueOf(port), String.valueOf(port), null, new String[]{"port=" + port});
+    public boolean startProductManager(int relatedDynamicScannerId) throws ProductManagerException {
+        createAndSaveProductManager(relatedDynamicScannerId);
+        boolean productManagerStarted = false;
+        try {
+            int port = calculateContainerPort(productManagerEntity.getId());
+            String containerId = DockerHandler.createContainer(ScannerProperties.getProductManagerDockerImage(),
+                    ipAddress, String.valueOf(port), String.valueOf(port), null, new String[]{"port=" + port});
 
-        if (containerId != null) {
-            String createdTime = new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
-            productManagerEntity.setContainerId(containerId);
-            productManagerEntity.setDockerIpAddress(ipAddress);
-            productManagerEntity.setContainerPort(port);
-            productManagerEntity.setHostPort(port);
-            productManagerEntity.setStatus(ScannerProperties.getStatusCreated());
-            productManagerEntity.setCreatedTime(createdTime);
-            productManagerEntity.setRelatedDynamicScannerId(relatedDynamicScannerId);
-            productManagerService.save(productManagerEntity);
-
-            if (DockerHandler.startContainer(containerId)) {
-                productManagerEntity.setStatus(ScannerProperties.getStatusRunning());
-                productManagerEntity.setDockerIpAddress(DockerHandler.inspectContainer(containerId).networkSettings()
-                        .ipAddress());
+            if (containerId != null) {
+                String createdTime = new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
+                productManagerEntity.setContainerId(containerId);
+                productManagerEntity.setDockerIpAddress(ipAddress);
+                productManagerEntity.setContainerPort(port);
+                productManagerEntity.setHostPort(port);
+                productManagerEntity.setStatus(ScannerProperties.getStatusCreated());
+                productManagerEntity.setCreatedTime(createdTime);
                 productManagerService.save(productManagerEntity);
-                return productManagerEntity;
+
+                if (DockerHandler.startContainer(containerId)) {
+                    productManagerEntity.setStatus(ScannerProperties.getStatusRunning());
+                    productManagerEntity.setDockerIpAddress(DockerHandler.inspectContainer(containerId)
+                            .networkSettings().ipAddress());
+                    productManagerService.save(productManagerEntity);
+                    productManagerStarted = ServerHandler.hostAvailabilityCheck(productManagerEntity
+                                    .getDockerIpAddress(),
+                            productManagerEntity.getHostPort(), 12 * 5);
+                }
             }
+        } catch (InterruptedException | DockerCertificateException | DockerException e) {
+            throw new ProductManagerException("Error occurred while starting Product Manager", e);
         }
-        return null;
+        return productManagerStarted;
     }
 
     @Override
-    public boolean startServer() {
+    public boolean startServer() throws ProductManagerException {
+        boolean serverStarted = false;
         try {
-            if (zipFile != null) {
-                URI uri = (new URIBuilder()).setHost(productManagerEntity.getDockerIpAddress())
-                        .setPort(productManagerEntity.getHostPort()).setScheme("http")
-                        .setPath(ScannerProperties.getProductManagerStartServer())
-                        .addParameter("automationManagerHost", ScannerProperties.getAutomationManagerHost())
-                        .addParameter("automationManagerPort", String.valueOf(ScannerProperties
-                                .getAutomationManagerPort()))
-                        .addParameter("myContainerId", productManagerEntity.getContainerId())
-                        .build();
+            URI uri = (new URIBuilder()).setHost(productManagerEntity.getDockerIpAddress())
+                    .setPort(productManagerEntity.getHostPort()).setScheme("http")
+                    .setPath(ScannerProperties.getProductManagerStartServer())
+                    .addParameter("automationManagerHost", ScannerProperties.getAutomationManagerHost())
+                    .addParameter("automationManagerPort", String.valueOf(ScannerProperties
+                            .getAutomationManagerPort()))
+                    .addParameter("myContainerId", productManagerEntity.getContainerId())
+                    .build();
 
-                Map<String, File> files = new HashMap<>();
-                files.put("zipFile", zipFile);
+            Map<String, File> files = new HashMap<>();
+            files.put("zipFile", zipFile);
 
-                HttpResponse response = HttpRequestHandler.sendMultipartRequest(uri, files, null);
-                if (response != null) {
-                    if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                        Thread.sleep(1000 * 60);
-                        return ServerHandler.hostAvailabilityCheck(productManagerEntity.getDockerIpAddress(),
-                                ScannerProperties.getProductManagerProductPort(), 12 * 4);
-                    }
+            HttpResponse response = HttpRequestHandler.sendMultipartRequest(uri, files, null);
+            if (response != null) {
+                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    Thread.sleep(1000 * 60);
+                    serverStarted = ServerHandler.hostAvailabilityCheck(productManagerEntity.getDockerIpAddress(),
+                            ScannerProperties.getProductManagerProductPort(), 12 * 4);
                 }
+
             }
-        } catch (URISyntaxException | InterruptedException e) {
-            LOGGER.error("Error occurred while executing start wso2server command", e);
+        } catch (URISyntaxException | InterruptedException | IOException e) {
+            throw new ProductManagerException("Error occurred while starting wso2 server", e);
         }
-        return false;
+        return serverStarted;
     }
 
     @Override

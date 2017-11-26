@@ -18,7 +18,7 @@
 
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 
-import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
+import org.wso2.security.tools.automation.manager.exception.DynamicScannerException;
 
 /**
  * Dynamic scanner interface
@@ -26,9 +26,10 @@ import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicS
  * @author Deshani Geethika
  */
 public interface DynamicScanner {
-    DynamicScannerEntity startScanner();
+    void startScanner() throws DynamicScannerException;
 
-    void startScan(String productHostRelativeToScanner, String productHostRelativeToThis, int productPort);
+    void startScan(String productHostRelativeToScanner, String productHostRelativeToThis, int productPort) throws
+            DynamicScannerException;
 
     int getId();
 }

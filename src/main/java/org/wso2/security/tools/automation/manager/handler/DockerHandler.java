@@ -25,7 +25,7 @@ import com.spotify.docker.client.LogStream;
 import com.spotify.docker.client.exceptions.DockerCertificateException;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.*;
-import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,7 +38,6 @@ import java.util.List;
 /**
  * The class {@code DockerHandler} provides methods to handle Docker related operations
  *
- * @author Deshani Geethika
  * @see com.spotify.docker.client
  */
 @SuppressWarnings("unused")
@@ -63,18 +62,16 @@ public class DockerHandler {
      *
      * @param imageName Image name to pull
      * @return a boolean value to indicate the operation success
+     * @throws DockerCertificateException If docker certificate validation has failed
+     * @throws DockerException
+     * @throws InterruptedException
      */
-
-    public static boolean pullImage(String imageName) throws AutomationManagerException {
+    public static boolean pullImage(String imageName) throws DockerCertificateException, DockerException,
+            InterruptedException {
         if (!checkIfImageIsAvailable(imageName)) {
-            try {
-                getDockerClient().pull(imageName);
-                return checkIfImageIsAvailable(imageName);
-            } catch (DockerException | InterruptedException | DockerCertificateException e) {
-                throw new AutomationManagerException("Error occurred while pulling the image", e);
-            }
+            getDockerClient().pull(imageName);
         }
-        return false;
+        return checkIfImageIsAvailable(imageName);
     }
 
     /**
@@ -83,24 +80,22 @@ public class DockerHandler {
      * @param imageName Image name to be checked
      * @return a boolean to indicate the image is available
      */
-    private static boolean checkIfImageIsAvailable(String imageName) throws AutomationManagerException {
+    private static boolean checkIfImageIsAvailable(String imageName) throws DockerCertificateException,
+            DockerException, InterruptedException {
+        boolean imageAvailable = false;
         List<Image> images;
-        try {
-            images = getDockerClient().listImages();
-            for (Image image : images) {
-                ImmutableList<String> tags = image.repoTags();
-                if (tags != null) {
-                    for (String tag : tags) {
-                        if (imageName.equals(tag)) {
-                            return true;
-                        }
+        images = getDockerClient().listImages();
+        for (Image image : images) {
+            ImmutableList<String> tags = image.repoTags();
+            if (tags != null) {
+                for (String tag : tags) {
+                    if (imageName.equals(tag)) {
+                        imageAvailable = true;
                     }
                 }
             }
-            return false;
-        } catch (InterruptedException | DockerCertificateException | DockerException e) {
-            throw new AutomationManagerException("Error occurred while checking image availability", e);
         }
+        return imageAvailable;
     }
 
     /**
@@ -115,10 +110,10 @@ public class DockerHandler {
      * @return container id if the container is successfully created, or {@code null}
      */
     public static String createContainer(String imageName, String ipAddress, String containerPort, String hostPort,
-                                         List<String> commands, String[] environmentVariables) {
+                                         List<String> commands, String[] environmentVariables) throws
+            DockerCertificateException, DockerException, InterruptedException {
         String[] ports = {containerPort, hostPort};
         HashMap<String, List<PortBinding>> portBindings = new HashMap<>();
-
         for (String port : ports) {
             List<PortBinding> hostPorts = new ArrayList<>();
             hostPorts.add(PortBinding.of(ipAddress, port));
@@ -131,11 +126,7 @@ public class DockerHandler {
                 .cmd(commands)
                 .env(environmentVariables)
                 .build();
-        try {
-            return getDockerClient().createContainer(containerConfig).id();
-        } catch (DockerException | InterruptedException | DockerCertificateException e) {
-//            throw new AutomationManagerException("Error occurred while creating the container", e);
-        }return null;
+        return getDockerClient().createContainer(containerConfig).id();
     }
 
     /**
@@ -144,13 +135,10 @@ public class DockerHandler {
      * @param containerId Container id
      * @return Boolean value to indicate the container is started
      */
-    public static boolean startContainer(String containerId){
-        try {
-            getDockerClient().startContainer(containerId);
-            return "running".equals(inspectContainer(containerId).state().status());
-        } catch (DockerException | InterruptedException | DockerCertificateException e) {
-//            throw new AutomationManagerException("Error occurred while starting the container", e);
-        }return false;
+    public static boolean startContainer(String containerId) throws DockerCertificateException, DockerException,
+            InterruptedException {
+        getDockerClient().startContainer(containerId);
+        return "running".equals(inspectContainer(containerId).state().status());
     }
 
     /**
@@ -159,12 +147,9 @@ public class DockerHandler {
      * @param containerId Container id
      * @return object containing container information
      */
-    public static ContainerInfo inspectContainer(String containerId){
-        try {
-            return getDockerClient().inspectContainer(containerId);
-        } catch (DockerException | InterruptedException | DockerCertificateException e) {
-//            throw new AutomationManagerException("Error occurred while inspecting the container", e);
-        }return null;
+    public static ContainerInfo inspectContainer(String containerId) throws DockerCertificateException,
+            DockerException, InterruptedException {
+        return getDockerClient().inspectContainer(containerId);
     }
 
     /**
@@ -172,12 +157,9 @@ public class DockerHandler {
      *
      * @param containerId Container id
      */
-    public static void killContainer(String containerId) {
-        try {
-            getDockerClient().killContainer(containerId);
-        } catch (DockerException | InterruptedException | DockerCertificateException e) {
-//            throw new AutomationManagerException("Error occurred while killing the container", e);
-        }
+    public static void killContainer(String containerId) throws DockerCertificateException, DockerException,
+            InterruptedException {
+        getDockerClient().killContainer(containerId);
     }
 
     /**
@@ -185,12 +167,9 @@ public class DockerHandler {
      *
      * @param containerId Container id
      */
-    public static void removeContainer(String containerId) {
-        try {
-            getDockerClient().removeContainer(containerId);
-        } catch (DockerException | InterruptedException | DockerCertificateException e) {
-//            throw new AutomationManagerException("Error occurred while removing the container", e);
-        }
+    public static void removeContainer(String containerId) throws DockerCertificateException, DockerException,
+            InterruptedException {
+        getDockerClient().removeContainer(containerId);
     }
 
     /**
@@ -198,12 +177,9 @@ public class DockerHandler {
      *
      * @param containerId Container id
      */
-    public static void restartContainer(String containerId){
-        try {
-            getDockerClient().restartContainer(containerId);
-        } catch (DockerCertificateException | DockerException | InterruptedException e) {
-//            throw new AutomationManagerException("Error occurred while restarting the container", e);
-        }
+    public static void restartContainer(String containerId) throws DockerCertificateException, DockerException,
+            InterruptedException {
+        getDockerClient().restartContainer(containerId);
     }
 
     /**
@@ -212,15 +188,14 @@ public class DockerHandler {
      * @param container_id Container id
      * @return Logs of a container
      */
-    public static String getContainerLogs(String container_id) {
+    public static String getContainerLogs(String container_id) throws DockerCertificateException, DockerException,
+            InterruptedException {
         final String logs;
         try (LogStream stream = getDockerClient().logs(container_id, DockerClient.LogsParam.stdout(),
                 DockerClient.LogsParam.stderr())) {
             logs = stream.readFully();
             return logs;
-        } catch (InterruptedException | DockerCertificateException | DockerException e) {
-//            throw new AutomationManagerException("Error occurred while getting container logs", e);
-        }return null;
+        }
     }
 
     /**
@@ -228,12 +203,9 @@ public class DockerHandler {
      *
      * @return a list of running containers
      */
-    public static List<Container> getRunningContainersList()  {
-        try {
-            return getDockerClient().listContainers();
-        } catch (DockerException | InterruptedException | DockerCertificateException e) {
-//            throw new AutomationManagerException("Error occurred while getting running containers list", e);
-        }return null;
+    public static List<Container> getRunningContainersList() throws DockerCertificateException, DockerException,
+            InterruptedException {
+        return getDockerClient().listContainers();
     }
 
     /**
@@ -241,61 +213,50 @@ public class DockerHandler {
      *
      * @return a list of all containers
      */
-//    public static List<Container> getAllContainersList() {
-//        try {
-//            return getDockerClient().listContainers(DockerClient.ListContainersParam.allContainers());
-//        } catch (InterruptedException | DockerCertificateException | DockerException e) {
-////            throw new AutomationManagerException("Error occurred while getting containers list", e);
-//        }
-//    }
-//
-//    /**
-//     * Closes any and all underlying connections to docker, and release resources.
-//     */
-//    public static void closeDockerClient() {
-//        try {
-//            getDockerClient().close();
-//        } catch (DockerCertificateException e) {
-////            throw new AutomationManagerException("Error occurred while closing Docker client", e);
-//        }
-//    }
-//
-//    /**
-//     * Copy files from a container
-//     *
-//     * @param containerId       Container Id
-//     * @param filePathToCopy    File path of host
-//     * @param destinationFile   Destination file path of the container
-//     * @param destinationFolder Destination folder path of the container
-//     */
-//    public static void copyFilesFromContainer(String containerId, String filePathToCopy, String destinationFile,
-//                                              File destinationFolder) {
-//
-//        try (InputStream inputStream = getDockerClient().archiveContainer(containerId, filePathToCopy);
-//             FileOutputStream outputStream = new FileOutputStream(new File(destinationFolder, destinationFile))) {
-//            int read;
-//            byte[] bytes = new byte[1024];
-//
-//            while ((read = inputStream.read(bytes)) != -1) {
-//                outputStream.write(bytes, 0, read);
-//            }
-//        } catch (IOException | InterruptedException | DockerCertificateException | DockerException e) {
-////            throw new AutomationManagerException("Error occurred while copying files from the container", e);
-//        }
-//    }
-//
-//    /**
-//     * Copy files to a container
-//     *
-//     * @param inputStream Input stream to copy
-//     * @param containerId Container id
-//     * @param path        Destination path in container
-//     */
-//    public static void copyFilesToContainer(InputStream inputStream, String containerId, String path) {
-//        try {
-//            getDockerClient().copyToContainer(inputStream, containerId, path);
-//        } catch (DockerException | InterruptedException | IOException | DockerCertificateException e) {
-////            throw new AutomationManagerException("Error occurred while copying files to the container", e);
-//        }
-//    }
+    public static List<Container> getAllContainersList() throws DockerCertificateException, DockerException,
+            InterruptedException {
+        return getDockerClient().listContainers(DockerClient.ListContainersParam.allContainers());
+    }
+
+    /**
+     * Closes any and all underlying connections to docker, and release resources.
+     */
+    public static void closeDockerClient() throws DockerCertificateException {
+        getDockerClient().close();
+    }
+
+    /**
+     * Copy files from a container
+     *
+     * @param containerId       Container Id
+     * @param filePathToCopy    File path of host
+     * @param destinationFile   Destination file path of the container
+     * @param destinationFolder Destination folder path of the container
+     */
+    public static void copyFilesFromContainer(String containerId, String filePathToCopy, String destinationFile,
+                                              File destinationFolder) throws IOException, DockerCertificateException,
+            DockerException, InterruptedException {
+        try (InputStream inputStream = getDockerClient().archiveContainer(containerId, filePathToCopy);
+             FileOutputStream outputStream = new FileOutputStream(new File(destinationFolder, FilenameUtils
+                     .getName(destinationFile))
+             )) {
+            int read;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+        }
+    }
+
+    /**
+     * Copy files to a container
+     *
+     * @param inputStream Input stream to copy
+     * @param containerId Container id
+     * @param path        Destination path in container
+     */
+    public static void copyFilesToContainer(InputStream inputStream, String containerId, String path) throws
+            DockerCertificateException, InterruptedException, DockerException, IOException {
+        getDockerClient().copyToContainer(inputStream, containerId, path);
+    }
 }

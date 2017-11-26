@@ -48,7 +48,8 @@ public abstract class ProductManagerEntity {
     private String scanFinishedTime;
     private String message;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "relatedDynamicScannerId", insertable = false, updatable = false)
     private DynamicScannerEntity dynamicScannerEntity;
 

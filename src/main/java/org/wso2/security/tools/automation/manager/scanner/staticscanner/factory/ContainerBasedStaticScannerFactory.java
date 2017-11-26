@@ -19,15 +19,18 @@ package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory
 
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.cloudbased.CloudBasedStaticScanner;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.ContainerBasedStaticScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.dependencycheck
+        .DependencyCheckScanner;
+import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.findsecbugs.FindSecBugsScanner;
 
 public class ContainerBasedStaticScannerFactory extends AbstractStaticScannerFactory {
     @Override
     public ContainerBasedStaticScanner getContainerBasedStaticScanner(String type) {
         if ("dc".equalsIgnoreCase(type)) {
-
+            return new DependencyCheckScanner();
         }
         if ("fsb".equalsIgnoreCase(type)) {
-
+            return new FindSecBugsScanner();
         }
         return null;
     }

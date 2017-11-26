@@ -18,7 +18,7 @@
 
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.productmanager;
 
-import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
+import org.wso2.security.tools.automation.manager.exception.ProductManagerException;
 
 /**
  * Product manager
@@ -28,9 +28,9 @@ import org.wso2.security.tools.automation.manager.entity.productmanager.ProductM
 @SuppressWarnings("WeakerAccess")
 public interface ProductManager {
 
-    ProductManagerEntity startProductManager();
+    boolean startProductManager(int relatedDynamicScannerId) throws ProductManagerException;
 
-    boolean startServer();
+    boolean startServer() throws ProductManagerException;
 
     String getHost();
 

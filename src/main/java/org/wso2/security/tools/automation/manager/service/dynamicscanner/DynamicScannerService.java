@@ -42,6 +42,7 @@ import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.product
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.productmanager.ProductManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -79,67 +80,60 @@ public class DynamicScannerService {
     }
 
     public void startScan(String scanType, String userId, String testName, String productName, String wumLevel,
-                          boolean isFileUpload, MultipartFile zipFile, MultipartFile urlListFile, String
+                          boolean productUploadAsZipFile, MultipartFile zipFile, MultipartFile urlListFile, String
                                   wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) throws
             AutomationManagerException {
 
-        String fileUploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
-                SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
-        String urlListFileName = urlListFile.getOriginalFilename();
-        DynamicScanner dynamicScanner = null;
-        ProductManager productManager = null;
+        try {
+            String fileUploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
+                    SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
+            String urlListFileName = urlListFile.getOriginalFilename();
+            DynamicScanner dynamicScanner = null;
+            ProductManager productManager;
+            if (productUploadAsZipFile) {
+                if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
+                    throw new AutomationManagerException("Please upload a zip file");
+                }
+                uploadFileToTempDirectory(fileUploadLocation, zipFile);
+            }
+            uploadFileToTempDirectory(fileUploadLocation, urlListFile);
+            if (isCloudBasedDynamicScanner(scanType)) {
+                dynamicScanner = createAndInitCloudBasedDynamicScanner(scanType, userId, fileUploadLocation,
+                        urlListFileName, scannerHost, scannerPort);
+            } else if (isContainerBasedDynamicScanner(scanType)) {
+                dynamicScanner = createAndInitContainerBasedDynamicScanner(scanType, userId, fileUploadLocation,
+                        urlListFileName);
+            }
 
-        uploadFilesToTempDirectory(fileUploadLocation, isFileUpload, zipFile, urlListFile);
-        if (isCloudBasedDynamicScanner(scanType)) {
-            dynamicScanner = createAndInitCloudBasedDynamicScanner(scanType, userId, fileUploadLocation,
-                    urlListFileName, scannerHost, scannerPort);
-        } else if (isContainerBasedDynamicScanner(scanType)) {
-            dynamicScanner = createAndInitContainerBasedDynamicScanner(scanType, userId, fileUploadLocation,
-                    urlListFileName);
+            if (dynamicScanner == null) {
+                throw new AutomationManagerException("Error occurred while creating dynamic scanner");
+            }
+            if (productUploadAsZipFile) {
+                productManager = createAndInitContainerBasedProductManager(userId, testName, productName, wumLevel,
+                        fileUploadLocation, zipFile.getOriginalFilename());
+            } else {
+                productManager = createAndInitCloudBasedProductManager(userId, testName, productName, wumLevel,
+                        wso2ServerHost, wso2ServerPort);
+            }
+            if (productManager == null) {
+                throw new AutomationManagerException("Error occurred while creating product manager");
+            }
+            DynamicScannerExecutor dynamicScannerExecutor = new DynamicScannerExecutor(productManager, dynamicScanner);
+            new Thread(dynamicScannerExecutor).start();
+        } catch (IOException e) {
+            throw new AutomationManagerException("I/O error occurred while uploading file",e);
         }
-
-        if (dynamicScanner == null) {
-            throw new AutomationManagerException("Error occurred while creating dynamic scanner");
-        }
-        if (isFileUpload && zipFile != null) {
-            productManager = createAndInitContainerBasedProductManager(userId, testName, productName, wumLevel,
-                    fileUploadLocation, zipFile.getOriginalFilename(), dynamicScanner.getId());
-        } else if (!isFileUpload) {
-            productManager = createAndInitCloudBasedProductManager(userId, testName, productName, wumLevel,
-                    wso2ServerHost, wso2ServerPort, dynamicScanner.getId());
-        }
-        if (productManager == null) {
-            throw new AutomationManagerException("Error occurred while creating product manager");
-        }
-        DynamicScannerExecutor dynamicScannerExecutor = new DynamicScannerExecutor(productManager, dynamicScanner);
-        new Thread(dynamicScannerExecutor).start();
     }
-//TODO:separate
-    private void uploadFilesToTempDirectory(String fileUploadLocation, boolean isFileUpload, MultipartFile zipFile,
-                                            MultipartFile urlListFile) throws AutomationManagerException {
+
+    private void uploadFileToTempDirectory(String fileUploadLocation, MultipartFile file) throws IOException {
         File tempDirectory = new File(ScannerProperties.getTempFolderPath());
         File uploadDirectory = new File(fileUploadLocation);
-        if (isFileUpload) {
-            if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
-                throw new AutomationManagerException("Please upload a zip file");
-            }
-        }
+
         if (tempDirectory.exists() || tempDirectory.mkdir()) {
             if (uploadDirectory.exists() || uploadDirectory.mkdir()) {
-                String zipFileName = zipFile.getOriginalFilename();
-                String urlListFileName = urlListFile.getOriginalFilename();
-                if (isFileUpload && !FileHandler.uploadFile(zipFile, fileUploadLocation + File.separator +
-                        zipFileName)) {
-                    throw new AutomationManagerException("Cannot upload zip file");
-                }
-                if (!FileHandler.uploadFile(zipFile, fileUploadLocation + File.separator + urlListFileName)) {
-                    throw new AutomationManagerException("Cannot upload URL list file");
-                }
-            } else {
-                throw new AutomationManagerException("File upload location is not available");
+                String filename = file.getOriginalFilename();
+                FileHandler.uploadFile(file, fileUploadLocation + File.separator + filename);
             }
-        } else {
-            throw new AutomationManagerException("Temp directory is not available");
         }
     }
 
@@ -205,22 +199,19 @@ public class DynamicScannerService {
     private ContainerBasedProductManager createAndInitContainerBasedProductManager(String userId, String testName,
                                                                                    String productName, String wumLevel,
                                                                                    String fileUploadLocation, String
-                                                                                           zipFileName, int
-                                                                                           dynamicScannerId) {
+                                                                                           zipFileName) {
         ContainerBasedProductManager productManager = new ContainerBasedProductManager();
         productManager.init(userId, testName, ScannerProperties.getIpAddress(), productName, wumLevel,
-                fileUploadLocation,
-                zipFileName, dynamicScannerId);
+                fileUploadLocation, zipFileName);
         return productManager;
     }
 
     private CloudBasedProductManager createAndInitCloudBasedProductManager(String userId, String testName,
                                                                            String productName, String wumLevel,
-                                                                           String wso2serverHost, int wso2ServerPort,
-                                                                           int dynamicScannerId) {
+                                                                           String wso2serverHost, int wso2ServerPort) {
         CloudBasedProductManager productManager = new CloudBasedProductManager();
         productManager.init(userId, testName, ScannerProperties.getIpAddress(), productName, wumLevel, wso2serverHost,
-                wso2ServerPort, dynamicScannerId);
+                wso2ServerPort);
         return productManager;
     }
 

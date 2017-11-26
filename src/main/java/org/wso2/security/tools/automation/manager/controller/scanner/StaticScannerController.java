@@ -101,6 +101,10 @@ public class StaticScannerController {
     @ApiOperation(value = "Stop a running container")
     public @ResponseBody
     void kill(@RequestParam String containerId) {
-        containerBasedStaticScannerService.kill(containerId);
+        try {
+            containerBasedStaticScannerService.kill(containerId);
+        } catch (AutomationManagerException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -39,7 +39,7 @@ public class ServerHandler {
      * @param times Number of times to check
      * @return Boolean to indicate host is available
      */
-    public static boolean hostAvailabilityCheck(String host, int port, int times) {
+    public static boolean hostAvailabilityCheck(String host, int port, int times) throws InterruptedException {
         int i = 0;
         while (i < times) {
             LOGGER.info("Checking host availability...");
@@ -47,11 +47,8 @@ public class ServerHandler {
                 LOGGER.info(host + ":" + port + " is available");
                 return true;
             } catch (IOException e) {
-                try {
                     Thread.sleep(5000);
                     i++;
-                } catch (InterruptedException e1) {
-                }
             }
         }
         return false;

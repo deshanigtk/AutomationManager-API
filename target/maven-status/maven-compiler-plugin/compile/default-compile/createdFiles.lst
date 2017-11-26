@@ -1,6 +1,7 @@
 org/wso2/security/tools/automation/manager/repository/dynamicscanner/ContainerBasedDynamicScannerRepository.class
 org/wso2/security/tools/automation/manager/repository/dynamicscanner/DynamicScannerRepository.class
 org/wso2/security/tools/automation/manager/controller/scanner/DynamicScannerController.class
+org/wso2/security/tools/automation/manager/scanner/staticscanner/cloudbased/CloudBasedStaticScannerEnum.class
 org/wso2/security/tools/automation/manager/exception/AutomationManagerException.class
 org/wso2/security/tools/automation/manager/entity/productmanager/containerbased/ContainerBasedProductManagerEntity.class
 org/wso2/security/tools/automation/manager/scanner/staticscanner/StaticScanner.class
@@ -11,6 +12,7 @@ org/wso2/security/tools/automation/manager/repository/productmanager/ProductMana
 org/wso2/security/tools/automation/manager/repository/staticscanner/ContainerBasedStaticScannerRepository.class
 org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/CloudBasedDynamicScannerFactory.class
 org/wso2/security/tools/automation/manager/service/productmanager/ContainerBasedProductManagerService.class
+org/wso2/security/tools/automation/manager/exception/StaticScannerException.class
 org/wso2/security/tools/automation/manager/entity/dynamicscanner/DynamicScannerEntity.class
 org/wso2/security/tools/automation/manager/service/productmanager/ProductManagerService.class
 org/wso2/security/tools/automation/manager/service/productmanager/CloudBasedProductManagerService.class
@@ -32,6 +34,7 @@ org/wso2/security/tools/automation/manager/scanner/staticscanner/factory/Abstrac
 org/wso2/security/tools/automation/manager/scanner/dynamicscanner/cloudbased/CloudBasedDynamicScanner.class
 org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/ContainerBasedDynamicScannerEntity.class
 org/wso2/security/tools/automation/manager/scanner/staticscanner/containerbased/dependencycheck/DependencyCheckScanner.class
+org/wso2/security/tools/automation/manager/scanner/staticscanner/containerbased/AbstractContainerBasedStaticScanner.class
 org/wso2/security/tools/automation/manager/service/dynamicscanner/CloudBasedDynamicScannerService.class
 org/wso2/security/tools/automation/manager/handler/FileHandler.class
 org/wso2/security/tools/automation/manager/controller/MainController.class
@@ -44,17 +47,21 @@ org/wso2/security/tools/automation/manager/scanner/staticscanner/factory/CloudBa
 org/wso2/security/tools/automation/manager/service/dynamicscanner/DynamicScannerService.class
 org/wso2/security/tools/automation/manager/scanner/staticscanner/containerbased/ContainerBasedStaticScanner.class
 org/wso2/security/tools/automation/manager/scanner/dynamicscanner/productmanager/ContainerBasedProductManager.class
+org/wso2/security/tools/automation/manager/scanner/staticscanner/containerbased/ContainerBasedStaticScannerEnum.class
 org/wso2/security/tools/automation/manager/scanner/staticscanner/factory/StaticScannerFactoryProducer.class
 org/wso2/security/tools/automation/manager/controller/scanner/StaticScannerController.class
 org/wso2/security/tools/automation/manager/scanner/staticscanner/containerbased/findsecbugs/FindSecBugsScanner.class
 org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/AbstractDynamicScannerFactory.class
 org/wso2/security/tools/automation/manager/scanner/dynamicscanner/productmanager/ProductManager.class
+org/wso2/security/tools/automation/manager/exception/ProductManagerException.class
 org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/dependencycheck/DependencyCheckEntity.class
 org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/findsecbugs/FindSecBugsEntity.class
 org/wso2/security/tools/automation/manager/config/ScannerProperties.class
 org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/ContainerBasedStaticScannerEntity.class
 org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/ContainerBasedDynamicScanner.class
 org/wso2/security/tools/automation/manager/controller/notification/StaticScannerNotificationController.class
+org/wso2/security/tools/automation/manager/scanner/staticscanner/StaticScannerExecutor.class
+org/wso2/security/tools/automation/manager/exception/DynamicScannerException.class
 org/wso2/security/tools/automation/manager/repository/dynamicscanner/CloudBasedDynamicScannerRepository.class
 org/wso2/security/tools/automation/manager/config/AppConfiguration.class
 org/wso2/security/tools/automation/manager/repository/staticscanner/StaticScannerRepository.class

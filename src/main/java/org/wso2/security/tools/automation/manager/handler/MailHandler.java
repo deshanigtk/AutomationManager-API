@@ -34,8 +34,6 @@ import java.io.InputStream;
 
 /**
  * Handler for email messages
- *
- * @author Deshani Geethika
  */
 @Component
 public class MailHandler {
@@ -55,23 +53,15 @@ public class MailHandler {
      * @param body               Email body
      * @param inputStream        Input stream of an attachment
      * @param attachmentFileName Attachment file name
-     * @return
      */
-    public boolean sendMail(String to, String subject, String body, InputStream inputStream, String
-            attachmentFileName) {
+    public void sendMail(String to, String subject, String body, InputStream inputStream, String
+            attachmentFileName) throws MessagingException, IOException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-        try {
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-            mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setText(body);
-            mimeMessageHelper.addAttachment(attachmentFileName,
-                    new ByteArrayResource(IOUtils.toByteArray(inputStream)));
-            mailSender.send(mimeMessageHelper.getMimeMessage());
-            return true;
-        } catch (MessagingException | IOException e) {
-            LOGGER.error("Error occurred while sending the email", e);
-        }
-        return false;
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        mimeMessageHelper.setSubject(subject);
+        mimeMessageHelper.setTo(to);
+        mimeMessageHelper.setText(body);
+        mimeMessageHelper.addAttachment(attachmentFileName, new ByteArrayResource(IOUtils.toByteArray(inputStream)));
+        mailSender.send(mimeMessageHelper.getMimeMessage());
     }
 }

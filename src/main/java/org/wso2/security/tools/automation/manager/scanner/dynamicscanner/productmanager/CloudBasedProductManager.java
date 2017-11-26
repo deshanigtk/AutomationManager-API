@@ -35,7 +35,7 @@ public class CloudBasedProductManager implements ProductManager {
     private ContainerBasedProductManagerEntity productManagerEntity;
 
     public void init(String userId, String testName, String ipAddress, String productName, String wumLevel, String
-            wso2ServerHost, int wso2ServerPort, int relatedDynamicScannerId) {
+            wso2ServerHost, int wso2ServerPort) {
 
         this.userId = userId;
         this.testName = testName;
@@ -48,8 +48,8 @@ public class CloudBasedProductManager implements ProductManager {
     }
 
     @Override
-    public ProductManagerEntity startProductManager() {
-        return null;
+    public boolean startProductManager(int relatedDynamicScannerId) {
+        return false;
     }
 
     @Override

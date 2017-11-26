@@ -18,14 +18,16 @@
 
 package org.wso2.security.tools.automation.manager.scanner.staticscanner;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
+import org.wso2.security.tools.automation.manager.exception.StaticScannerException;
 
-public interface StaticScanner{
-    Logger LOGGER = LoggerFactory.getLogger(StaticScanner.class);
+public interface StaticScanner {
 
-    StaticScannerEntity startScanner();
+    void startScanner() throws StaticScannerException;
 
-    void startScan();
+    void startScan() throws StaticScannerException;
+
+    String getHost();
+
+    int getPort();
+
 }

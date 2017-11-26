@@ -18,10 +18,11 @@
 
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wso2.security.tools.automation.manager.config.ScannerProperties;
-import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
-import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
-import org.wso2.security.tools.automation.manager.handler.ServerHandler;
+import org.wso2.security.tools.automation.manager.exception.DynamicScannerException;
+import org.wso2.security.tools.automation.manager.exception.ProductManagerException;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.productmanager.ProductManager;
 
 /**
@@ -32,6 +33,8 @@ import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.product
 public class DynamicScannerExecutor implements Runnable {
     private ProductManager productManager;
     private DynamicScanner dynamicScanner;
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
 
     public DynamicScannerExecutor(ProductManager productManager, DynamicScanner dynamicScanner) {
         this.productManager = productManager;
@@ -40,21 +43,25 @@ public class DynamicScannerExecutor implements Runnable {
 
     @Override
     public void run() {
-        //TODO:meaning and why these are needed
+        //If the scanner is a docker container, 
         String productHostRelativeToScanner;
         String productHostRelativeToAutomationManager;
         int productPort;
 
-        DynamicScannerEntity dynamicScannerEntity = dynamicScanner.startScanner();
-        //TODO:change to call internal private mthds
-        ProductManagerEntity productManagerEntity = productManager.startProductManager();
-        //TODO:add if
-        ServerHandler.hostAvailabilityCheck(productManager.getHost(), productManager.getPort(), 12 * 5);
-        if (productManager.startServer()) {
-            productHostRelativeToScanner = productManager.getHost();
-            productHostRelativeToAutomationManager = productManager.getHost();
-            productPort = ScannerProperties.getProductManagerProductPort();
-            dynamicScanner.startScan(productHostRelativeToScanner, productHostRelativeToAutomationManager, productPort);
+        try {
+            dynamicScanner.startScanner();
+            LOGGER.info(String.valueOf(dynamicScanner.getId()));
+            productManager.startProductManager(dynamicScanner.getId());
+            if (productManager.startServer()) {
+                productHostRelativeToScanner = productManager.getHost();
+                productHostRelativeToAutomationManager = productManager.getHost();
+                productPort = ScannerProperties.getProductManagerProductPort();
+                dynamicScanner.startScan(productHostRelativeToScanner, productHostRelativeToAutomationManager,
+                        productPort);
+
+            }
+        } catch (ProductManagerException | DynamicScannerException e) {
+            e.printStackTrace();
         }
     }
 }

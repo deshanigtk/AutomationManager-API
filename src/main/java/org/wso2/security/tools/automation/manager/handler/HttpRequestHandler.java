@@ -29,7 +29,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 
 import java.io.*;
 import java.net.URI;
@@ -51,16 +50,12 @@ public class HttpRequestHandler {
      *
      * @param request Requested URI
      * @return HTTP response after executing the GET command
+     * @throws IOException in case of a problem or the connection was aborted
      */
-    public static HttpResponse sendGetRequest(URI request) {
+    public static HttpResponse sendGetRequest(URI request) throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGetRequest = new HttpGet(request);
-        try {
-            return httpClient.execute(httpGetRequest);
-        } catch (IOException e) {
-//            throw new AutomationManagerException("Error occurred while sending the GET request to host: " +
-//                    request.getHost() + "at port: " + request.getPort(), e);
-        }return null;
+        return httpClient.execute(httpGetRequest);
     }
 
     /**
@@ -69,24 +64,19 @@ public class HttpRequestHandler {
      * @param request    Requested URI
      * @param parameters URL parameters
      * @return HTTP response after executing POST command
+     * @throws IOException in case of a problem or the connection was aborted
      */
-    public static HttpResponse sendPostRequest(URI request, ArrayList<NameValuePair> parameters) {
+    public static HttpResponse sendPostRequest(URI request, ArrayList<NameValuePair> parameters) throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
         List<NameValuePair> urlParameters = new ArrayList<>();
-        try {
-            HttpPost httpPostRequest = new HttpPost(request);
-            if (parameters != null) {
-                for (NameValuePair parameter : parameters) {
-                    urlParameters.add(new BasicNameValuePair(parameter.getName(), parameter.getValue()));
-                }
-                httpPostRequest.setEntity(new UrlEncodedFormEntity(urlParameters));
+        HttpPost httpPostRequest = new HttpPost(request);
+        if (parameters != null) {
+            for (NameValuePair parameter : parameters) {
+                urlParameters.add(new BasicNameValuePair(parameter.getName(), parameter.getValue()));
             }
-            return httpClient.execute(httpPostRequest);
-        } catch (IOException e) {
-//            throw new AutomationManagerException("Error occurred while sending the POST request to host: " +
-//                    request.getHost() + "at port: " + request.getPort(), e);
-            return null;
+            httpPostRequest.setEntity(new UrlEncodedFormEntity(urlParameters));
         }
+        return httpClient.execute(httpPostRequest);
     }
 
     /**
@@ -97,39 +87,35 @@ public class HttpRequestHandler {
      * @param files    List of files to be sent over HTTP
      * @param textBody List of text parameters to be sent in body
      * @return HTTP response after  executing the request
+     * @throws IOException in case of a problem or the connection was aborted
      */
     public static HttpResponse sendMultipartRequest(URI request, Map<String, File> files, Map<String, String>
-            textBody) {
+            textBody) throws IOException {
         HttpClient httpClient = HttpClients.createDefault();
-        try {
-            HttpPost uploadFile = new HttpPost(request);
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            if (textBody != null) {
-                for (Map.Entry<String, String> entry : textBody.entrySet()) {
-                    builder.addTextBody(entry.getKey(), entry.getValue(), ContentType.TEXT_PLAIN);
-                }
-            }
-            // This attaches the file to the POST:
-            if (files != null) {
-                for (Map.Entry<String, File> entry : files.entrySet()) {
-                    InputStream inputStream = new FileInputStream(entry.getValue());
-                    builder.addBinaryBody(
-                            entry.getKey(),
-                            inputStream,
-                            ContentType.APPLICATION_OCTET_STREAM,
-                            entry.getValue().getName()
-                    );
 
-                }
+        HttpPost uploadFile = new HttpPost(request);
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        if (textBody != null) {
+            for (Map.Entry<String, String> entry : textBody.entrySet()) {
+                builder.addTextBody(entry.getKey(), entry.getValue(), ContentType.TEXT_PLAIN);
             }
-            HttpEntity multipart = builder.build();
-            uploadFile.setEntity(multipart);
-            return httpClient.execute(uploadFile);
-        } catch (IOException e) {
-//            throw new AutomationManagerException("Error occurred while sending the multipart request to host: " +
-//                    request.getHost() + "at port: " + request.getPort(), e);
+        }
+        // This attaches the file to the POST:
+        if (files != null) {
+            for (Map.Entry<String, File> entry : files.entrySet()) {
+                InputStream inputStream = new FileInputStream(entry.getValue());
+                builder.addBinaryBody(
+                        entry.getKey(),
+                        inputStream,
+                        ContentType.APPLICATION_OCTET_STREAM,
+                        entry.getValue().getName()
+                );
 
-        }return null;
+            }
+        }
+        HttpEntity multipart = builder.build();
+        uploadFile.setEntity(multipart);
+        return httpClient.execute(uploadFile);
     }
 
     /**
@@ -137,8 +123,9 @@ public class HttpRequestHandler {
      *
      * @param response HTTP response to be read
      * @return a string of HTTP response
+     * @throws IOException in case of a problem or the connection was aborted
      */
-    public static String printResponse(HttpResponse response) {
+    public static String printResponse(HttpResponse response) throws IOException {
         try (BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
             StringBuilder result = new StringBuilder();
             String line;
@@ -146,9 +133,7 @@ public class HttpRequestHandler {
                 result.append(line);
             }
             return result.toString();
-        } catch (IOException e) {
-//            throw new AutomationManagerException("Error occurred while reading the response to file", e);
-        }return null;
+        }
     }
 
     /**
@@ -156,26 +141,19 @@ public class HttpRequestHandler {
      *
      * @param response        HTTP response
      * @param destinationFile Destination file path
-     * @return Boolean to indicate the operation is succeeded
+     * @throws IOException in case of a problem or the connection was aborted
      */
-    public static boolean saveResponseToFile(HttpResponse response, File destinationFile) {
-        try {
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                try (InputStream inputStream = entity.getContent();
-                     FileOutputStream output = new FileOutputStream(destinationFile)) {
-                    int l;
-                    byte[] tmp = new byte[2048];
-                    while ((l = inputStream.read(tmp)) != -1) {
-                        output.write(tmp, 0, l);
-                    }
-                    return true;
+    public static void saveResponseToFile(HttpResponse response, File destinationFile) throws IOException {
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            try (InputStream inputStream = entity.getContent();
+                 FileOutputStream output = new FileOutputStream(destinationFile)) {
+                int l;
+                byte[] tmp = new byte[2048];
+                while ((l = inputStream.read(tmp)) != -1) {
+                    output.write(tmp, 0, l);
                 }
-
             }
-        } catch (IOException e) {
-//            throw new AutomationManagerException("Error occurred while writing response to file", e);
         }
-        return false;
     }
 }

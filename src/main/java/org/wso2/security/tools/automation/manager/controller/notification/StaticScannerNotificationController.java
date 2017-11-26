@@ -54,7 +54,18 @@ public class StaticScannerNotificationController {
         this.staticScannerService = staticScannerService;
         this.containerBasedStaticScannerService = containerBasedStaticScannerService;
     }
-
+    /**
+     * Calls by {@code StaticScanner} Docker containers to notify the product zip file is uploaded
+     *
+     * @param containerId Container Id of the container
+     * @param status      boolean status to indicate the file is uploaded or not
+     */
+    @GetMapping(value = "fileUploaded")
+    @ApiOperation(value = "Update that a zip file is extracted to the container")
+    public @ResponseBody
+    void updateFileUploaded(@RequestParam String containerId, @RequestParam boolean status) {
+        containerBasedStaticScannerService.updateFileUploaded(containerId, status);
+    }
     /**
      * Calls by {@code StaticScanner} Docker containers to notify the product zip file is extracted
      *

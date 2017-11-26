@@ -37,7 +37,7 @@ import org.wso2.security.tools.automation.manager.service.dynamicscanner.Dynamic
  */
 @Controller
 @RequestMapping("dynamicScanner")
-@Api(value = "dynamicScanner", description = "Dynamic DependencyCheckScanner container related APIs")
+@Api(value = "dynamicScanner", description = "Dynamic Scanner container related APIs")
 public class DynamicScannerController {
 
     private final DynamicScannerService dynamicScannerService;
@@ -85,13 +85,10 @@ public class DynamicScannerController {
                    @RequestParam(required = false) String wso2ServerHost,
                    @RequestParam(required = false, defaultValue = "-1") int wso2ServerPort,
                    @RequestParam(required = false) String scannerHost,
-                   @RequestParam(required = false, defaultValue = "-1") int scannerPort) {
-        try {
-            dynamicScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload, zipFile,
-                    urlListFile, wso2ServerHost, wso2ServerPort, scannerHost, scannerPort);
-        } catch (AutomationManagerException e) {
-            e.printStackTrace();
-        }
+                   @RequestParam(required = false, defaultValue = "-1") int scannerPort) throws
+            AutomationManagerException {
+        dynamicScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload, zipFile,
+                urlListFile, wso2ServerHost, wso2ServerPort, scannerHost, scannerPort);
     }
 
     /**
@@ -102,7 +99,8 @@ public class DynamicScannerController {
     @GetMapping(path = "kill")
     @ApiOperation(value = "Stop a running container")
     public @ResponseBody
-    void kill(@RequestParam String containerId) {
+    void kill(@RequestParam String containerId) throws AutomationManagerException {
         containerBasedDynamicScannerService.kill(containerId);
+
     }
 }
