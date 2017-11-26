@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -33,6 +33,9 @@ import org.wso2.security.tools.automation.manager.repository.productmanager.Cont
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Service layer methods to handle container based product managers
+ */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 @Service
 public class ContainerBasedProductManagerService {
@@ -44,26 +47,60 @@ public class ContainerBasedProductManagerService {
         this.productManagerRepository = productManagerRepository;
     }
 
+    /**
+     * Get Iterable container based product manager entity list
+     *
+     * @return Iterable list of {@link ContainerBasedProductManagerEntity}
+     */
     public Iterable<ContainerBasedProductManagerEntity> findAll() {
         return productManagerRepository.findAll();
     }
 
+    /**
+     * Find a container based product manager entity by id
+     *
+     * @param id Auto generated database id of product manager
+     * @return {@link ContainerBasedProductManagerEntity}
+     */
     public ContainerBasedProductManagerEntity findOne(int id) {
         return productManagerRepository.findOne(id);
     }
 
+    /**
+     * Find a container based product manager entity by container id
+     *
+     * @param containerId Container id of product manager
+     * @return {@link ContainerBasedProductManagerEntity}
+     */
     public ContainerBasedProductManagerEntity findOneByContainerId(String containerId) {
         return productManagerRepository.findOneByContainerId(containerId);
     }
 
+    /**
+     * Get Iterable container based product manager entity list of a specific user
+     *
+     * @param userId User id
+     * @return Iterable list of {@link ContainerBasedProductManagerEntity}
+     */
     public Iterable<ContainerBasedProductManagerEntity> findByUserId(String userId) {
         return productManagerRepository.findByUserId(userId);
     }
 
+    /**
+     * Save a container based product manager
+     *
+     * @param productManagerEntity Product manager entity
+     * @return {@link ContainerBasedProductManagerEntity} that saves in the database
+     */
     public ContainerBasedProductManagerEntity save(ContainerBasedProductManagerEntity productManagerEntity) {
         return productManagerRepository.save(productManagerEntity);
     }
-
+    /**
+     * Update that a zip file is uploaded to the container
+     *
+     * @param containerId Container id
+     * @param status      Whether file is uploaded or not
+     */
     public void updateFileUploaded(String containerId, boolean status) {
         ContainerBasedProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
         productManagerEntity.setFileUploaded(status);
@@ -71,7 +108,12 @@ public class ContainerBasedProductManagerService {
                 Date()));
         save(productManagerEntity);
     }
-
+    /**
+     * Update that the zip file is extracted
+     *
+     * @param containerId Container id
+     * @param status      Whether file is extracted or not
+     */
     public void updateFileExtracted(String containerId, boolean status) {
         ContainerBasedProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
         productManagerEntity.setFileExtracted(status);
@@ -79,7 +121,12 @@ public class ContainerBasedProductManagerService {
                 Date()));
         save(productManagerEntity);
     }
-
+    /**
+     * Update a server is started in the container
+     *
+     * @param containerId Container id
+     * @param status      Whether the server is started or not
+     */
     public void updateServerStarted(String containerId, boolean status) {
         ContainerBasedProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
         productManagerEntity.setServerStarted(status);
@@ -87,7 +134,12 @@ public class ContainerBasedProductManagerService {
                 Date()));
         save(productManagerEntity);
     }
-
+    /**
+     * Stop a running container and remove
+     *
+     * @param containerId Container id
+     * @throws AutomationManagerException The general exception type of Automation Manager API
+     */
     public void kill(String containerId) throws AutomationManagerException {
         try {
             ContainerBasedProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
@@ -100,5 +152,4 @@ public class ContainerBasedProductManagerService {
 
         }
     }
-
 }

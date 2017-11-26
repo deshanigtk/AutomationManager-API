@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -43,9 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Static scanner service
- *
- * @author Deshani Geethika
+ * Service layer methods to handle static scanners
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
 @Service
@@ -60,22 +58,48 @@ public class StaticScannerService {
         this.staticScannerRepository = staticScannerRepository;
     }
 
+    /**
+     * Get Iterable static scanner entity list
+     *
+     * @return Iterable list of {@link StaticScannerEntity}
+     */
     public Iterable<StaticScannerEntity> findAll() {
         return staticScannerRepository.findAll();
     }
 
+    /**
+     * Find a static scanner entity by a unique id
+     *
+     * @param id Auto generated database id of static scanner
+     * @return {@link StaticScannerEntity}
+     */
     public StaticScannerEntity findOne(int id) {
         return staticScannerRepository.findOne(id);
     }
 
+    /**
+     * Get Iterable static scanner entity list of a specific user
+     *
+     * @param userId User id
+     * @return Iterable list of {@link StaticScannerEntity}
+     */
     public Iterable<StaticScannerEntity> findByUserId(String userId) {
         return staticScannerRepository.findByUserId(userId);
     }
 
-    public StaticScannerEntity save(StaticScannerEntity staticScanner) {
-        return staticScannerRepository.save(staticScanner);
+    /**
+     * Save a static scanner entity
+     *
+     * @param staticScannerEntity Static scanner entity to persist
+     * @return {@link StaticScannerEntity} that saves in the database
+     */
+    public StaticScannerEntity save(StaticScannerEntity staticScannerEntity) {
+        return staticScannerRepository.save(staticScannerEntity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void startScan(String scanType, String userId, String testName, String productName,
                           String wumLevel, boolean isFileUpload, MultipartFile zipFile, String gitUrl, String
                                   gitUsername, String gitPassword) throws AutomationManagerException {
@@ -99,8 +123,7 @@ public class StaticScannerService {
                 }
             }
             if (isCloudBasedStaticScanner(scanType)) {
-//                staticScanner = createAndInitCloudBasedStaticScanner(scanType,userId,AutomationManagerProperties.getIpAddress()
-//                        ,fileUploadLocation,zipFileName, null, 0);
+                //staticScanner = createAndInitCloudBasedStaticScanner();
             } else if (isContainerBasedStaticScanner(scanType)) {
                 staticScanner = createAndInitContainerBasedDynamicScanner(scanType, userId, testName,
                         AutomationManagerProperties.getIpAddress(), productName, wumLevel, isFileUpload, uploadLocation,
@@ -148,10 +171,13 @@ public class StaticScannerService {
         return false;
     }
 
+    /*
+        Have to implement
+     */
     private CloudBasedStaticScanner createAndInitCloudBasedStaticScanner(String scanType, String userId, String
             fileUploadLocation, String filename, String scannerHost, int scannerPort) throws
             AutomationManagerException {
-        String factoryType = "cloud";
+        String factoryType = AutomationManagerProperties.getCloudBasedScannerType();
         AbstractStaticScannerFactory staticScannerFactory = StaticScannerFactoryProducer.getStaticScannerFactory
                 (factoryType);
         if (staticScannerFactory == null) {
@@ -161,7 +187,7 @@ public class StaticScannerService {
         if (staticScanner == null) {
             throw new AutomationManagerException("Dynamic scanner cannot be created");
         }
-//        staticScanner.init(userId, fileUploadLocation, filename, scannerHost, scannerPort);
+        staticScanner.init();
         return staticScanner;
     }
 
@@ -175,7 +201,7 @@ public class StaticScannerService {
                                                                                   String gitUsername, String
                                                                                           gitPassword) throws
             AutomationManagerException {
-        String factoryType = "container";
+        String factoryType = AutomationManagerProperties.getContainerBasedScannerType();
         AbstractStaticScannerFactory staticScannerFactory = StaticScannerFactoryProducer.getStaticScannerFactory
                 (factoryType);
         if (staticScannerFactory == null) {

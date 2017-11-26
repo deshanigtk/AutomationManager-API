@@ -90,9 +90,9 @@ public class ContainerBasedDynamicScannerService {
     }
 
     /**
-     * Save a dynamic scanner in cloud based dynamic scanner entity
+     * Save a dynamic scanner in container based dynamic scanner entity
      *
-     * @param dynamicScannerEntity Dynamic scanner entity
+     * @param dynamicScannerEntity Dynamic scanner entity to persist
      * @return {@link ContainerBasedDynamicScannerEntity} that saves in the database
      */
     public ContainerBasedDynamicScannerEntity save(ContainerBasedDynamicScannerEntity dynamicScannerEntity) {
@@ -118,7 +118,7 @@ public class ContainerBasedDynamicScannerService {
     }
 
     /**
-     * Update the dynamic scan status in database
+     * Update the dynamic scan status
      *
      * @param containerId Container id
      * @param status      Scan status (eg: running, completed)
@@ -134,9 +134,10 @@ public class ContainerBasedDynamicScannerService {
     }
 
     /**
-     * Update that the report is ready by dynamic scanner
-     * @param containerId Container id
-     * @param status Status whether the report is ready
+     * Update that the report is ready by dynamic scanner, get the report and mail
+     *
+     * @param containerId    Container id
+     * @param status         Status whether the report is ready
      * @param reportFilePath Reports file path
      * @throws AutomationManagerException The general exception type of Automation Manager API
      */
@@ -150,12 +151,25 @@ public class ContainerBasedDynamicScannerService {
         getReportAndMail(containerId, reportFilePath);
     }
 
-    public void updateMessage(String containerId, String status) {
+    /**
+     * Update a message
+     *
+     * @param containerId Container id
+     * @param message     Message to be updated
+     */
+    public void updateMessage(String containerId, String message) {
         ContainerBasedDynamicScannerEntity dynamicScanner = findOneByContainerId(containerId);
-        dynamicScanner.setMessage(status);
+        dynamicScanner.setMessage(message);
         save(dynamicScanner);
     }
 
+    /**
+     * Get the report and sent to the user
+     *
+     * @param containerId    Container id
+     * @param reportFilePath Reports file path
+     * @throws AutomationManagerException The general exception type of Automation Manager API
+     */
     private void getReportAndMail(String containerId, String reportFilePath) throws AutomationManagerException {
         try {
             ContainerBasedDynamicScannerEntity dynamicScannerEntity = findOneByContainerId(containerId);

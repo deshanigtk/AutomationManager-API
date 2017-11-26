@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -47,9 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Dynamic scanner service level methods
- *
- * @author Deshani Geethika
+ * Service layer methods to handle container based dynamic scanners
  */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 @Service
@@ -63,22 +61,48 @@ public class DynamicScannerService {
         this.dynamicScannerRepository = dynamicScannerRepository;
     }
 
+    /**
+     * Get Iterable dynamic scanner entity list
+     *
+     * @return Iterable list of {@link DynamicScannerEntity}
+     */
     public Iterable<DynamicScannerEntity> findAll() {
         return dynamicScannerRepository.findAll();
     }
 
+    /**
+     * Find a dynamic scanner entity by a unique id
+     *
+     * @param id Auto generated database id of dynamic scanner
+     * @return {@link DynamicScannerEntity}
+     */
     public DynamicScannerEntity findOne(int id) {
         return dynamicScannerRepository.findOne(id);
     }
 
+    /**
+     * Get Iterable dynamic scanner entity list of a specific user
+     *
+     * @param userId User id
+     * @return Iterable list of {@link DynamicScannerEntity}
+     */
     public Iterable<DynamicScannerEntity> findByUserId(String userId) {
         return dynamicScannerRepository.findByUserId(userId);
     }
 
-    public DynamicScannerEntity save(DynamicScannerEntity dynamicScanner) {
-        return dynamicScannerRepository.save(dynamicScanner);
+    /**
+     * Save a dynamic scanner entity
+     *
+     * @param dynamicScannerEntity Dynamic scanner entity
+     * @return {@link DynamicScannerEntity} that saves in the database
+     */
+    public DynamicScannerEntity save(DynamicScannerEntity dynamicScannerEntity) {
+        return dynamicScannerRepository.save(dynamicScannerEntity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void startScan(String scanType, String userId, String testName, String productName, String wumLevel,
                           boolean productUploadAsZipFile, MultipartFile zipFile, MultipartFile urlListFile, String
                                   wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) throws
@@ -121,7 +145,7 @@ public class DynamicScannerService {
             DynamicScannerExecutor dynamicScannerExecutor = new DynamicScannerExecutor(productManager, dynamicScanner);
             new Thread(dynamicScannerExecutor).start();
         } catch (IOException e) {
-            throw new AutomationManagerException("I/O error occurred while uploading file",e);
+            throw new AutomationManagerException("I/O error occurred while uploading file", e);
         }
     }
 
@@ -152,6 +176,12 @@ public class DynamicScannerService {
         return false;
     }
 
+    /**
+     * Check if a given scan type is a container based one.
+     *
+     * @param scanType Scan type
+     * @return Boolean to indicate the scanner is a cloud based
+     */
     private boolean isContainerBasedDynamicScanner(String scanType) {
         for (ContainerBasedDynamicScannerEnum e : ContainerBasedDynamicScannerEnum.values()) {
             if (e.name().equalsIgnoreCase(scanType)) {
@@ -210,9 +240,9 @@ public class DynamicScannerService {
                                                                            String productName, String wumLevel,
                                                                            String wso2serverHost, int wso2ServerPort) {
         CloudBasedProductManager productManager = new CloudBasedProductManager();
-        productManager.init(userId, testName, AutomationManagerProperties.getIpAddress(), productName, wumLevel, wso2serverHost,
+        productManager.init(userId, testName, AutomationManagerProperties.getIpAddress(), productName, wumLevel,
+                wso2serverHost,
                 wso2ServerPort);
         return productManager;
     }
-
 }

@@ -24,4 +24,5 @@ import org.wso2.security.tools.automation.manager.scanner.staticscanner.StaticSc
  * methods of cloud based static scanners
  */
 public interface CloudBasedStaticScanner extends StaticScanner {
+    void init();
 }

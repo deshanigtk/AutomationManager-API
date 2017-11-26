@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -41,6 +41,9 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Service layer methods to handle container based static scanners
+ */
 @Service
 public class ContainerBasedStaticScannerService {
 
@@ -56,26 +59,61 @@ public class ContainerBasedStaticScannerService {
         this.mailHandler = mailHandler;
     }
 
+    /**
+     * Get Iterable container based static scanner entity list
+     *
+     * @return Iterable list of {@link ContainerBasedStaticScannerEntity}
+     */
     public Iterable<ContainerBasedStaticScannerEntity> findAll() {
         return staticScannerRepository.findAll();
     }
 
+    /**
+     * Find a container based static scanner entity by a unique id
+     *
+     * @param id Auto generated database id of static scanner
+     * @return {@link ContainerBasedStaticScannerEntity}
+     */
     public ContainerBasedStaticScannerEntity findOne(int id) {
         return staticScannerRepository.findOne(id);
     }
 
+    /**
+     * Find a container based static scanner entity by container id
+     *
+     * @param containerId Container id of static scanner
+     * @return {@link ContainerBasedStaticScannerEntity}
+     */
     public ContainerBasedStaticScannerEntity findOneByContainerId(String containerId) {
         return staticScannerRepository.findOneByContainerId(containerId);
     }
 
+    /**
+     * Get Iterable container based static scanner entity list of a specific user
+     *
+     * @param userId User id
+     * @return Iterable list of {@link ContainerBasedStaticScannerEntity}
+     */
     public Iterable<ContainerBasedStaticScannerEntity> findByUserId(String userId) {
         return staticScannerRepository.findByUserId(userId);
     }
 
-    public ContainerBasedStaticScannerEntity save(ContainerBasedStaticScannerEntity staticScanner) {
-        return staticScannerRepository.save(staticScanner);
+    /**
+     * Save a dynamic scanner in container based static scanner entity
+     *
+     * @param staticScannerEntity Static scanner entity to persist
+     * @return {@link ContainerBasedStaticScannerEntity} that saves in the database
+     */
+    public ContainerBasedStaticScannerEntity save(ContainerBasedStaticScannerEntity staticScannerEntity) {
+        return staticScannerRepository.save(staticScannerEntity);
     }
 
+    /**
+     * Stop a running container and remove
+     *
+     * @param containerId Container id
+     * @throws AutomationManagerException The general exception type of Automation Manager API
+     */
     public void kill(String containerId) throws AutomationManagerException {
         try {
             ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
@@ -88,41 +126,76 @@ public class ContainerBasedStaticScannerService {
         }
     }
 
+    /**
+     * Update that a zip file is uploaded to the container
+     *
+     * @param containerId Container id
+     * @param status      Whether file is uploaded or not
+     */
     public void updateFileUploaded(String containerId, boolean status) {
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
         staticScanner.setFileUploaded(status);
-        staticScanner.setFileUploadedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setFileUploadedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format
+                (new Date()));
         staticScanner.setProductAvailable(true);
         save(staticScanner);
     }
 
+    /**
+     * Update that the zip file is extracted
+     *
+     * @param containerId Container id
+     * @param status      Whether file is extracted or not
+     */
     public void updateFileExtracted(String containerId, boolean status) {
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
         staticScanner.setFileExtracted(status);
-        staticScanner.setFileExtractedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setFileExtractedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format
+                (new Date()));
         staticScanner.setProductAvailable(true);
         save(staticScanner);
     }
 
+    /**
+     * Update a product is cloned to the container
+     *
+     * @param containerId Container id
+     * @param status      Whether the product is cloned or not
+     */
     public void updateProductCloned(String containerId, boolean status) {
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
         staticScanner.setProductCloned(status);
-        staticScanner.setProductClonedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setProductClonedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format
+                (new Date()));
         staticScanner.setProductAvailable(true);
         save(staticScanner);
     }
 
+    /**
+     * Update the scan status (eg: running, completed)
+     *
+     * @param containerId Container id
+     * @param status      Status of the scan
+     */
     public void updateScanStatus(String containerId, String status) {
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
         staticScanner.setScanStatus(status);
-        staticScanner.setScanStatusTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setScanStatusTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new
+                Date()));
         save(staticScanner);
     }
 
-    public void updateReportReady(String containerId, boolean status){
+    /**
+     * Update that the report is ready and get the report and mail
+     *
+     * @param containerId Container id
+     * @param status      Whether the report is ready or not
+     */
+    public void updateReportReady(String containerId, boolean status) {
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
         staticScanner.setReportReady(status);
-        staticScanner.setReportReadyTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setReportReadyTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format
+                (new Date()));
         save(staticScanner);
         try {
             getReportAndMail(containerId);
@@ -130,15 +203,20 @@ public class ContainerBasedStaticScannerService {
             e.printStackTrace();
         }
     }
-
-
-    public void getReportAndMail(String containerId) throws AutomationManagerException {
+    /**
+     * Get the report and sent to the user
+     *
+     * @param containerId    Container id
+     * @throws AutomationManagerException The general exception type of Automation Manager API
+     */
+    private void getReportAndMail(String containerId) throws AutomationManagerException {
         try {
             ContainerBasedStaticScannerEntity staticScannerEntity = findOneByContainerId(containerId);
             if (staticScannerEntity != null) {
                 URI uri = (new URIBuilder()).setHost(staticScannerEntity.getIpAddress())
                         .setPort(staticScannerEntity.getHostPort()).setScheme("http")
-                        .setPath(staticScannerEntity.getContextPath() + StaticScannerProperties.getStaticScannerGetReport())
+                        .setPath(staticScannerEntity.getContextPath() + StaticScannerProperties
+                                .getStaticScannerGetReport())
                         .build();
                 HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
 
@@ -147,7 +225,8 @@ public class ContainerBasedStaticScannerService {
                     mailHandler.sendMail(staticScannerEntity.getUserId(), subject, "This is auto generated message",
                             response.getEntity().getContent(), "Reports.zip");
                     staticScannerEntity.setReportSent(true);
-                    staticScannerEntity.setReportSentTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern())
+                    staticScannerEntity.setReportSentTime(new SimpleDateFormat(AutomationManagerProperties
+                            .getDatePattern())
                             .format(new Date()));
                     kill(containerId);
                 }

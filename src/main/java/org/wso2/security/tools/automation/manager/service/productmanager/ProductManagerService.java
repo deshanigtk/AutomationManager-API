@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,9 @@ import org.springframework.stereotype.Service;
 import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.repository.productmanager.ProductManagerRepository;
 
+/**
+ * Service layer methods to handle product managers
+ */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 @Service
 public class ProductManagerService {
@@ -35,21 +38,39 @@ public class ProductManagerService {
     public ProductManagerService(ProductManagerRepository productManagerRepository) {
         this.productManagerRepository = productManagerRepository;
     }
-
+    /**
+     * Get Iterable product manager entity list
+     *
+     * @return Iterable list of {@link ProductManagerEntity}
+     */
     public Iterable<ProductManagerEntity> findAll() {
         return productManagerRepository.findAll();
     }
-
+    /**
+     * Find a product manager entity by id
+     *
+     * @param id Auto generated database id of product manager
+     * @return {@link ProductManagerEntity}
+     */
     public ProductManagerEntity findOne(int id) {
         return productManagerRepository.findOne(id);
     }
-
+    /**
+     * Get Iterable product manager entity list of a specific user
+     *
+     * @param userId User id
+     * @return Iterable list of {@link ProductManagerEntity}
+     */
     public Iterable<ProductManagerEntity> findByUserId(String userId) {
         return productManagerRepository.findByUserId(userId);
     }
-
+    /**
+     * Save a product manager
+     *
+     * @param dynamicScanner Product manager entity
+     * @return {@link ProductManagerEntity} that saves in the database
+     */
     public ProductManagerEntity save(ProductManagerEntity dynamicScanner) {
         return productManagerRepository.save(dynamicScanner);
     }
-
 }
