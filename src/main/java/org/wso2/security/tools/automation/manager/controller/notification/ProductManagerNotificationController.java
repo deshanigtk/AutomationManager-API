@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,29 +26,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wso2.security.tools.automation.manager.service.productmanager.ContainerBasedProductManagerService;
-import org.wso2.security.tools.automation.manager.service.productmanager.ProductManagerService;
 
 /**
  * The main contract of the {@code ProductManagerNotificationController} class is to provide an API to be called by
  * ProductManager Docker containers.
- * When a {@code ProductManager} Docker container is initialized to run a task, it will run asynchronously. Therefore
+ * <p>When a {@code ProductManager} Docker container is initialized to run a task, it will run asynchronously. Therefore
  * in order to track whether a task is completed or not, Docker container is configured to send back notifications to
- * APIs defined here.
- *
- * @author Deshani Geethika
+ * APIs defined here.</p>
  */
+
 @Controller
+//TODO:change path
 @RequestMapping("dynamicScanner/notify")
 @Api(value = "productManagerNotifications", description = "Product Manager Docker container will use this API to " +
         "notify the status of the container such as file uploaded, file extracted and server started")
 public class ProductManagerNotificationController {
-    private final ProductManagerService productManagerService;
     private final ContainerBasedProductManagerService containerBasedProductManagerService;
 
     @Autowired
-    public ProductManagerNotificationController(ProductManagerService productManagerService,
-                                                ContainerBasedProductManagerService containerBasedProductManagerService) {
-        this.productManagerService = productManagerService;
+    public ProductManagerNotificationController(ContainerBasedProductManagerService
+                                                            containerBasedProductManagerService) {
         this.containerBasedProductManagerService = containerBasedProductManagerService;
     }
 

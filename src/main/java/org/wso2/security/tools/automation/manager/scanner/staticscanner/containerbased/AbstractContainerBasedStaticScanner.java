@@ -22,7 +22,8 @@ import com.spotify.docker.client.exceptions.DockerException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.wso2.security.tools.automation.manager.config.ApplicationContextUtils;
-import org.wso2.security.tools.automation.manager.config.ScannerProperties;
+import org.wso2.security.tools.automation.manager.config.AutomationManagerProperties;
+import org.wso2.security.tools.automation.manager.config.StaticScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.containerbased.ContainerBasedStaticScannerEntity;
 import org.wso2.security.tools.automation.manager.exception.StaticScannerException;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
@@ -39,6 +40,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The abstract class {@link AbstractContainerBasedStaticScanner} implements the interface
+ * {@link ContainerBasedStaticScanner} to implement common methods for container based static scanners
+ */
 public abstract class AbstractContainerBasedStaticScanner implements ContainerBasedStaticScanner {
     private String userId;
     private String testName;
@@ -63,6 +68,9 @@ public abstract class AbstractContainerBasedStaticScanner implements ContainerBa
         staticScannerService = ApplicationContextUtils.getApplicationContext().getBean(StaticScannerService.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void init(String userId, String testName, String ipAddress, String productName, String wumLevel, boolean
             isFileUpload, String uploadLocation, String zipFileName, String gitUrl, String gitUsername, String
                              gitPassword) {
@@ -80,49 +88,72 @@ public abstract class AbstractContainerBasedStaticScanner implements ContainerBa
         this.gitPassword = gitPassword;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void startScanner() throws StaticScannerException {
         saveMetaData();
         createContainer();
         startContainer();
-        hostAvailabilityCheck();
+        if(!hostAvailabilityCheck()){
+            throw new StaticScannerException("Error occurred while starting static scanner container");
+        }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void saveMetaData() {
         staticScannerEntity.setUserId(userId);
         staticScannerEntity.setTestName(testName);
         staticScannerEntity.setProductName(productName);
         staticScannerEntity.setWumLevel(wumLevel);
-        staticScannerEntity.setStatus(ScannerProperties.getStatusInitiated());
+        staticScannerEntity.setStatus(AutomationManagerProperties.getStatusInitiated());
         staticScannerEntity.setContextPath(contextPath);
         staticScannerService.save(staticScannerEntity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void createContainer() throws StaticScannerException {
         try {
-            int port = ContainerBasedStaticScanner.calculatePort(staticScannerEntity.getId());
+            int port = ContainerBasedStaticScanner.calculateStaticScannerContainerPort(staticScannerEntity.getId());
             String containerId = DockerHandler.createContainer(dockerImage, ipAddress, String.valueOf(port),
                     String.valueOf(port), null, new String[]{"port=" + port});
             if (containerId == null) {
                 throw new StaticScannerException("Error occurred while creating static scanner docker container");
             }
-            String createdTime = new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
-            staticScannerEntity.setContainerId(containerId);
-            staticScannerEntity.setIpAddress(ipAddress);
-            staticScannerEntity.setContainerPort(port);
-            staticScannerEntity.setHostPort(port);
-            staticScannerEntity.setStatus(ScannerProperties.getStatusCreated());
-            staticScannerEntity.setCreatedTime(createdTime);
-            staticScannerService.save(staticScannerEntity);
-
+            saveContainerData(containerId, port);
         } catch (InterruptedException | DockerCertificateException | DockerException e) {
             throw new StaticScannerException("Error occurred while creating static scanner docker container", e);
         }
     }
 
+    /**
+     * After container is created, the container related data are saved
+     *
+     * @param containerId Container id
+     * @param port        Port where the container is running
+     */
+    protected void saveContainerData(String containerId, int port) {
+        String createdTime = new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date());
+        staticScannerEntity.setContainerId(containerId);
+        staticScannerEntity.setIpAddress(ipAddress);
+        staticScannerEntity.setContainerPort(port);
+        staticScannerEntity.setHostPort(port);
+        staticScannerEntity.setStatus(AutomationManagerProperties.getStatusCreated());
+        staticScannerEntity.setCreatedTime(createdTime);
+        staticScannerService.save(staticScannerEntity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void startContainer() throws StaticScannerException {
         try {
             if (DockerHandler.startContainer(staticScannerEntity.getContainerId())) {
-                staticScannerEntity.setStatus(ScannerProperties.getStatusRunning());
+                staticScannerEntity.setStatus(AutomationManagerProperties.getStatusRunning());
                 staticScannerEntity.setDockerIpAddress(DockerHandler.inspectContainer(staticScannerEntity
                         .getContainerId()).networkSettings().ipAddress());
                 staticScannerService.save(staticScannerEntity);
@@ -132,6 +163,9 @@ public abstract class AbstractContainerBasedStaticScanner implements ContainerBa
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hostAvailabilityCheck() throws StaticScannerException {
         try {
             return ServerHandler.hostAvailabilityCheck(staticScannerEntity.getDockerIpAddress(), staticScannerEntity
@@ -141,13 +175,19 @@ public abstract class AbstractContainerBasedStaticScanner implements ContainerBa
         }
     }
 
+    /**
+     * Send request to static scanner micro service API to start a scan
+     * {@inheritDoc}
+     */
     public void startScan() throws StaticScannerException {
         try {
             URI uri = (new URIBuilder()).setHost(staticScannerEntity.getIpAddress())
                     .setPort(staticScannerEntity.getHostPort()).setScheme("http").setPath(contextPath +
-                            ScannerProperties.getStaticScannerStartScan())
-                    .addParameter("automationManagerHost", ScannerProperties.getAutomationManagerHost())
-                    .addParameter("automationManagerPort", String.valueOf(ScannerProperties.getAutomationManagerPort()))
+                            StaticScannerProperties.getStaticScannerStartScan())
+                    .addParameter("automationManagerHost", AutomationManagerProperties
+                            .getAutomationManagerHostRelativeToContainers())
+                    .addParameter("automationManagerPort", String.valueOf(AutomationManagerProperties
+                            .getAutomationManagerPort()))
                     .addParameter("myContainerId", staticScannerEntity.getContainerId())
                     .addParameter("isFileUpload", String.valueOf(isFileUpload))
                     .addParameter("gitUrl", gitUrl)
@@ -168,10 +208,16 @@ public abstract class AbstractContainerBasedStaticScanner implements ContainerBa
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getHost() {
         return staticScannerEntity.getDockerIpAddress();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPort() {
         return staticScannerEntity.getHostPort();
     }

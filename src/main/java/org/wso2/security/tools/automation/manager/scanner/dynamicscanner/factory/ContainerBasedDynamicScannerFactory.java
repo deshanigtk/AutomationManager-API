@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -17,10 +17,15 @@
 */
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.factory;
 
+import org.wso2.security.tools.automation.manager.config.DynamicScannerProperties;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.cloudbased.CloudBasedDynamicScanner;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased.ContainerBasedDynamicScanner;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased.zap.ZapScanner;
 
+/**
+ * The class {@link ContainerBasedDynamicScannerFactory} implements abstract methods of
+ * {@link AbstractDynamicScannerFactory} to create instances of {@link ContainerBasedDynamicScanner}
+ */
 public class ContainerBasedDynamicScannerFactory extends AbstractDynamicScannerFactory {
 
     @Override
@@ -28,14 +33,18 @@ public class ContainerBasedDynamicScannerFactory extends AbstractDynamicScannerF
         return null;
     }
 
+    /**
+     * Check the scan type and return a scanner instance
+     *
+     * @param type Scanner type
+     * @return {@link ContainerBasedDynamicScanner} instance
+     */
     @Override
     public ContainerBasedDynamicScanner getContainerBasedDynamicScanner(String type) {
-        if (type == null) {
-            return null;
+        ContainerBasedDynamicScanner dynamicScanner = null;
+        if (DynamicScannerProperties.getZapScannerType().equalsIgnoreCase(type)) {
+            dynamicScanner = new ZapScanner();
         }
-        if ("zap".equalsIgnoreCase(type)) {
-            return new ZapScanner();
-        }
-        return null;
+        return dynamicScanner;
     }
 }

@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -17,19 +17,29 @@
 */
 package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory;
 
+import org.wso2.security.tools.automation.manager.config.StaticScannerProperties;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.cloudbased.CloudBasedStaticScanner;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.ContainerBasedStaticScanner;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.dependencycheck
         .DependencyCheckScanner;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.findsecbugs.FindSecBugsScanner;
-
+/**
+ * The class {@link ContainerBasedStaticScannerFactory} implements abstract methods of
+ * {@link AbstractStaticScannerFactory} to create instances of {@link ContainerBasedStaticScanner}
+ */
 public class ContainerBasedStaticScannerFactory extends AbstractStaticScannerFactory {
+    /**
+     * Check the scan type and return a scanner instance
+     *
+     * @param type Scanner type
+     * @return {@link ContainerBasedStaticScanner} instance
+     */
     @Override
     public ContainerBasedStaticScanner getContainerBasedStaticScanner(String type) {
-        if ("dc".equalsIgnoreCase(type)) {
+        if (StaticScannerProperties.getDependencyCheckScannerType().equalsIgnoreCase(type)) {
             return new DependencyCheckScanner();
         }
-        if ("fsb".equalsIgnoreCase(type)) {
+        if (StaticScannerProperties.getFindSecBugsScannerType().equalsIgnoreCase(type)) {
             return new FindSecBugsScanner();
         }
         return null;

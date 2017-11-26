@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,9 +31,9 @@ import java.io.IOException;
 
 /**
  * The class {@code FileHandler} is to handle file uploading.
- * Since a container starts in a separate thread, Tomcat removes uploaded file which is in Tomcat temp directory.
- * Therefore, the file cannot be sent to the container. So that, instead of using Tomcat temp directory, a custom
- * location is used to upload a file
+ * <p>Since a container starts in a separate thread, Tomcat removes uploaded file which is in Tomcat temp directory.
+ * Therefore, the file cannot be directly sent to the container. So that, instead of using Tomcat temp directory, a
+ * custom location is used to upload a file. Once the tasks are completed, the uploaded files aew deleted
  *
  */
 @SuppressWarnings("unused")

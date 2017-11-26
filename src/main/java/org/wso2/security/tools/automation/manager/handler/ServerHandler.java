@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,6 @@ package org.wso2.security.tools.automation.manager.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -31,8 +30,9 @@ public class ServerHandler {
     private final static Logger LOGGER = LoggerFactory.getLogger(ServerHandler.class);
 
     /**
-     * Periodically checks for a host availability. If {@link IOException} is occurred, {@link Thread} sleeps for
-     * few seconds and again check for host availability. This loop is run for given number of times
+     * Periodically checks for a host availability by creating a socket. If {@link IOException} is occurred,
+     * {@link Thread} sleeps for few seconds and again check for host availability. This loop is run for given number
+     * of times
      *
      * @param host  Host to be checked
      * @param port  Port to be checked
@@ -42,13 +42,13 @@ public class ServerHandler {
     public static boolean hostAvailabilityCheck(String host, int port, int times) throws InterruptedException {
         int i = 0;
         while (i < times) {
-            LOGGER.info("Checking host availability...");
+            LOGGER.trace("Checking host availability for the host: " + host + " and the port: " + port);
             try (Socket s = new Socket(host, port)) {
                 LOGGER.info(host + ":" + port + " is available");
                 return true;
             } catch (IOException e) {
-                    Thread.sleep(5000);
-                    i++;
+                Thread.sleep(5000);
+                i++;
             }
         }
         return false;

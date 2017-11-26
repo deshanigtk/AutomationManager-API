@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,10 +22,8 @@ import javax.persistence.*;
 
 /**
  * The  abstract class {@code StaticScannerEntity} is the database entity to store details about static scans and
- * scanners. {@code InheritanceType} is defined as joined table strategy. To add a static scanner, simply have to
- * extend the {@code StaticScannerEntity}
+ * scanners. {@code InheritanceType} is defined as joined table strategy.
  *
- * @author Deshani Geethika
  */
 @SuppressWarnings("unused")
 @Entity

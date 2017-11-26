@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -17,15 +17,33 @@
 */
 package org.wso2.security.tools.automation.manager.exception;
 
+/**
+ * The class {@code ProductManagerException} extends {@link Exception}, is the general product manager exception
+ * for all operations dealing with product managers
+ */
+@SuppressWarnings("unused")
 public class ProductManagerException extends Exception {
+    /**
+     * Constructs a new runtime exception with {@code null} as its
+     * detail message.
+     */
     public ProductManagerException() {
         super();
     }
 
+    /**
+     * Constructs a new runtime exception with the specified detail message.
+     *
+     * @param message Message for the exception
+     */
     public ProductManagerException(String message) {
         super(message);
     }
 
+    /**
+     * Constructs a new runtime exception with the specified detail message and
+     * cause.
+     */
     public ProductManagerException(String message, Throwable e) {
         super(message, e);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,31 +25,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
-import org.wso2.security.tools.automation.manager.service.dynamicscanner.CloudBasedDynamicScannerService;
 import org.wso2.security.tools.automation.manager.service.dynamicscanner.ContainerBasedDynamicScannerService;
 import org.wso2.security.tools.automation.manager.service.dynamicscanner.DynamicScannerService;
 
 /**
  * The class {@code DynamicScannerController} is the web controller which defines the routines for initiating dynamic
  * scans.
- *
- * @author Deshani Geethika
  */
 @Controller
 @RequestMapping("dynamicScanner")
-@Api(value = "dynamicScanner", description = "Dynamic Scanner container related APIs")
+@Api(value = "dynamicScanner", description = "APIs to initiate dynamic scans such as ZAP and other dynamic scanner " +
+        "related controller methods")
 public class DynamicScannerController {
 
     private final DynamicScannerService dynamicScannerService;
     private final ContainerBasedDynamicScannerService containerBasedDynamicScannerService;
-    private final CloudBasedDynamicScannerService cloudBasedDynamicScannerService;
 
     @Autowired
     public DynamicScannerController(DynamicScannerService dynamicScannerService, ContainerBasedDynamicScannerService
-            containerBasedDynamicScannerService, CloudBasedDynamicScannerService cloudBasedDynamicScannerService) {
+            containerBasedDynamicScannerService) {
         this.dynamicScannerService = dynamicScannerService;
         this.containerBasedDynamicScannerService = containerBasedDynamicScannerService;
-        this.cloudBasedDynamicScannerService = cloudBasedDynamicScannerService;
     }
 
     /**
@@ -72,8 +68,9 @@ public class DynamicScannerController {
      * @param scannerPort    Port of the remote scanner
      */
     @PostMapping(value = "startScan")
-    @ApiOperation(value = "Start ProductManager container, upload the product zip file or else give IP address and " +
-            "port of already running server and start a dynamic scan")
+    @ApiOperation(value = "Start ProductManager, upload the product zip file or else give IP address and " +
+            "port of already running server, start dynamic scanner container or else call APIs of cloud based " +
+            "dynamic scanner and start a dynamic scan")
     public @ResponseBody
     void startScan(@RequestParam String scanType, @RequestParam String userId,
                    @RequestParam String testName,
@@ -97,7 +94,7 @@ public class DynamicScannerController {
      * @param containerId Container Id of the container to be killed
      */
     @GetMapping(path = "kill")
-    @ApiOperation(value = "Stop a running container")
+    @ApiOperation(value = "Stop a running dynamic scanner container")
     public @ResponseBody
     void kill(@RequestParam String containerId) throws AutomationManagerException {
         containerBasedDynamicScannerService.kill(containerId);

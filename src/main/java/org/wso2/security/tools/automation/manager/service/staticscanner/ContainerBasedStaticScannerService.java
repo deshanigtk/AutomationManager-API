@@ -25,7 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.wso2.security.tools.automation.manager.config.ScannerProperties;
+import org.wso2.security.tools.automation.manager.config.AutomationManagerProperties;
+import org.wso2.security.tools.automation.manager.config.StaticScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.containerbased.ContainerBasedStaticScannerEntity;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 import org.wso2.security.tools.automation.manager.handler.DockerHandler;
@@ -80,7 +81,7 @@ public class ContainerBasedStaticScannerService {
             ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
             DockerHandler.killContainer(containerId);
             DockerHandler.removeContainer(containerId);
-            staticScanner.setStatus(ScannerProperties.getStatusRemoved());
+            staticScanner.setStatus(AutomationManagerProperties.getStatusRemoved());
             save(staticScanner);
         } catch (InterruptedException | DockerCertificateException | DockerException e) {
             throw new AutomationManagerException("Error occurred while removing product manager container", e);
@@ -90,7 +91,7 @@ public class ContainerBasedStaticScannerService {
     public void updateFileUploaded(String containerId, boolean status) {
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
         staticScanner.setFileUploaded(status);
-        staticScanner.setFileUploadedTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setFileUploadedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date()));
         staticScanner.setProductAvailable(true);
         save(staticScanner);
     }
@@ -98,7 +99,7 @@ public class ContainerBasedStaticScannerService {
     public void updateFileExtracted(String containerId, boolean status) {
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
         staticScanner.setFileExtracted(status);
-        staticScanner.setFileExtractedTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setFileExtractedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date()));
         staticScanner.setProductAvailable(true);
         save(staticScanner);
     }
@@ -106,7 +107,7 @@ public class ContainerBasedStaticScannerService {
     public void updateProductCloned(String containerId, boolean status) {
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
         staticScanner.setProductCloned(status);
-        staticScanner.setProductClonedTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setProductClonedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date()));
         staticScanner.setProductAvailable(true);
         save(staticScanner);
     }
@@ -114,16 +115,20 @@ public class ContainerBasedStaticScannerService {
     public void updateScanStatus(String containerId, String status) {
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
         staticScanner.setScanStatus(status);
-        staticScanner.setScanStatusTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setScanStatusTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date()));
         save(staticScanner);
     }
 
-    public void updateReportReady(String containerId, boolean status) throws AutomationManagerException {
+    public void updateReportReady(String containerId, boolean status){
         ContainerBasedStaticScannerEntity staticScanner = findOneByContainerId(containerId);
         staticScanner.setReportReady(status);
-        staticScanner.setReportReadyTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date()));
+        staticScanner.setReportReadyTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date()));
         save(staticScanner);
-        getReportAndMail(containerId);
+        try {
+            getReportAndMail(containerId);
+        } catch (AutomationManagerException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -133,7 +138,7 @@ public class ContainerBasedStaticScannerService {
             if (staticScannerEntity != null) {
                 URI uri = (new URIBuilder()).setHost(staticScannerEntity.getIpAddress())
                         .setPort(staticScannerEntity.getHostPort()).setScheme("http")
-                        .setPath(staticScannerEntity.getContextPath() + ScannerProperties.getStaticScannerGetReport())
+                        .setPath(staticScannerEntity.getContextPath() + StaticScannerProperties.getStaticScannerGetReport())
                         .build();
                 HttpResponse response = HttpRequestHandler.sendGetRequest(uri);
 
@@ -142,7 +147,7 @@ public class ContainerBasedStaticScannerService {
                     mailHandler.sendMail(staticScannerEntity.getUserId(), subject, "This is auto generated message",
                             response.getEntity().getContent(), "Reports.zip");
                     staticScannerEntity.setReportSent(true);
-                    staticScannerEntity.setReportSentTime(new SimpleDateFormat(ScannerProperties.getDatePattern())
+                    staticScannerEntity.setReportSentTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern())
                             .format(new Date()));
                     kill(containerId);
                 }

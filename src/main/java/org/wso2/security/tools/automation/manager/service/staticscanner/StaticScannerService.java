@@ -18,13 +18,12 @@
 
 package org.wso2.security.tools.automation.manager.service.staticscanner;
 
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.tools.automation.manager.config.ScannerProperties;
+import org.wso2.security.tools.automation.manager.config.AutomationManagerProperties;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 import org.wso2.security.tools.automation.manager.handler.FileHandler;
@@ -81,11 +80,11 @@ public class StaticScannerService {
                           String wumLevel, boolean isFileUpload, MultipartFile zipFile, String gitUrl, String
                                   gitUsername, String gitPassword) throws AutomationManagerException {
         String zipFileName = null;
-        String uploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
-                SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
-        String ipAddress = ScannerProperties.getIpAddress();
-        String fileUploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
-                SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
+        String uploadLocation = AutomationManagerProperties.getTempFolderPath() + File.separator + userId + new
+                SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date());
+        String ipAddress = AutomationManagerProperties.getIpAddress();
+        String fileUploadLocation = AutomationManagerProperties.getTempFolderPath() + File.separator + userId + new
+                SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date());
         StaticScanner staticScanner = null;
         try {
             if (isFileUpload) {
@@ -100,11 +99,11 @@ public class StaticScannerService {
                 }
             }
             if (isCloudBasedStaticScanner(scanType)) {
-//                staticScanner = createAndInitCloudBasedStaticScanner(scanType,userId,ScannerProperties.getIpAddress()
+//                staticScanner = createAndInitCloudBasedStaticScanner(scanType,userId,AutomationManagerProperties.getIpAddress()
 //                        ,fileUploadLocation,zipFileName, null, 0);
             } else if (isContainerBasedStaticScanner(scanType)) {
                 staticScanner = createAndInitContainerBasedDynamicScanner(scanType, userId, testName,
-                        ScannerProperties.getIpAddress(), productName, wumLevel, isFileUpload, uploadLocation,
+                        AutomationManagerProperties.getIpAddress(), productName, wumLevel, isFileUpload, uploadLocation,
                         zipFileName, gitUrl, gitUsername, gitPassword);
             }
 
@@ -120,7 +119,7 @@ public class StaticScannerService {
     }
 
     private void uploadFileToTempDirectory(String fileUploadLocation, MultipartFile file) throws IOException {
-        File tempDirectory = new File(ScannerProperties.getTempFolderPath());
+        File tempDirectory = new File(AutomationManagerProperties.getTempFolderPath());
         File uploadDirectory = new File(fileUploadLocation);
 
         if (tempDirectory.exists() || tempDirectory.mkdir()) {

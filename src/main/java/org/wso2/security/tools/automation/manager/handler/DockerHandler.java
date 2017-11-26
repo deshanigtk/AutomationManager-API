@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -79,6 +79,9 @@ public class DockerHandler {
      *
      * @param imageName Image name to be checked
      * @return a boolean to indicate the image is available
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     private static boolean checkIfImageIsAvailable(String imageName) throws DockerCertificateException,
             DockerException, InterruptedException {
@@ -108,6 +111,9 @@ public class DockerHandler {
      * @param commands             Container startup command
      * @param environmentVariables Environment variables of the container
      * @return container id if the container is successfully created, or {@code null}
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     public static String createContainer(String imageName, String ipAddress, String containerPort, String hostPort,
                                          List<String> commands, String[] environmentVariables) throws
@@ -134,6 +140,9 @@ public class DockerHandler {
      *
      * @param containerId Container id
      * @return Boolean value to indicate the container is started
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     public static boolean startContainer(String containerId) throws DockerCertificateException, DockerException,
             InterruptedException {
@@ -146,6 +155,9 @@ public class DockerHandler {
      *
      * @param containerId Container id
      * @return object containing container information
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     public static ContainerInfo inspectContainer(String containerId) throws DockerCertificateException,
             DockerException, InterruptedException {
@@ -156,6 +168,9 @@ public class DockerHandler {
      * Stop a running container
      *
      * @param containerId Container id
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     public static void killContainer(String containerId) throws DockerCertificateException, DockerException,
             InterruptedException {
@@ -166,6 +181,9 @@ public class DockerHandler {
      * Remove a stopped container
      *
      * @param containerId Container id
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     public static void removeContainer(String containerId) throws DockerCertificateException, DockerException,
             InterruptedException {
@@ -176,6 +194,9 @@ public class DockerHandler {
      * Restarts a stopped container
      *
      * @param containerId Container id
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     public static void restartContainer(String containerId) throws DockerCertificateException, DockerException,
             InterruptedException {
@@ -187,6 +208,9 @@ public class DockerHandler {
      *
      * @param container_id Container id
      * @return Logs of a container
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     public static String getContainerLogs(String container_id) throws DockerCertificateException, DockerException,
             InterruptedException {
@@ -202,6 +226,9 @@ public class DockerHandler {
      * Get a list of running containers
      *
      * @return a list of running containers
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     public static List<Container> getRunningContainersList() throws DockerCertificateException, DockerException,
             InterruptedException {
@@ -212,6 +239,9 @@ public class DockerHandler {
      * Get all containers list
      *
      * @return a list of all containers
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     public static List<Container> getAllContainersList() throws DockerCertificateException, DockerException,
             InterruptedException {
@@ -220,6 +250,8 @@ public class DockerHandler {
 
     /**
      * Closes any and all underlying connections to docker, and release resources.
+     *
+     * @throws DockerCertificateException
      */
     public static void closeDockerClient() throws DockerCertificateException {
         getDockerClient().close();
@@ -232,14 +264,17 @@ public class DockerHandler {
      * @param filePathToCopy    File path of host
      * @param destinationFile   Destination file path of the container
      * @param destinationFolder Destination folder path of the container
+     * @throws IOException
+     * @throws DockerCertificateException
+     * @throws DockerException
+     * @throws InterruptedException
      */
     public static void copyFilesFromContainer(String containerId, String filePathToCopy, String destinationFile,
                                               File destinationFolder) throws IOException, DockerCertificateException,
             DockerException, InterruptedException {
         try (InputStream inputStream = getDockerClient().archiveContainer(containerId, filePathToCopy);
              FileOutputStream outputStream = new FileOutputStream(new File(destinationFolder, FilenameUtils
-                     .getName(destinationFile))
-             )) {
+                     .getName(destinationFile)))) {
             int read;
             byte[] bytes = new byte[1024];
             while ((read = inputStream.read(bytes)) != -1) {
@@ -254,6 +289,10 @@ public class DockerHandler {
      * @param inputStream Input stream to copy
      * @param containerId Container id
      * @param path        Destination path in container
+     * @throws DockerCertificateException
+     * @throws InterruptedException
+     * @throws DockerException
+     * @throws IOException
      */
     public static void copyFilesToContainer(InputStream inputStream, String containerId, String path) throws
             DockerCertificateException, InterruptedException, DockerException, IOException {

@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,10 @@ package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory
 
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.cloudbased.CloudBasedStaticScanner;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.ContainerBasedStaticScanner;
-
+/**
+ * The class {@link CloudBasedStaticScannerFactory } implements abstract methods of
+ * {@link AbstractStaticScannerFactory} to create instances of {@link CloudBasedStaticScanner}
+ */
 public class CloudBasedStaticScannerFactory extends AbstractStaticScannerFactory {
     @Override
     public ContainerBasedStaticScanner getContainerBasedStaticScanner(String type) {

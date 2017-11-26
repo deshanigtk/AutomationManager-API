@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,30 +25,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
-import org.wso2.security.tools.automation.manager.service.staticscanner.CloudBasedStaticScannerService;
 import org.wso2.security.tools.automation.manager.service.staticscanner.ContainerBasedStaticScannerService;
 import org.wso2.security.tools.automation.manager.service.staticscanner.StaticScannerService;
 
 /**
  * The class {@code StaticScannerController} is the web controller which defines the routines for initiating static
  * scans.
- *
- * @author Deshani Geethika
  */
 @Controller
 @RequestMapping("staticScanner")
-@Api(value = "staticScanner", description = "StaticScanner container related APIs")
+@Api(value = "staticScanner", description = "APIs to initiate static scans such as ZAP and other static scanner " +
+        "related controller methods")
 public class StaticScannerController {
 
     private final StaticScannerService staticScannerService;
-    private final CloudBasedStaticScannerService cloudBasedStaticScannerService;
     private final ContainerBasedStaticScannerService containerBasedStaticScannerService;
 
     @Autowired
-    public StaticScannerController(StaticScannerService staticScannerService, CloudBasedStaticScannerService
-            cloudBasedStaticScannerService, ContainerBasedStaticScannerService containerBasedStaticScannerService) {
+    public StaticScannerController(StaticScannerService staticScannerService, ContainerBasedStaticScannerService
+            containerBasedStaticScannerService) {
         this.staticScannerService = staticScannerService;
-        this.cloudBasedStaticScannerService = cloudBasedStaticScannerService;
         this.containerBasedStaticScannerService = containerBasedStaticScannerService;
     }
 
@@ -71,8 +67,8 @@ public class StaticScannerController {
      * @param gitPassword  Password of the GitHub account, if the repository is private
      */
     @PostMapping(value = "startScan")
-    @ApiOperation(value = "Start Static DependencyCheckScanner container, upload the product zip file or else clone " +
-            "product from GitHub and start scans - FindSecBugsEntity and/or OWASP Dependency Check")
+    @ApiOperation(value = "Start static scanner, upload the product zip file or else clone product from GitHub and " +
+            "start scans - FindSecBugsEntity and/or OWASP Dependency Check")
     public @ResponseBody
     void startScan(@RequestParam String scanType,
                    @RequestParam String userId,
@@ -83,13 +79,9 @@ public class StaticScannerController {
                    @RequestParam(required = false) MultipartFile zipFile,
                    @RequestParam(required = false) String gitUrl,
                    @RequestParam(required = false) String gitUsername,
-                   @RequestParam(required = false) String gitPassword) {
-        try {
-            staticScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload,
-                    zipFile, gitUrl, gitUsername, gitPassword);
-        } catch (AutomationManagerException e) {
-            e.printStackTrace();
-        }
+                   @RequestParam(required = false) String gitPassword) throws AutomationManagerException {
+        staticScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload,
+                zipFile, gitUrl, gitUsername, gitPassword);
     }
 
     /**
@@ -98,13 +90,9 @@ public class StaticScannerController {
      * @param containerId Container Id of the container to be killed
      */
     @GetMapping(path = "kill")
-    @ApiOperation(value = "Stop a running container")
+    @ApiOperation(value = "Stop a running static scanner container")
     public @ResponseBody
-    void kill(@RequestParam String containerId) {
-        try {
-            containerBasedStaticScannerService.kill(containerId);
-        } catch (AutomationManagerException e) {
-            e.printStackTrace();
-        }
+    void kill(@RequestParam String containerId) throws AutomationManagerException {
+        containerBasedStaticScannerService.kill(containerId);
     }
 }

@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -17,15 +17,27 @@
 */
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.factory;
 
+import org.wso2.security.tools.automation.manager.config.AutomationManagerProperties;
+
+/**
+ * The class {@link DynamicScannerFactoryProducer} is to produce dynamic scanner factory instances based on the
+ * factory type (eg: cloud based, container based)
+ */
 public class DynamicScannerFactoryProducer {
+    /**
+     * Check the factory type and returns a factory instance based on the type
+     *
+     * @param factoryType Factory type
+     * @return {@link AbstractDynamicScannerFactory}
+     */
     public static AbstractDynamicScannerFactory getDynamicScannerFactory(String factoryType) {
-        //TODO:pass as const
-        if ("cloud".equalsIgnoreCase(factoryType)) {
-            return new CloudBasedDynamicScannerFactory();
+        AbstractDynamicScannerFactory dynamicScannerFactory = null;
+        if (AutomationManagerProperties.getCloudBasedScannerType().equalsIgnoreCase(factoryType)) {
+            dynamicScannerFactory = new CloudBasedDynamicScannerFactory();
         }
-        if ("container".equalsIgnoreCase(factoryType)) {
-            return new ContainerBasedDynamicScannerFactory();
+        if (AutomationManagerProperties.getContainerBasedScannerType().equalsIgnoreCase(factoryType)) {
+            dynamicScannerFactory = new ContainerBasedDynamicScannerFactory();
         }
-        return null;
+        return dynamicScannerFactory;
     }
 }

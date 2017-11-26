@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,8 +33,6 @@ import java.net.URISyntaxException;
 
 /**
  * The class {@code ZapClient} is a client to communicate with ZAP API
- *
- * @author Deshani Geethika
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ZapClient {
@@ -73,7 +71,7 @@ public class ZapClient {
         this.host = host;
         this.port = port;
         this.scheme = scheme;
-        LOGGER.info("ZapClient is initialized");
+        LOGGER.trace("ZapClient is initialized");
     }
 
     /**
@@ -96,8 +94,7 @@ public class ZapClient {
                 .addParameter("name", name)
                 .addParameter("overwrite", overwrite ? "true" : "false")
                 .build();
-
-        LOGGER.info("Sending request to save session");
+        LOGGER.trace("Sending request to save session");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -121,8 +118,7 @@ public class ZapClient {
                 .addParameter("site", site)
                 .addParameter("session", session)
                 .build();
-
-        LOGGER.info("Sending request to remove session");
+        LOGGER.trace("Sending request to remove session");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -146,8 +142,7 @@ public class ZapClient {
                 .addParameter("site", site)
                 .addParameter("session", session)
                 .build();
-
-        LOGGER.info("Sending request to create empty session");
+        LOGGER.trace("Sending request to create empty session");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -175,8 +170,7 @@ public class ZapClient {
                 .addParameter("sessionToken", sessionToken)
                 .addParameter("tokenValue", tokenValue)
                 .build();
-
-        LOGGER.info("Sending request to set session token value");
+        LOGGER.trace("Sending request to set session token value");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -199,8 +193,7 @@ public class ZapClient {
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("regex", regex)
                 .build();
-
-        LOGGER.info("Sending request to exclude URL from spider");
+        LOGGER.trace("Sending request to exclude URL from spider");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -221,8 +214,7 @@ public class ZapClient {
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("contextName", contextName)
                 .build();
-
-        LOGGER.info("Sending request to create new context");
+        LOGGER.trace("Sending request to create new context");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -246,8 +238,7 @@ public class ZapClient {
                 .addParameter("contextName", contextName)
                 .addParameter("regex", regex)
                 .build();
-
-        LOGGER.info("Sending request to include in context");
+        LOGGER.trace("Sending request to include in context");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -276,8 +267,7 @@ public class ZapClient {
                 .addParameter("contextName", contextName)
                 .addParameter("subtreeOnly", subtreeOnly)
                 .build();
-
-        LOGGER.info("Sending request to run spider");
+        LOGGER.trace("Sending request to run spider");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -297,8 +287,7 @@ public class ZapClient {
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("scanId", scanId)
                 .build();
-
-        LOGGER.info("Sending request to check spider status");
+        LOGGER.trace("Sending request to check spider status");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -326,8 +315,7 @@ public class ZapClient {
                 .addParameter("contextName", contextName)
                 .addParameter("subtreeOnly", subtreeOnly)
                 .build();
-
-        LOGGER.info("Sending request to run ajax spider");
+        LOGGER.trace("Sending request to run ajax spider");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -346,8 +334,7 @@ public class ZapClient {
                 .setPath(AJAX_SPIDER_STATUS)
                 .addParameter("formMethod", post ? POST : GET)
                 .build();
-
-        LOGGER.info("Sending request to check ajax spider status");
+        LOGGER.trace("Sending request to check ajax spider status");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -381,8 +368,7 @@ public class ZapClient {
                 .addParameter("postData", postData)
                 .addParameter("contextId", contextId)
                 .build();
-
-        LOGGER.info("Sending request to run active scan");
+        LOGGER.trace("Sending request to run active scan");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -403,8 +389,7 @@ public class ZapClient {
                 .addParameter("formMethod", post ? POST : GET)
                 .addParameter("scanId", scanId)
                 .build();
-
-        LOGGER.info("Sending request to check active scan status");
+        LOGGER.trace("Sending request to check active scan status");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 
@@ -422,8 +407,7 @@ public class ZapClient {
         URI uri = (new URIBuilder()).setHost(this.host).setPort(this.port).setScheme(this.scheme).setPath(HTML_REPORT)
                 .addParameter("formMethod", post ? POST : GET)
                 .build();
-
-        LOGGER.info("Sending request to generate html report");
+        LOGGER.trace("Sending request to generate html report");
         return httpClient.execute(post ? new HttpPost(uri) : new HttpGet(uri));
     }
 }

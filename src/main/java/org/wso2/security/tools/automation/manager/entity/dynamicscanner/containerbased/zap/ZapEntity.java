@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,9 +25,9 @@ import org.wso2.security.tools.automation.manager.entity.dynamicscanner.containe
 import javax.persistence.Entity;
 
 /**
- * The {@code ZapEntity} class is inherited from {@link ContainerBasedDynamicScannerEntity}
+ * The {@code ZapEntity} class is inherited from {@link ContainerBasedDynamicScannerEntity} defines specific
+ * properties of ZAP
  *
- * @author Deshani Geethika
  */
 @SuppressWarnings("unused")
 @Entity

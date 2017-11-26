@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,16 +46,19 @@ public class MailHandler {
     }
 
     /**
-     * Send an email
+     * Send an email with an attachment
      *
      * @param to                 To whom the email is sent
      * @param subject            Email subject
      * @param body               Email body
      * @param inputStream        Input stream of an attachment
      * @param attachmentFileName Attachment file name
+     * @throws MessagingException Exceptions thrown by the Messaging classes
+     * @throws IOException        Signals that an I/O exception of some sort has occurred
      */
     public void sendMail(String to, String subject, String body, InputStream inputStream, String
             attachmentFileName) throws MessagingException, IOException {
+        LOGGER.info("Sending email");
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setSubject(subject);

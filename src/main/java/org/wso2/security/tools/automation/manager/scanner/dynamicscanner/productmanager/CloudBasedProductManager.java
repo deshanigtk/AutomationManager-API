@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -17,11 +17,14 @@
 */
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.productmanager;
 
-import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
-import org.wso2.security.tools.automation.manager.entity.productmanager.containerbased
-        .ContainerBasedProductManagerEntity;
+import org.wso2.security.tools.automation.manager.entity.productmanager.cloudbased.CloudBasedProductManagerEntity;
 import org.wso2.security.tools.automation.manager.service.productmanager.ProductManagerService;
 
+/**
+ * The class {@link CloudBasedProductManager} implements the interface {@link ProductManager} methods to handle cloud
+ * based product managers
+ */
+@SuppressWarnings("unused")
 public class CloudBasedProductManager implements ProductManager {
     private String userId;
     private String testName;
@@ -32,7 +35,7 @@ public class CloudBasedProductManager implements ProductManager {
     private int wso2ServerPort;
     private int relatedDynamicScannerId;
     private ProductManagerService productManagerService;
-    private ContainerBasedProductManagerEntity productManagerEntity;
+    private CloudBasedProductManagerEntity productManagerEntity;
 
     public void init(String userId, String testName, String ipAddress, String productName, String wumLevel, String
             wso2ServerHost, int wso2ServerPort) {
@@ -44,12 +47,10 @@ public class CloudBasedProductManager implements ProductManager {
         this.wumLevel = wumLevel;
         this.wso2ServerHost = wso2ServerHost;
         this.wso2ServerPort = wso2ServerPort;
-        this.relatedDynamicScannerId = relatedDynamicScannerId;
     }
 
     @Override
-    public boolean startProductManager(int relatedDynamicScannerId) {
-        return false;
+    public void startProductManager(int relatedDynamicScannerId) {
     }
 
     @Override

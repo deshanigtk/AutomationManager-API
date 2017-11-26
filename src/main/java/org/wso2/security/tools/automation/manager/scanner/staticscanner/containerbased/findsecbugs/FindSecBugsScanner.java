@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,16 +18,21 @@
 
 package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.findsecbugs;
 
-import org.wso2.security.tools.automation.manager.config.ScannerProperties;
+import org.wso2.security.tools.automation.manager.config.StaticScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.containerbased.findsecbugs.FindSecBugsEntity;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased
         .AbstractContainerBasedStaticScanner;
 
+/**
+ * The class {@link FindSecBugsScanner} extends the abstract class {@link AbstractContainerBasedStaticScanner}
+ */
 public class FindSecBugsScanner extends AbstractContainerBasedStaticScanner {
-
+    /**
+     * Calls the parent constructor with find sec bugs scanner specific data
+     */
     public FindSecBugsScanner() {
-        super(new FindSecBugsEntity(), ScannerProperties.getFindSecBugsScannerContextPath(), ScannerProperties
-                .getFindsecbugsScannerDockerImage());
+        super(new FindSecBugsEntity(), StaticScannerProperties.getFindSecBugsScannerContextPath(),
+                StaticScannerProperties.getFindSecBugsScannerDockerImage());
     }
 
 }

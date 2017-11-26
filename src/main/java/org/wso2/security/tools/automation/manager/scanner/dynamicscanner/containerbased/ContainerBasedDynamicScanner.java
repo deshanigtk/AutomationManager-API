@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
 */
 package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased;
 
+import org.wso2.security.tools.automation.manager.exception.DynamicScannerException;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScanner;
 
 /**
@@ -24,8 +25,13 @@ import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.Dynamic
  * specific to container based dynamic scanners
  */
 public interface ContainerBasedDynamicScanner extends DynamicScanner {
-
-    static int calculateDynamicScannerPort(int id) {
+    /**
+     * Calculate dynamic scanner container port
+     *
+     * @param id Auto generated database id of dynamic scanner
+     * @return Dynamic scanner container port
+     */
+    static int calculateDynamicScannerContainerPort(int id) {
         if (5000 + id > 20000) {
             id = 1;
         }
@@ -39,4 +45,28 @@ public interface ContainerBasedDynamicScanner extends DynamicScanner {
      * @param urlListFileName    URL list file name (URL list which needs to be scanned are defined in this file)
      */
     void init(String userId, String ipAddress, String fileUploadLocation, String urlListFileName);
+
+    /**
+     * Saves the basic meta data of the dynamic scanner
+     */
+    void saveMetaData();
+
+    /**
+     * Create dynamic scanner container
+     *
+     * @throws DynamicScannerException The general exception type of dynamic scanners
+     */
+    void createContainer() throws DynamicScannerException;
+    /**
+     * Start dynamic scanner container
+     *
+     * @throws DynamicScannerException The general exception type of dynamic scanners
+     */
+    void startContainer() throws DynamicScannerException;
+    /**
+     * Check whether the dynamic scanner host is available
+     *
+     * @throws DynamicScannerException The general exception type of dynamic scanners
+     */
+    boolean checkDynamicScannerHostAvailability() throws DynamicScannerException;
 }

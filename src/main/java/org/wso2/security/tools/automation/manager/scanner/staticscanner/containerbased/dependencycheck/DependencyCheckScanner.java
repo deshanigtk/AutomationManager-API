@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,17 +18,21 @@
 
 package org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased.dependencycheck;
 
-import org.wso2.security.tools.automation.manager.config.ScannerProperties;
+import org.wso2.security.tools.automation.manager.config.StaticScannerProperties;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.containerbased.dependencycheck
         .DependencyCheckEntity;
 import org.wso2.security.tools.automation.manager.scanner.staticscanner.containerbased
         .AbstractContainerBasedStaticScanner;
-
+/**
+ * The class {@link DependencyCheckScanner} extends the abstract class {@link AbstractContainerBasedStaticScanner}
+ */
 public class DependencyCheckScanner extends AbstractContainerBasedStaticScanner {
-
+    /**
+     * Calls the parent constructor with dependency check scanner specific data
+     */
     public DependencyCheckScanner() {
-        super(new DependencyCheckEntity(), ScannerProperties.getDependencyCheckScannerContextPath(),
-                ScannerProperties.getDependencyCheckDockerImage());
+        super(new DependencyCheckEntity(), StaticScannerProperties.getDependencyCheckScannerContextPath(),
+                StaticScannerProperties.getDependencyCheckDockerImage());
     }
 
 }

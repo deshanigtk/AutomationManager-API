@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.wso2.security.tools.automation.manager.entity.productmanager.containerbased
         .ContainerBasedProductManagerEntity;
 
+/**
+ * Repository methods for accessing persistent {@link ContainerBasedProductManagerEntity}
+ */
 public interface ContainerBasedProductManagerRepository extends CrudRepository<ContainerBasedProductManagerEntity, Integer> {
     /**
      * Find a container by containerId

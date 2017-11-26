@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,15 +21,35 @@ package org.wso2.security.tools.automation.manager.scanner.dynamicscanner;
 import org.wso2.security.tools.automation.manager.exception.DynamicScannerException;
 
 /**
- * Dynamic scanner interface
- *
- * @author Deshani Geethika
+ * The interface {@link DynamicScanner} provides abstraction to dynamic scanner related methods
  */
 public interface DynamicScanner {
+    /**
+     * Start a dynamic scanner
+     *
+     * @throws DynamicScannerException The general exception thrown by the dynamic scanners
+     */
     void startScanner() throws DynamicScannerException;
 
-    void startScan(String productHostRelativeToScanner, String productHostRelativeToThis, int productPort) throws
-            DynamicScannerException;
+    /**
+     * Start a dynamic scan
+     *
+     * @param productHostRelativeToScanner           Product host relative to scanner (If dynamic scanner or/and product
+     *                                               manager are container based, scanner needs the product host
+     *                                               relative to
+     *                                               it as it has to communicate)
+     * @param productHostRelativeToAutomationManager Product host relative to automation manager (If dynamic scanner
+     *                                               or/and product manager are container based, automation manager
+     *                                               needs the product host relative to it as it has to communicate)
+     * @param productPort                            Product port
+     * @throws DynamicScannerException The general exception thrown by the dynamic scanners
+     */
+    void startScan(String productHostRelativeToScanner, String productHostRelativeToAutomationManager, int
+            productPort) throws DynamicScannerException;
 
+    /**
+     * Get the auto generated id of the dynamic scanner, as it is needed to product manager
+     * @return Dynamic scanner database id
+     */
     int getId();
 }

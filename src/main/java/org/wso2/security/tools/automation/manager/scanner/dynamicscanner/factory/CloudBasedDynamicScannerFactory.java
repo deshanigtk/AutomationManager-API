@@ -1,6 +1,5 @@
 /*
-//TODO:add year to date
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,14 +20,11 @@ package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.factor
 
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.cloudbased.CloudBasedDynamicScanner;
 import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.containerbased.ContainerBasedDynamicScanner;
-import org.wso2.security.tools.automation.manager.scanner.dynamicscanner.DynamicScanner;
 
 /**
- * Factory class to create instances of {@link DynamicScanner} implementations
- * //TODO:remove author
- * @author Deshani Geethika
+ * The class {@link CloudBasedDynamicScannerFactory } implements abstract methods of
+ * {@link AbstractDynamicScannerFactory} to create instances of {@link CloudBasedDynamicScanner}
  */
-//TODO:abstract class
 public class CloudBasedDynamicScannerFactory extends AbstractDynamicScannerFactory {
 
     @Override

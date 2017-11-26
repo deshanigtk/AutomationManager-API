@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,12 +35,11 @@ import org.wso2.security.tools.automation.manager.service.staticscanner.StaticSc
 /**
  * The class {@code MainController} is the web controller which defines the routines for getting static scans,
  * dynamic scans and product managers
- *
- * @author Deshani Geethika
  */
 @Controller
 @RequestMapping("/")
-@Api(value = "scanners", description = "Get static scans and dynamic scans done by a specific user")
+@Api(value = "scanners", description = "Get StaticScanners, DynamicScanners and ProductManagers done by a specific " +
+        "user")
 public class MainController {
 
     private final StaticScannerService staticScannerService;
@@ -61,7 +60,7 @@ public class MainController {
      * @param userId Email address of the user
      * @return Iterable list of StaticScannerEntity
      */
-    @GetMapping(value = "getStaticScanners")
+    @GetMapping(value = "myStaticScanners")
     @ApiOperation(value = "Get static scans done by a user")
     @ResponseBody
     public Iterable<StaticScannerEntity> getStaticScanners(String userId) {
@@ -74,7 +73,7 @@ public class MainController {
      * @param userId Email address of the user
      * @return Iterable list of DynamicScannerEntity
      */
-    @GetMapping(value = "getDynamicScanners")
+    @GetMapping(value = "myDynamicScanners")
     @ApiOperation(value = "Get dynamic scans done by a user")
     @ResponseBody
     public Iterable<DynamicScannerEntity> getDynamicScanners(String userId) {
@@ -82,12 +81,12 @@ public class MainController {
     }
 
     /**
-     * Returns a list of {@code ProductManagerEntity} in other words, products started by a user
+     * Returns a list of {@code ProductManagerEntity} in other words, product managers started by a user
      *
      * @param userId Email address of the user
      * @return Iterable list of ProductManagerEntity
      */
-    @GetMapping(value = "getProductManagers")
+    @GetMapping(value = "myProductManagers")
     @ApiOperation(value = "Get product managers done by a user")
     @ResponseBody
     public Iterable<ProductManagerEntity> getProductManagers(String userId) {

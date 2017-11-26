@@ -1,4 +1,4 @@
-package org.wso2.security.tools.automation.manager.scanner.staticscanner;/*
+/*
 *  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
@@ -15,25 +15,36 @@ package org.wso2.security.tools.automation.manager.scanner.staticscanner;/*
 * specific language governing permissions and limitations
 * under the License.
 */
+package org.wso2.security.tools.automation.manager.scanner.staticscanner;
 
 import org.wso2.security.tools.automation.manager.exception.StaticScannerException;
-import org.wso2.security.tools.automation.manager.handler.ServerHandler;
 
+/**
+ * The  class {@link StaticScannerExecutor} which implements {@link Runnable}, provides methods to execute static
+ * scans asynchronously.
+ */
 public class StaticScannerExecutor implements Runnable {
 
     private StaticScanner staticScanner;
 
+    /**
+     * Get {@link StaticScanner} instance from the constructor parameters
+     *
+     * @param staticScanner Static scanner instance
+     */
     public StaticScannerExecutor(StaticScanner staticScanner) {
         this.staticScanner = staticScanner;
     }
 
+    /**
+     * Run the static scan asynchronously
+     */
     @Override
     public void run() {
         try {
             staticScanner.startScanner();
-            ServerHandler.hostAvailabilityCheck(staticScanner.getHost(), staticScanner.getPort(), 12 * 5);
             staticScanner.startScan();
-        } catch (StaticScannerException | InterruptedException e) {
+        } catch (StaticScannerException e) {
             e.printStackTrace();
         }
     }

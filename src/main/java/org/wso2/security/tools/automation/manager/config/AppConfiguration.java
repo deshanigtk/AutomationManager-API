@@ -90,6 +90,11 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
+    /**
+     * Defines configurations for {@link JavaMailSender}
+     *
+     * @return {@link JavaMailSender}
+     */
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -106,6 +111,11 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
         return mailSender;
     }
 
+    /**
+     * Defines configurations for swagger
+     *
+     * @return {@link Docket}
+     */
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

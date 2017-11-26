@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,14 +20,8 @@ package org.wso2.security.tools.automation.manager.repository.staticscanner;
 
 import org.springframework.data.repository.CrudRepository;
 import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
-
-
 /**
- * The interface {@code StaticScannerRepository} extends from {@link CrudRepository} defines methods to perform
- * database operations related to {@code StaticScannerRepository}. Since extends from {@link CrudRepository}, basic CRUD
- * operation methods are not required to be defined. Custom methods are only defined
- *
- * @author Deshani Geethika
+ * Repository methods for accessing persistent {@link StaticScannerEntity}
  */
 public interface StaticScannerRepository extends CrudRepository<StaticScannerEntity, Integer> {
 

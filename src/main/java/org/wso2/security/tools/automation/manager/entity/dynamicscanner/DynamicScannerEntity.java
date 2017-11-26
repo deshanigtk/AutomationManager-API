@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,7 +29,6 @@ import javax.validation.constraints.NotNull;
  * DynamicScannerEntity} is created and any entity inherited from this class is stored in this table. Also tables are
  * generated for each sub class, and only sub class specific fields are saved in those tables</p>
  *
- * @author Deshani Geethika
  */
 @SuppressWarnings("unused")
 @Entity
@@ -52,7 +51,7 @@ public abstract class DynamicScannerEntity {
     protected String reportSentTime;
     protected String message;
 
-
+    //Defines one to one relationship with ProductManagerEntity
     @OneToOne(mappedBy = "dynamicScannerEntity")
     protected ProductManagerEntity productManagerEntity;
 

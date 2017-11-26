@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -26,8 +26,6 @@ import javax.validation.constraints.NotNull;
  * The class {@code ProductManagerEntity} is a database entity to store product manager objects related to dynamic
  * scans. {@code ProductManagerEntity} can be a Docker container or else a product that is already in up and running
  * state.
- *
- * @author Deshani Geethika
  */
 @SuppressWarnings("unused")
 @Entity
@@ -48,8 +46,9 @@ public abstract class ProductManagerEntity {
     private String scanFinishedTime;
     private String message;
 
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //Defines the one to one relationship with DynamicScannerEntity
     @OneToOne(cascade = CascadeType.ALL)
+    //Defines the foreign key constraint for the column "relatedDynamicScannerId"
     @JoinColumn(name = "relatedDynamicScannerId", insertable = false, updatable = false)
     private DynamicScannerEntity dynamicScannerEntity;
 

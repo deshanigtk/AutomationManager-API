@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,15 +18,27 @@
 
 package org.wso2.security.tools.automation.manager.scanner.staticscanner.factory;
 
+import org.wso2.security.tools.automation.manager.config.AutomationManagerProperties;
+
+/**
+ * The class {@link StaticScannerFactoryProducer} is to produce static scanner factory instances based on the
+ * factory type (eg: cloud based, container based)
+ */
 public class StaticScannerFactoryProducer {
+    /**
+     * Check the factory type and returns a factory instance based on the type
+     *
+     * @param factoryType Factory type
+     * @return {@link AbstractStaticScannerFactory}
+     */
     public static AbstractStaticScannerFactory getStaticScannerFactory(String factoryType) {
-        //TODO:pass as const
-        if ("cloud".equalsIgnoreCase(factoryType)) {
-            return new CloudBasedStaticScannerFactory();
+        AbstractStaticScannerFactory staticScannerFactory = null;
+        if (AutomationManagerProperties.getCloudBasedScannerType().equalsIgnoreCase(factoryType)) {
+            staticScannerFactory = new CloudBasedStaticScannerFactory();
         }
-        if ("container".equalsIgnoreCase(factoryType)) {
-            return new ContainerBasedStaticScannerFactory();
+        if (AutomationManagerProperties.getContainerBasedScannerType().equalsIgnoreCase(factoryType)) {
+            staticScannerFactory = new ContainerBasedStaticScannerFactory();
         }
-        return null;
+        return staticScannerFactory;
     }
 }

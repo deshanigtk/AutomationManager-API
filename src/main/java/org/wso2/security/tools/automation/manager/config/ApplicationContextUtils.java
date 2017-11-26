@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,6 @@ import org.springframework.context.annotation.Configuration;
  * This class contains application context utility methods.
  * When a Spring managed class is needed to be used in a non-spring managed class, this util class is required
  *
- * @author Deshani Geethika
  * @see ApplicationContext
  * @see ApplicationContextAware
  */

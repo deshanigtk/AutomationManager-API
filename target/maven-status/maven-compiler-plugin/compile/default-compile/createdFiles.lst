@@ -1,4 +1,5 @@
 org/wso2/security/tools/automation/manager/repository/dynamicscanner/ContainerBasedDynamicScannerRepository.class
+org/wso2/security/tools/automation/manager/config/ProductManagerProperties.class
 org/wso2/security/tools/automation/manager/repository/dynamicscanner/DynamicScannerRepository.class
 org/wso2/security/tools/automation/manager/controller/scanner/DynamicScannerController.class
 org/wso2/security/tools/automation/manager/scanner/staticscanner/cloudbased/CloudBasedStaticScannerEnum.class
@@ -14,9 +15,11 @@ org/wso2/security/tools/automation/manager/scanner/dynamicscanner/factory/CloudB
 org/wso2/security/tools/automation/manager/service/productmanager/ContainerBasedProductManagerService.class
 org/wso2/security/tools/automation/manager/exception/StaticScannerException.class
 org/wso2/security/tools/automation/manager/entity/dynamicscanner/DynamicScannerEntity.class
+org/wso2/security/tools/automation/manager/config/DynamicScannerProperties.class
 org/wso2/security/tools/automation/manager/service/productmanager/ProductManagerService.class
 org/wso2/security/tools/automation/manager/service/productmanager/CloudBasedProductManagerService.class
 org/wso2/security/tools/automation/manager/service/staticscanner/CloudBasedStaticScannerService.class
+org/wso2/security/tools/automation/manager/config/AutomationManagerProperties.class
 org/wso2/security/tools/automation/manager/scanner/staticscanner/cloudbased/CloudBasedStaticScanner.class
 org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/zap/ZapEntity.class
 org/wso2/security/tools/automation/manager/entity/staticscanner/cloudbased/CloudBasedStaticScannerEntity.class
@@ -31,6 +34,7 @@ org/wso2/security/tools/automation/manager/scanner/staticscanner/factory/Contain
 org/wso2/security/tools/automation/manager/scanner/dynamicscanner/productmanager/CloudBasedProductManager.class
 org/wso2/security/tools/automation/manager/Application.class
 org/wso2/security/tools/automation/manager/scanner/staticscanner/factory/AbstractStaticScannerFactory.class
+org/wso2/security/tools/automation/manager/config/StaticScannerProperties.class
 org/wso2/security/tools/automation/manager/scanner/dynamicscanner/cloudbased/CloudBasedDynamicScanner.class
 org/wso2/security/tools/automation/manager/entity/dynamicscanner/containerbased/ContainerBasedDynamicScannerEntity.class
 org/wso2/security/tools/automation/manager/scanner/staticscanner/containerbased/dependencycheck/DependencyCheckScanner.class
@@ -42,6 +46,7 @@ org/wso2/security/tools/automation/manager/repository/productmanager/ContainerBa
 org/wso2/security/tools/automation/manager/repository/staticscanner/CloudBasedStaticScannerRepository.class
 org/wso2/security/tools/automation/manager/handler/MailHandler.class
 org/wso2/security/tools/automation/manager/entity/dynamicscanner/cloudbased/CloudBasedDynamicScannerEntity.class
+org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/AbstractContainerBasedDynamicScanner.class
 org/wso2/security/tools/automation/manager/scanner/dynamicscanner/DynamicScanner.class
 org/wso2/security/tools/automation/manager/scanner/staticscanner/factory/CloudBasedStaticScannerFactory.class
 org/wso2/security/tools/automation/manager/service/dynamicscanner/DynamicScannerService.class
@@ -56,7 +61,6 @@ org/wso2/security/tools/automation/manager/scanner/dynamicscanner/productmanager
 org/wso2/security/tools/automation/manager/exception/ProductManagerException.class
 org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/dependencycheck/DependencyCheckEntity.class
 org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/findsecbugs/FindSecBugsEntity.class
-org/wso2/security/tools/automation/manager/config/ScannerProperties.class
 org/wso2/security/tools/automation/manager/entity/staticscanner/containerbased/ContainerBasedStaticScannerEntity.class
 org/wso2/security/tools/automation/manager/scanner/dynamicscanner/containerbased/ContainerBasedDynamicScanner.class
 org/wso2/security/tools/automation/manager/controller/notification/StaticScannerNotificationController.class

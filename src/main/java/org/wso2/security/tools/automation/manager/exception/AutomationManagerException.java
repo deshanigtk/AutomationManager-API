@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,10 +19,8 @@
 package org.wso2.security.tools.automation.manager.exception;
 
 /**
- * The class {@code AutomationManagerException} extends {@link RuntimeException}, wraps exceptions of the
- * application to {@code AutomationManagerException} type
- *
- * @author Deshani Geethika
+ * The class {@code AutomationManagerException} extends {@link Exception}, is the general Automation Manager exception
+ * for all operations dealing with Automation Manager
  */
 @SuppressWarnings("unused")
 public class AutomationManagerException extends Exception {

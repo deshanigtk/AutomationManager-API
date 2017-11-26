@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -21,12 +21,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 
 /**
- * The interface {@code ProductManagerRepository} extends from {@link CrudRepository} defines methods to perform
- * database operations related to {@code ProductManagerRepository}. Since extends from {@link CrudRepository}, basic
- * CRUD
- * operation methods are not required to be defined. Custom methods are only defined
- *
- * @author Deshani Geethika
+ * Repository methods for accessing persistent {@link ProductManagerEntity}
  */
 public interface ProductManagerRepository extends CrudRepository<ProductManagerEntity, Integer> {
     /**

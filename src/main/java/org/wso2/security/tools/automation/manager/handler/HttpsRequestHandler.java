@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -17,10 +17,7 @@
 */
 package org.wso2.security.tools.automation.manager.handler;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -37,9 +34,8 @@ import java.util.Map;
 
 /**
  * Utility methods for HTTPS request handling
- *
- * @author Deshani Geethika
  */
+@SuppressWarnings("unused")
 public class HttpsRequestHandler {
 
     private static final String trustStoreType = "JKS";
@@ -50,16 +46,11 @@ public class HttpsRequestHandler {
     private static SSLSocketFactory sslSocketFactory;
     private static boolean isInitialized = false;
 
-    /**
-     * Set host name verification for wso2 server
+    /*
+      Set host name verification for wso2 server
      */
     static {
-        HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> {
-            // ip address of the service URL(like.23.28.244.244)
-//                if (hostname.equals("23.28.244.244"))
-            return true;
-
-        });
+        HttpsURLConnection.setDefaultHostnameVerifier((String hostname, SSLSession session) -> true);
     }
 
     /**
@@ -67,14 +58,14 @@ public class HttpsRequestHandler {
      * <p>Creates a {@link KeyStore} instance and load key store file into it. Then the created {@link KeyStore}
      * instance is passed to {@link TrustManagerFactory} and the trust managers from {@link TrustManagerFactory}
      * instance are passed into {@link SSLContext} instance</p>
-     */
-    /**
      *
-     * @throws KeyStoreException
-     * @throws CertificateException
-     * @throws NoSuchAlgorithmException
-     * @throws IOException
-     * @throws KeyManagementException
+     * @throws IOException              In case of a problem or the connection was aborted
+     * @throws CertificateException     This exception indicates one of a variety of certificate problems
+     * @throws NoSuchAlgorithmException This exception is thrown when a particular cryptographic algorithm is
+     *                                  requested but is not available in the environment
+     * @throws KeyStoreException        This is the generic KeyStore exception
+     * @throws KeyManagementException   This is the general key management exception for all operations
+     *                                  dealing with key management
      */
     private static void init() throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException,
             KeyManagementException {
@@ -98,7 +89,13 @@ public class HttpsRequestHandler {
      * @param requestParams  Map of request parameters
      * @param method         Method type (GET or POST)
      * @return HTTP URL connection instance
-     * @throws IOException in case of a problem or the connection was aborted
+     * @throws IOException              In case of a problem or the connection was aborted
+     * @throws CertificateException     This exception indicates one of a variety of certificate problems
+     * @throws NoSuchAlgorithmException This exception is thrown when a particular cryptographic algorithm is
+     *                                  requested but is not available in the environment
+     * @throws KeyStoreException        This is the generic KeyStore exception
+     * @throws KeyManagementException   This is the general key management exception for all operations
+     *                                  dealing with key management
      */
     public static HttpsURLConnection sendRequest(String link, Map<String, String> requestHeaders, Map<String, Object>
             requestParams, String method) throws IOException, CertificateException, NoSuchAlgorithmException,

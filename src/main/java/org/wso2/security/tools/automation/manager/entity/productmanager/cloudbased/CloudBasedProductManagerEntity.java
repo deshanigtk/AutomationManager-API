@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -24,8 +24,6 @@ import javax.persistence.Entity;
 /**
  * The class {@code CloudBasedProductManagerEntity} extends {@code ProductManagerEntity} is an entity to
  * store cloud based product managers
- *
- * @author Deshani Geethika
  */
 @SuppressWarnings("unused")
 @Entity

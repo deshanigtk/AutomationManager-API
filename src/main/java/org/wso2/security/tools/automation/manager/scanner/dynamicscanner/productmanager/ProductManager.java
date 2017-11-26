@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,18 +21,35 @@ package org.wso2.security.tools.automation.manager.scanner.dynamicscanner.produc
 import org.wso2.security.tools.automation.manager.exception.ProductManagerException;
 
 /**
- * Product manager
- *
- * @author Deshani Geethika
+ * The interface {@link ProductManager} provides abstraction to product manager related methods
  */
 @SuppressWarnings("WeakerAccess")
 public interface ProductManager {
 
-    boolean startProductManager(int relatedDynamicScannerId) throws ProductManagerException;
+    /**
+     * Start a product manager
+     *
+     * @param relatedDynamicScannerId Related dynamic scanner id that product manager belongs to
+     * @throws ProductManagerException The general exception thrown by product managers
+     */
+    void startProductManager(int relatedDynamicScannerId) throws ProductManagerException;
 
+    /**
+     * Start wso2 server (Container based product manager will unzip a file and start a server, and cloud based
+     * product manager will check whether the host is available)
+     *
+     * @return Boolean to indicate server is started
+     * @throws ProductManagerException The general exception thrown by product managers
+     */
     boolean startServer() throws ProductManagerException;
 
+    /**
+     * @return Product manager host
+     */
     String getHost();
 
+    /**
+     * @return Product manager port
+     */
     int getPort();
 }

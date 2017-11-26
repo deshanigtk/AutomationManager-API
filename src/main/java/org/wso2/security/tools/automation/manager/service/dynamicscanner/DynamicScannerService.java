@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.wso2.security.tools.automation.manager.config.ScannerProperties;
+import org.wso2.security.tools.automation.manager.config.AutomationManagerProperties;
 import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 import org.wso2.security.tools.automation.manager.handler.FileHandler;
@@ -85,8 +85,8 @@ public class DynamicScannerService {
             AutomationManagerException {
 
         try {
-            String fileUploadLocation = ScannerProperties.getTempFolderPath() + File.separator + userId + new
-                    SimpleDateFormat(ScannerProperties.getDatePattern()).format(new Date());
+            String fileUploadLocation = AutomationManagerProperties.getTempFolderPath() + File.separator + userId + new
+                    SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date());
             String urlListFileName = urlListFile.getOriginalFilename();
             DynamicScanner dynamicScanner = null;
             ProductManager productManager;
@@ -126,7 +126,7 @@ public class DynamicScannerService {
     }
 
     private void uploadFileToTempDirectory(String fileUploadLocation, MultipartFile file) throws IOException {
-        File tempDirectory = new File(ScannerProperties.getTempFolderPath());
+        File tempDirectory = new File(AutomationManagerProperties.getTempFolderPath());
         File uploadDirectory = new File(fileUploadLocation);
 
         if (tempDirectory.exists() || tempDirectory.mkdir()) {
@@ -192,7 +192,7 @@ public class DynamicScannerService {
         if (dynamicScanner == null) {
             throw new AutomationManagerException("Dynamic scanner cannot be created");
         }
-        dynamicScanner.init(userId, ScannerProperties.getIpAddress(), fileUploadLocation, urlListFileName);
+        dynamicScanner.init(userId, AutomationManagerProperties.getIpAddress(), fileUploadLocation, urlListFileName);
         return dynamicScanner;
     }
 
@@ -201,7 +201,7 @@ public class DynamicScannerService {
                                                                                    String fileUploadLocation, String
                                                                                            zipFileName) {
         ContainerBasedProductManager productManager = new ContainerBasedProductManager();
-        productManager.init(userId, testName, ScannerProperties.getIpAddress(), productName, wumLevel,
+        productManager.init(userId, testName, AutomationManagerProperties.getIpAddress(), productName, wumLevel,
                 fileUploadLocation, zipFileName);
         return productManager;
     }
@@ -210,7 +210,7 @@ public class DynamicScannerService {
                                                                            String productName, String wumLevel,
                                                                            String wso2serverHost, int wso2ServerPort) {
         CloudBasedProductManager productManager = new CloudBasedProductManager();
-        productManager.init(userId, testName, ScannerProperties.getIpAddress(), productName, wumLevel, wso2serverHost,
+        productManager.init(userId, testName, AutomationManagerProperties.getIpAddress(), productName, wumLevel, wso2serverHost,
                 wso2ServerPort);
         return productManager;
     }

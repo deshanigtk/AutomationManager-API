@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -15,17 +15,36 @@
 * specific language governing permissions and limitations
 * under the License.
 */
+
 package org.wso2.security.tools.automation.manager.exception;
 
+/**
+ * The class {@code StaticScannerException} extends {@link Exception}, is the general static scanner exception
+ * for all operations dealing with static scanners
+ */
+@SuppressWarnings("unused")
 public class StaticScannerException extends Exception {
+    /**
+     * Constructs a new runtime exception with {@code null} as its
+     * detail message.
+     */
     public StaticScannerException() {
         super();
     }
 
+    /**
+     * Constructs a new runtime exception with the specified detail message.
+     *
+     * @param message Message for the exception
+     */
     public StaticScannerException(String message) {
         super(message);
     }
 
+    /**
+     * Constructs a new runtime exception with the specified detail message and
+     * cause.
+     */
     public StaticScannerException(String message, Throwable e) {
         super(message, e);
     }

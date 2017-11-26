@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.wso2.security.tools.automation.manager.config.ScannerProperties;
+import org.wso2.security.tools.automation.manager.config.AutomationManagerProperties;
 import org.wso2.security.tools.automation.manager.entity.productmanager.containerbased
         .ContainerBasedProductManagerEntity;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
@@ -67,7 +67,7 @@ public class ContainerBasedProductManagerService {
     public void updateFileUploaded(String containerId, boolean status) {
         ContainerBasedProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
         productManagerEntity.setFileUploaded(status);
-        productManagerEntity.setFileUploadedTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new
+        productManagerEntity.setFileUploadedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new
                 Date()));
         save(productManagerEntity);
     }
@@ -75,7 +75,7 @@ public class ContainerBasedProductManagerService {
     public void updateFileExtracted(String containerId, boolean status) {
         ContainerBasedProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
         productManagerEntity.setFileExtracted(status);
-        productManagerEntity.setFileExtractedTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new
+        productManagerEntity.setFileExtractedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new
                 Date()));
         save(productManagerEntity);
     }
@@ -83,7 +83,7 @@ public class ContainerBasedProductManagerService {
     public void updateServerStarted(String containerId, boolean status) {
         ContainerBasedProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
         productManagerEntity.setServerStarted(status);
-        productManagerEntity.setServerStartedTime(new SimpleDateFormat(ScannerProperties.getDatePattern()).format(new
+        productManagerEntity.setServerStartedTime(new SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new
                 Date()));
         save(productManagerEntity);
     }
@@ -93,7 +93,7 @@ public class ContainerBasedProductManagerService {
             ContainerBasedProductManagerEntity productManagerEntity = findOneByContainerId(containerId);
             DockerHandler.killContainer(containerId);
             DockerHandler.removeContainer(containerId);
-            productManagerEntity.setStatus(ScannerProperties.getStatusRemoved());
+            productManagerEntity.setStatus(AutomationManagerProperties.getStatusRemoved());
             save(productManagerEntity);
         } catch (InterruptedException | DockerCertificateException | DockerException e) {
             throw new AutomationManagerException("Error occurred while removing product manager container");

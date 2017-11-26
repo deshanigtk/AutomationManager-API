@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) ${2017}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,32 +28,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 import org.wso2.security.tools.automation.manager.service.staticscanner.ContainerBasedStaticScannerService;
-import org.wso2.security.tools.automation.manager.service.staticscanner.StaticScannerService;
 
 /**
  * The main contract of the {@code StaticScannerNotificationController} class is to provide an API to be called by
  * {@code StaticScanner} Docker containers. (eg: findsecbugs_scanner, dependency_check_scanner)
- * When a {@code StaticScanner} Docker container is initialized to run a task, it will run asynchronously. Therefore
- * in order to track whether a task is completed or not,
- * Docker container is configured to send back notifications to APIs defined here.
- *
- * @author Deshani Geethika
+ * <p>When a {@code StaticScanner} Docker container is initialized to run a task, it will run asynchronously. Therefore
+ * in order to track whether a task is completed or not, Docker container is configured to send back notifications to
+ * APIs defined here.
  */
 @Controller
 @RequestMapping("staticScanner/notify")
-@Api(value = "staticScannerNotifications", description = "Static DependencyCheckScanner containers notify status " +
-        "after a task is completed")
+@Api(value = "staticScannerNotifications", description = "Container based static scanners such as FindSecBugs " +
+        "scanner, DependencyCheck scanner notify status after a task is completed")
 public class StaticScannerNotificationController {
 
-    private final StaticScannerService staticScannerService;
     private final ContainerBasedStaticScannerService containerBasedStaticScannerService;
 
     @Autowired
-    public StaticScannerNotificationController(StaticScannerService staticScannerService,
-                                               ContainerBasedStaticScannerService containerBasedStaticScannerService) {
-        this.staticScannerService = staticScannerService;
+    public StaticScannerNotificationController(ContainerBasedStaticScannerService containerBasedStaticScannerService) {
         this.containerBasedStaticScannerService = containerBasedStaticScannerService;
     }
+
     /**
      * Calls by {@code StaticScanner} Docker containers to notify the product zip file is uploaded
      *
@@ -61,11 +56,12 @@ public class StaticScannerNotificationController {
      * @param status      boolean status to indicate the file is uploaded or not
      */
     @GetMapping(value = "fileUploaded")
-    @ApiOperation(value = "Update that a zip file is extracted to the container")
+    @ApiOperation(value = "Update that a zip file is uploaded to the container")
     public @ResponseBody
     void updateFileUploaded(@RequestParam String containerId, @RequestParam boolean status) {
         containerBasedStaticScannerService.updateFileUploaded(containerId, status);
     }
+
     /**
      * Calls by {@code StaticScanner} Docker containers to notify the product zip file is extracted
      *
@@ -100,7 +96,7 @@ public class StaticScannerNotificationController {
      */
     @GetMapping(value = "scanStatus")
     public @ResponseBody
-    @ApiOperation(value = "Update the status of the scan")
+    @ApiOperation(value = "Update the status of the scan. eg: running, failed, completed")
     void updateScanStatus(@RequestParam String containerId, @RequestParam String status) {
         containerBasedStaticScannerService.updateScanStatus(containerId, status);
     }
@@ -115,10 +111,6 @@ public class StaticScannerNotificationController {
     public @ResponseBody
     @ApiOperation(value = "Update that the scan report is ready")
     void updateReportReady(@RequestParam String containerId, @RequestParam boolean status) {
-        try {
             containerBasedStaticScannerService.updateReportReady(containerId, status);
-        } catch (AutomationManagerException e) {
-            e.printStackTrace();
-        }
     }
 }
