@@ -36,8 +36,7 @@ import org.wso2.security.tools.automation.manager.service.productmanager.Contain
  */
 
 @Controller
-//TODO:change path
-@RequestMapping("dynamicScanner/notify")
+@RequestMapping("productManager/notify")
 @Api(value = "productManagerNotifications", description = "Product Manager Docker container will use this API to " +
         "notify the status of the container such as file uploaded, file extracted and server started")
 public class ProductManagerNotificationController {
