@@ -1,8 +1,8 @@
-/home/deshani/1.MY_PROJECT/MyNewAutomationManager/src/test/java/org/wso2/security/automation/manager/service/StaticScannerServiceTest.java
-/home/deshani/1.MY_PROJECT/MyNewAutomationManager/src/test/java/org/wso2/security/automation/manager/repository/DynamicScannerImplRepositoryTest.java
-/home/deshani/1.MY_PROJECT/MyNewAutomationManager/src/test/java/org/wso2/security/automation/manager/ApplicationTest.java
-/home/deshani/1.MY_PROJECT/MyNewAutomationManager/src/test/java/org/wso2/security/automation/manager/StaticScannerThreadTest.java
-/home/deshani/1.MY_PROJECT/MyNewAutomationManager/src/test/java/org/wso2/security/automation/manager/service/DynamicScannerImplServiceTest.java
-/home/deshani/1.MY_PROJECT/MyNewAutomationManager/src/test/java/org/wso2/security/automation/manager/repository/ZapRepositoryTest.java
-/home/deshani/1.MY_PROJECT/MyNewAutomationManager/src/test/java/org/wso2/security/automation/manager/repository/StaticScannerRepositoryTest.java
-/home/deshani/1.MY_PROJECT/MyNewAutomationManager/src/test/java/org/wso2/security/automation/manager/StaticScannerTest.java
+/home/deshani/Documents/1.Project/MyNewAutomationManager/src/test/java/org/wso2/security/tools/automation/manager/repository/DynamicScannerImplRepositoryTest.java
+/home/deshani/Documents/1.Project/MyNewAutomationManager/src/test/java/org/wso2/security/tools/automation/manager/ApplicationTest.java
+/home/deshani/Documents/1.Project/MyNewAutomationManager/src/test/java/org/wso2/security/tools/automation/manager/repository/ZapRepositoryTest.java
+/home/deshani/Documents/1.Project/MyNewAutomationManager/src/test/java/org/wso2/security/tools/automation/manager/service/DynamicScannerImplServiceTest.java
+/home/deshani/Documents/1.Project/MyNewAutomationManager/src/test/java/org/wso2/security/tools/automation/manager/repository/StaticScannerRepositoryTest.java
+/home/deshani/Documents/1.Project/MyNewAutomationManager/src/test/java/org/wso2/security/tools/automation/manager/StaticDependencyCheckScannerOLDTest.java
+/home/deshani/Documents/1.Project/MyNewAutomationManager/src/test/java/org/wso2/security/tools/automation/manager/StaticDependencyCheckScannerOLDThreadTest.java
+/home/deshani/Documents/1.Project/MyNewAutomationManager/src/test/java/org/wso2/security/tools/automation/manager/service/StaticScannerServiceTest.java

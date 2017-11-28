@@ -105,7 +105,7 @@ public class DynamicScannerService {
      */
     public void startScan(String scanType, String userId, String testName, String productName, String wumLevel,
                           boolean productUploadAsZipFile, MultipartFile zipFile, MultipartFile urlListFile, String
-                                  wso2ServerHost, int wso2ServerPort, String scannerHost, int scannerPort) throws
+                                  wso2ServerHost, int wso2ServerPort) throws
             AutomationManagerException {
 
         try {
@@ -123,7 +123,7 @@ public class DynamicScannerService {
             uploadFileToTempDirectory(fileUploadLocation, urlListFile);
             if (isCloudBasedDynamicScanner(scanType)) {
                 dynamicScanner = createAndInitCloudBasedDynamicScanner(scanType, userId, fileUploadLocation,
-                        urlListFileName, scannerHost, scannerPort);
+                        urlListFileName);
             } else if (isContainerBasedDynamicScanner(scanType)) {
                 dynamicScanner = createAndInitContainerBasedDynamicScanner(scanType, userId, fileUploadLocation,
                         urlListFileName);
@@ -192,9 +192,11 @@ public class DynamicScannerService {
     }
 
     private CloudBasedDynamicScanner createAndInitCloudBasedDynamicScanner(String scanType, String userId, String
-            fileUploadLocation, String urlListFileName, String scannerHost, int scannerPort) throws
+            fileUploadLocation, String urlListFileName) throws
             AutomationManagerException {
         String factoryType = "cloud";
+        String scannerHost = "";
+        int scannerPort = 0;
         AbstractDynamicScannerFactory dynamicScannerFactory = DynamicScannerFactoryProducer.getDynamicScannerFactory
                 (factoryType);
         if (dynamicScannerFactory == null) {
@@ -241,8 +243,7 @@ public class DynamicScannerService {
                                                                            String wso2serverHost, int wso2ServerPort) {
         CloudBasedProductManager productManager = new CloudBasedProductManager();
         productManager.init(userId, testName, AutomationManagerProperties.getIpAddress(), productName, wumLevel,
-                wso2serverHost,
-                wso2ServerPort);
+                wso2serverHost, wso2ServerPort);
         return productManager;
     }
 }

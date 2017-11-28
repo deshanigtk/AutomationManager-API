@@ -101,8 +101,8 @@ public class StaticScannerService {
      * {@inheritDoc}
      */
     public void startScan(String scanType, String userId, String testName, String productName,
-                          String wumLevel, boolean isFileUpload, MultipartFile zipFile, String gitUrl, String
-                                  gitUsername, String gitPassword) throws AutomationManagerException {
+                          String wumLevel, boolean sourceCodeUploadAsZip, MultipartFile zipFile, String gitUrl) throws
+            AutomationManagerException {
         String zipFileName = null;
         String uploadLocation = AutomationManagerProperties.getTempFolderPath() + File.separator + userId + new
                 SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date());
@@ -110,8 +110,10 @@ public class StaticScannerService {
         String fileUploadLocation = AutomationManagerProperties.getTempFolderPath() + File.separator + userId + new
                 SimpleDateFormat(AutomationManagerProperties.getDatePattern()).format(new Date());
         StaticScanner staticScanner = null;
+        String gitUsername = AutomationManagerProperties.getGitUsername();
+        String gitPassword = AutomationManagerProperties.getGitPassword();
         try {
-            if (isFileUpload) {
+            if (sourceCodeUploadAsZip) {
                 if (zipFile == null || !zipFile.getOriginalFilename().endsWith(".zip")) {
                     throw new AutomationManagerException("Please upload product zip file");
                 }
@@ -125,19 +127,19 @@ public class StaticScannerService {
             if (isCloudBasedStaticScanner(scanType)) {
                 //staticScanner = createAndInitCloudBasedStaticScanner();
             } else if (isContainerBasedStaticScanner(scanType)) {
-                staticScanner = createAndInitContainerBasedDynamicScanner(scanType, userId, testName,
-                        AutomationManagerProperties.getIpAddress(), productName, wumLevel, isFileUpload, uploadLocation,
+                staticScanner = createAndInitContainerBasedStaticScanner(scanType, userId, testName,
+                        AutomationManagerProperties.getIpAddress(), productName, wumLevel, sourceCodeUploadAsZip, uploadLocation,
                         zipFileName, gitUrl, gitUsername, gitPassword);
             }
 
             if (staticScanner == null) {
-                throw new AutomationManagerException("Error occurred while creating dynamic scanner");
+                throw new AutomationManagerException("Error occurred while creating static scanner");
             }
 
             StaticScannerExecutor staticScannerExecutor = new StaticScannerExecutor(staticScanner);
             new Thread(staticScannerExecutor).start();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new AutomationManagerException("Error occurred while uploading to temp location");
         }
     }
 
@@ -192,13 +194,13 @@ public class StaticScannerService {
     }
 
 
-    private ContainerBasedStaticScanner createAndInitContainerBasedDynamicScanner(String scanType, String userId,
-                                                                                  String testName, String ipAddress,
-                                                                                  String productName, String wumLevel,
-                                                                                  boolean isFileUpload, String
+    private ContainerBasedStaticScanner createAndInitContainerBasedStaticScanner(String scanType, String userId,
+                                                                                 String testName, String ipAddress,
+                                                                                 String productName, String wumLevel,
+                                                                                 boolean isFileUpload, String
                                                                                           uploadLocation, String
                                                                                           zipFileName, String gitUrl,
-                                                                                  String gitUsername, String
+                                                                                 String gitUsername, String
                                                                                           gitPassword) throws
             AutomationManagerException {
         String factoryType = AutomationManagerProperties.getContainerBasedScannerType();

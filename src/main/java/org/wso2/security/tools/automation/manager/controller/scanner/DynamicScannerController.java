@@ -52,20 +52,20 @@ public class DynamicScannerController {
      * The general contract of the method is to call {@code startScan} method in {@code DynamicScannerService} class.
      * Then the service level method will validate the request and execute the scanning process
      *
-     * @param scanType       Indicates the dynamic scan type. Eg: ZAP, Qualis
-     * @param userId         Unique identifier of a logged in user. Here email address is taken from authenticated user
-     * @param testName       User defined name for the test
-     * @param productName    Name of the product to be scanned
-     * @param wumLevel       WUM level of the product. Default value will be 0
-     * @param isFileUpload   Indicates whether the product is uploaded. False means the product is already in up and
-     *                       running status
-     * @param zipFile        ZIP file of the product to be scanned. This is not required if {@code isFileUpload}
-     *                       parameter is false
-     * @param urlListFile    URLs of the product to be scanned is sent as a file
-     * @param wso2ServerHost Host address if the product is already in up and running state
-     * @param wso2ServerPort Port of a product which is in up and running state
-     * @param scannerHost    Host address if the scanner is hosted somewhere else
-     * @param scannerPort    Port of the remote scanner
+     * @param scanType           Indicates the dynamic scan type. Eg: ZAP, Qualis
+     * @param userId             Unique identifier of a logged in user. Here email address is taken from
+     *                           authenticated user
+     * @param testName           User defined name for the test
+     * @param productName        Name of the product to be scanned
+     * @param wumLevel           WUM level of the product. Default value will be 0
+     * @param productUploadAsZip Indicates whether the product is uploaded. False means the product is already in up and
+     *                           running status
+     * @param zipFile            ZIP file of the product to be scanned. This is not required if {@code isFileUpload}
+     *                           parameter is false
+     * @param urlListFile        URLs of the product to be scanned is sent as a file
+     * @param wso2ServerHost     Host address if the product is already in up and running state
+     * @param wso2ServerPort     Port of a product which is in up and running state
+     * @throws AutomationManagerException The general exception thrown by Automation Manager
      */
     @PostMapping(value = "startScan")
     @ApiOperation(value = "Start ProductManager, upload the product zip file or else give IP address and " +
@@ -76,22 +76,21 @@ public class DynamicScannerController {
                    @RequestParam String testName,
                    @RequestParam String productName,
                    @RequestParam(defaultValue = "0") String wumLevel,
-                   @RequestParam boolean isFileUpload,
+                   @RequestParam boolean productUploadAsZip,
                    @RequestParam(required = false) MultipartFile zipFile,
                    @RequestParam MultipartFile urlListFile,
                    @RequestParam(required = false) String wso2ServerHost,
-                   @RequestParam(required = false, defaultValue = "-1") int wso2ServerPort,
-                   @RequestParam(required = false) String scannerHost,
-                   @RequestParam(required = false, defaultValue = "-1") int scannerPort) throws
+                   @RequestParam(required = false, defaultValue = "-1") int wso2ServerPort) throws
             AutomationManagerException {
-        dynamicScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload, zipFile,
-                urlListFile, wso2ServerHost, wso2ServerPort, scannerHost, scannerPort);
+        dynamicScannerService.startScan(scanType, userId, testName, productName, wumLevel, productUploadAsZip, zipFile,
+                urlListFile, wso2ServerHost, wso2ServerPort);
     }
 
     /**
      * This method is to kill a running or stopped container, if any error occurs
      *
      * @param containerId Container Id of the container to be killed
+     * @throws AutomationManagerException The general exception thrown by Automation Manager
      */
     @GetMapping(path = "kill")
     @ApiOperation(value = "Stop a running dynamic scanner container")

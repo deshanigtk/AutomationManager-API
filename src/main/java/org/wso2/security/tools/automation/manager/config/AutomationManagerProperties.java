@@ -41,6 +41,8 @@ public class AutomationManagerProperties {
     private static String datePattern;
     private static String cloudBasedScannerType;
     private static String containerBasedScannerType;
+    private static String gitUsername;
+    private static String gitPassword;
 
     /*
       Load {@code automationmanager.properties} file and assign properties into variables
@@ -63,6 +65,8 @@ public class AutomationManagerProperties {
             datePattern = properties.getProperty("date.pattern");
             cloudBasedScannerType = properties.getProperty("scanner.type.cloud.based");
             containerBasedScannerType = properties.getProperty("scanner.type.container.based");
+            gitUsername=properties.getProperty("app.git.username");
+            gitPassword=properties.getProperty("app.git.password");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -179,11 +183,34 @@ public class AutomationManagerProperties {
         return datePattern;
     }
 
+    /**
+     *
+     * @return Cloud based scanner type
+     */
     public static String getCloudBasedScannerType() {
         return cloudBasedScannerType;
     }
 
+    /**
+     *
+     * @return Container based scanner type
+     */
     public static String getContainerBasedScannerType() {
         return containerBasedScannerType;
+    }
+
+    /**
+     * Get the GitHub username for private repositories (There is a specific user defined for the application)
+     * @return GitHub username
+     */
+    public static String getGitUsername() {
+        return gitUsername;
+    }
+    /**
+     * Get the GitHub password for private repositories (There is a specific user defined for the application)
+     * @return GitHub password
+     */
+    public static String getGitPassword() {
+        return gitPassword;
     }
 }

@@ -52,42 +52,42 @@ public class StaticScannerController {
      * The general contract of the method is to call {@code startScan} method in {@code StaticScannerService} class.
      * Then the service level method will validate the request and execute the scanning process
      *
-     * @param scanType     Indicates the dynamic scan type. Eg: ZAP, Qualis
-     * @param userId       Unique identifier of a logged in user. Here email address is taken from authenticated user
-     * @param testName     User defined name for the test
-     * @param productName  Name of the product to be scanned
-     * @param wumLevel     WUM level of the product. Default value will be 0
-     * @param isFileUpload Indicates whether the product is uploaded. False means the product is already in up and
-     *                     running status
-     * @param zipFile      ZIP file of the product to be scanned. This is not required if {@code isFileUpload}
-     *                     parameter is false
-     * @param gitUrl       GitHub URL of the product to be cloned. By default, master branch is cloned. If a specific
-     *                     branch or tag needs to be cloned, the URL should point the specified branch or tag
-     * @param gitUsername  Username of the GitHub account, if the repository is private
-     * @param gitPassword  Password of the GitHub account, if the repository is private
+     * @param scanType              Indicates the dynamic scan type. Eg: ZAP, Qualis
+     * @param userId                Unique identifier of a logged in user. Here email address is taken from
+     *                              authenticated user
+     * @param testName              User defined name for the test
+     * @param productName           Name of the product to be scanned
+     * @param wumLevel              WUM level of the product. Default value will be 0
+     * @param sourceCodeUploadAsZip Indicates whether the product is uploaded. False means the product is already in
+     *                              up and
+     *                              running status
+     * @param zipFile               ZIP file of the product to be scanned. This is not required if {@code isFileUpload}
+     *                              parameter is false
+     * @param gitUrl                GitHub URL of the product to be cloned. By default, master branch is cloned. If a
+     *                              specific
+     *                              branch or tag needs to be cloned, the URL should point the specified branch or tag
+     * @throws AutomationManagerException The general exception thrown by Automation Manager
      */
     @PostMapping(value = "startScan")
     @ApiOperation(value = "Start static scanner, upload the product zip file or else clone product from GitHub and " +
             "start scans - FindSecBugsEntity and/or OWASP Dependency Check")
-    public @ResponseBody
     void startScan(@RequestParam String scanType,
                    @RequestParam String userId,
                    @RequestParam String testName,
                    @RequestParam String productName,
                    @RequestParam String wumLevel,
-                   @RequestParam boolean isFileUpload,
+                   @RequestParam boolean sourceCodeUploadAsZip,
                    @RequestParam(required = false) MultipartFile zipFile,
-                   @RequestParam(required = false) String gitUrl,
-                   @RequestParam(required = false) String gitUsername,
-                   @RequestParam(required = false) String gitPassword) throws AutomationManagerException {
-        staticScannerService.startScan(scanType, userId, testName, productName, wumLevel, isFileUpload,
-                zipFile, gitUrl, gitUsername, gitPassword);
+                   @RequestParam(required = false) String gitUrl) throws AutomationManagerException {
+        staticScannerService.startScan(scanType, userId, testName, productName, wumLevel, sourceCodeUploadAsZip,
+                zipFile, gitUrl);
     }
 
     /**
      * This method is to kill a running or stopped container, if any error occurs
      *
      * @param containerId Container Id of the container to be killed
+     * @throws AutomationManagerException The general exception thrown by Automation Manager
      */
     @GetMapping(path = "kill")
     @ApiOperation(value = "Stop a running static scanner container")
