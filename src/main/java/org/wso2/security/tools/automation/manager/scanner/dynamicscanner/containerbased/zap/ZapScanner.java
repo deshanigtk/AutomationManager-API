@@ -119,7 +119,6 @@ public class ZapScanner extends AbstractContainerBasedDynamicScanner {
             runAjaxSpider(zapClient);
             runActiveScan(zapClient);
             generateReport(zapClient);
-
         } catch (IOException | CertificateException | URISyntaxException | NoSuchAlgorithmException |
                 KeyStoreException | AutomationManagerException | KeyManagementException | InterruptedException e) {
             dynamicScannerService.updateScanStatus(dynamicScannerEntity.getContainerId(), AutomationManagerProperties
@@ -189,7 +188,6 @@ public class ZapScanner extends AbstractContainerBasedDynamicScanner {
                 String scanId = extractJsonValue(spiderResponse, "scan");
                 spiderScanIds.add(scanId);
             }
-
             for (String scanId : spiderScanIds) {
                 HttpResponse spiderStatusResponse = zapClient.spiderStatus(scanId, false);
                 LOGGER.info("Sending request to check spider status");
@@ -224,11 +222,9 @@ public class ZapScanner extends AbstractContainerBasedDynamicScanner {
         Thread.sleep(500);
         HttpResponse activeScanStatusResponse = zapClient.activeScanStatus(activeScanId, false);
         progress = Integer.parseInt(extractJsonValue(activeScanStatusResponse, "status"));
-
         while (progress < 100) {
             activeScanStatusResponse = zapClient.activeScanStatus(activeScanId, false);
             progress = Integer.parseInt(extractJsonValue(activeScanStatusResponse, "status"));
-
             dynamicScannerService.updateScanStatus(dynamicScannerEntity.getContainerId(),
                     AutomationManagerProperties.getStatusRunning(), progress);
             Thread.sleep(1000 * 60);

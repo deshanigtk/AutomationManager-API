@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.wso2.security.tools.automation.manager.repository;
+package org.wso2.security.tools.automation.manager.repository.dynamicscanner;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

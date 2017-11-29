@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.repository;
+package org.wso2.security.tools.automation.manager.repository.dynamicscanner;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,31 +24,34 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.wso2.security.tools.automation.manager.entity.staticscanner.StaticScannerEntity;
-import org.wso2.security.tools.automation.manager.entity.staticscanner.containerbased.dependencycheck
-        .DependencyCheckEntity;
-import org.wso2.security.tools.automation.manager.repository.staticscanner.StaticScannerRepository;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
+import org.wso2.security.tools.automation.manager.entity.dynamicscanner.containerbased.zap.ZapEntity;
+import org.wso2.security.tools.automation.manager.repository.dynamicscanner.DynamicScannerRepository;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Unit tests for {@link DynamicScannerRepository}
+ */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class StaticScannerRepositoryTest {
+public class DynamicScannerRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private StaticScannerRepository staticScannerRepository;
+    private DynamicScannerRepository dynamicScannerRepository;
 
     @Test
     public void testFindByUserId() throws Exception {
         String userId = "test@test.com";
-        StaticScannerEntity staticScannerToPersist = new DependencyCheckEntity();
-        staticScannerToPersist.setUserId(userId);
-        entityManager.persist(staticScannerToPersist);
 
-        Iterable<StaticScannerEntity> staticScanners = staticScannerRepository.findByUserId(userId);
-        assertEquals(staticScannerToPersist, staticScanners.iterator().next());
+        DynamicScannerEntity dynamicScannerToPersist = new ZapEntity();
+        dynamicScannerToPersist.setUserId(userId);
+        entityManager.persist(dynamicScannerToPersist);
+
+        Iterable<DynamicScannerEntity> dynamicScanners = dynamicScannerRepository.findByUserId(userId);
+        assertEquals(dynamicScannerToPersist, dynamicScanners.iterator().next());
     }
 }

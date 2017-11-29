@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.security.tools.automation.manager.repository;
+package org.wso2.security.tools.automation.manager.repository.productmanager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,28 +27,26 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.wso2.security.tools.automation.manager.entity.dynamicscanner.DynamicScannerEntity;
-import org.wso2.security.tools.automation.manager.entity.productmanager.ProductManagerEntity;
 import org.wso2.security.tools.automation.manager.entity.productmanager.containerbased
         .ContainerBasedProductManagerEntity;
-import org.wso2.security.tools.automation.manager.repository.productmanager.ProductManagerRepository;
+import org.wso2.security.tools.automation.manager.repository.productmanager.ContainerBasedProductManagerRepository;
 
 import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for
- * {@link org.wso2.security.tools.automation.manager.repository.productmanager.ProductManagerRepository}
+ * {@link org.wso2.security.tools.automation.manager.repository.productmanager.ContainerBasedProductManagerRepository}
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ProductManagerRepositoryTest {
-
+public class ContainerBasedProductManagerRepositoryTest {
     private DynamicScannerEntity dynamicScannerEntityMock;
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private ProductManagerRepository productManagerRepository;
+    private ContainerBasedProductManagerRepository productManagerRepository;
 
     @Before
     public void setup() {
@@ -56,18 +54,39 @@ public class ProductManagerRepositoryTest {
     }
 
     @Test
+    public void testFindOneByContainerId() throws Exception {
+        String containerId = "testContainerId";
+        String testName = "testName";
+        String userId = "test@test.com";
+        int relatedDynamicScannerId = 1;
+
+        Mockito.when(dynamicScannerEntityMock.getId()).thenReturn(1);
+
+        ContainerBasedProductManagerEntity productManagerToPersist = new ContainerBasedProductManagerEntity();
+        productManagerToPersist.setContainerId(containerId);
+        productManagerToPersist.setTestName(testName);
+        productManagerToPersist.setUserId(userId);
+        productManagerToPersist.setRelatedDynamicScannerId(relatedDynamicScannerId);
+        entityManager.persist(productManagerToPersist);
+        ContainerBasedProductManagerEntity productManager = productManagerRepository.findOneByContainerId(containerId);
+        assertEquals(testName, productManager.getTestName());
+    }
+
+    @Test
     public void testFindByUserId() {
+        String containerId = "testContainerId";
         String name = "testName";
         String userId = "test@test.com";
         int relatedDynamicScannerId = 1;
         Mockito.when(dynamicScannerEntityMock.getId()).thenReturn(1);
 
-        ProductManagerEntity productManagerToPersist = new ContainerBasedProductManagerEntity();
+        ContainerBasedProductManagerEntity productManagerToPersist = new ContainerBasedProductManagerEntity();
+        productManagerToPersist.setContainerId(containerId);
         productManagerToPersist.setTestName(name);
         productManagerToPersist.setUserId(userId);
         productManagerToPersist.setRelatedDynamicScannerId(relatedDynamicScannerId);
         entityManager.persist(productManagerToPersist);
-        Iterable<ProductManagerEntity> productManagers = productManagerRepository.findByUserId(userId);
+        Iterable<ContainerBasedProductManagerEntity> productManagers = productManagerRepository.findByUserId(userId);
         assertEquals(productManagerToPersist.getUserId(), productManagers.iterator().next().getUserId());
     }
 }
