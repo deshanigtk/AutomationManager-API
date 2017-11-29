@@ -1,5 +1,5 @@
 /*
- * Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,9 @@ import org.wso2.security.tools.automation.manager.repository.dynamicscanner.Cont
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Unit tests for {@link ContainerBasedDynamicScannerRepository}
+ */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)

@@ -1,5 +1,5 @@
-package org.wso2.security.tools.automation.manager.service;/*
-*  Copyright (c) ${date}, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+/*
+*  Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -15,8 +15,8 @@ package org.wso2.security.tools.automation.manager.service;/*
 * specific language governing permissions and limitations
 * under the License.
 */
+package org.wso2.security.tools.automation.manager.service;
 
-import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,6 @@ import org.mockito.Mockito;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.wso2.security.tools.automation.manager.exception.AutomationManagerException;
 import org.wso2.security.tools.automation.manager.repository.dynamicscanner.DynamicScannerRepository;
 import org.wso2.security.tools.automation.manager.service.dynamicscanner.DynamicScannerService;
@@ -34,6 +33,9 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Unit tests for {@link DynamicScannerService}
+ */
 @RunWith(SpringRunner.class)
 public class DynamicScannerServiceTest {
 
